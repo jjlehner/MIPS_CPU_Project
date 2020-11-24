@@ -3,15 +3,26 @@
   This module will take opcode and function code from the instruction and use them to calculate what control signals need to be high.
 
   ## Input
-  op_code: 
+  op_code: The opcode of the instruction, which identifies the type of instruction (r-type & b-type) or the specific instruction (j-type)  
+  fn_code: The function code for r type instructions, which identifies the function to perform.  
 
+  ## Output
+  reg_wr_en: Write enable for the registers. We need this to ensure registers don't get overwritten when they shouldn't be.  
+  mem_wr_en: Write enable for main memory. We need this to ensure main memory doesn't get overwritten when it shouldn't be.  
+  use_alu:   A selector for a future MUX. Indicates whether or not we should use the output from the ALU or from main memory.  
+  pc_branch: Indicates whether the program counter is liable to be changed by a branch. Currently I'm going to use it for ALU result reduction (XOR => BNE) especially. Will also probably be used in a MUX after logic operations.  
+  pc_jump:   Indicates whether the program counter is liable to be changed by a jump. Will probably be used as a selector for a future MUX.  
+  i_type:    Indicates whether an instruction takes an immediate operand. Probably will be used in a MUX before the ALU & maybe elsewhere.
+  j_type:    Indicates whether an instruction is a jump type instruction. I may end up removing this as it's only high for half of jump instructions and we have pc_jump.  
+  r_type:    Indicates whether an instruction is a r type instruction. I may end up removing this as it's essentialy !(i_type) with a couple of exceptions for J and JAL.  
+  
 */
 
 module instruction_decode (
     input  [5:0] op_code, fn_code,
     output logic [3:0] alu_op,
-    output logic reg_wr_en, 
-    output mem_wr_en, use_alu,
+    output reg_wr_en, mem_wr_en,
+    output use_alu,
     output pc_branch, pc_jump,
     output i_type, j_type, r_type
   );
