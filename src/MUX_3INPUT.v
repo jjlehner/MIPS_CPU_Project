@@ -16,7 +16,7 @@ module MUX_3
 			2'b00 	:	resolved = input_0;
 			2'b01	:	resolved = input_1;
 			2'b10	:	resolved = input_2;
-			2'b11	:	resolved = 0; //Something has gone wrong if this case has been reached
+			2'b11	:	resolved = {BUS_WIDTH{1'bx}}; //Something has gone wrong if this case has been reached
 		endcase
 	end
 
