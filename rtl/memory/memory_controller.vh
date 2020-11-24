@@ -26,6 +26,5 @@ module memory_controller (
 
   `clock_gen(37)
 
-
   
 endmodule
