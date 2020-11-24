@@ -1,9 +1,12 @@
 * We're going to assume that our CPU is running at 30MHz, ie 1 clock per 33ns as this is a reasonable clock rate for the [MIPS R3000](https://cgi.cse.unsw.edu.au/~cs3231/doc/R3000.pdf).
 * The RAM is partially going to be modelled after [this](https://faculty-web.msoe.edu/johnsontimoj/EE4980/files4980/SDRAM_Spec.pdf). This RAM runs at 133 MHz, ie 1 clock per 7.5ns.
-* As we're using DRAM, we need to periodically refresh the values of the capacitors. Due to the slow clock rate of the CPU this can be done between read/write operations.
-* The read latency is 5.4ns, meaning our hold time is effectively negligable. For convenience's sake, we're going to run our memory at 135MHz. This means 1 clock per 7.4ns.
+* As we're using DRAM, we need to periodically refresh the values of the capacitors.
+* For convenience's sake, we're going to run our memory at 135MHz. This means 1 clock per 7.4ns.
+* The read latency is 5.4ns, meaning our hold time is effectively negligable (<1 clock cycle).
+* The time to change from one bank to another is 15ns. This is ~2 clock cycles so will have to be accounted for using the wait signal.
 * Our memory will be sorted into blocks, banks, columns & rows. We have 8 
-* As DRAM needs to be refreshed approximately every 64ns, we will have to refresh our ram every 8 (memory) clock cycles
+* Our memory will auto-refresh when not in use, or when the time since a row was last refreshed is on track to be over 64ms.
+* From what I can see there are 2 ways of refreshing the memory, 1 is time efficient, area inefficient and the other the inverse. We will need to store the time since each row was last refreshed somewhere, & theoretically we could skip rows which have been refreshed recently. The issue with this is that we don't know whether there are registers which were skipped which are exceeding 64ms since the last refresh so we would have to implement expensive logic to figure that out as well as to decide whether a row was accessed recently enough that we can skip it.
 
 Memory block layout:
 

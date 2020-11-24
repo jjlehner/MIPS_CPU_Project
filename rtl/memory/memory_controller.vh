@@ -1,6 +1,9 @@
 /* moduledoc
 
-
+  The memory controller has all of the memory.
+  If you're impatient it tells u to wait.
+  Legend has it that the clock ticks differently here.
+  WELCOME TO MEMORY LAND, EST 2020
 
 */
 
@@ -11,8 +14,9 @@
 module memory_controller (
   input wr_en,
   input [31:0] read_address,
-  input [31:0] write_addres,
+  input [31:0] write_address,
   input [31:0] write_data,
+  output[31:0] wait_signal,
   output[31:0] read_data
   );
 
@@ -21,9 +25,7 @@ module memory_controller (
   ////////////////////////////////////////////////
 
   `clock_gen(37)
-  
-  always @(posedge clock) begin
-    
-  end
 
+
+  
 endmodule
