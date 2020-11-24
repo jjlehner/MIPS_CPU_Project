@@ -13,13 +13,15 @@ module Fetch_Decode_Register
 );
 
 	always_ff @(posedge clk, posedge clear) begin
-		if(clear && !enable) begin
-			instruction_decode <= 0;
-			PC_plus_four_decode <= 0;
-		end
-		else if(!enable) begin
-			instruction_decode <= instruction_fetch;
-			PC_plus_four_decode <= PC_plus_four_fetch;
+		if(!enable) begin
+			if(clear) begin
+				instruction_decode <= 0;
+				PC_plus_four_decode <= 0;
+			end else if(clk) begin
+				instruction_decode <= instruction_fetch;
+				PC_plus_four_decode <= PC_plus_four_fetch;
+			end
 		end
 	end
+	
 endmodule
