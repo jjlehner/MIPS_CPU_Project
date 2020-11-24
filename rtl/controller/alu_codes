@@ -1,0 +1,32 @@
+and, andi
+0000
+or, ori
+0001
+xor, xori, bne (reduce), beq (reduce, negate)
+0010
+bltz, bltzal || bgez, bgezal (negate)
+0011
+blez || bgtz (negate)
+0100
+sll, sllv
+0101
+sra, srav
+0110
+srl, srlv
+0111
+slt, slti
+1000
+sltu, sltiu
+1001
+addu, addiu
+1010
+subu, subiu
+1011
+div
+1100
+divu
+1101
+mult
+1110
+multu
+1111
