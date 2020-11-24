@@ -1,0 +1,1 @@
+`define clock_gen(i) logic clock; initial begin forever begin clock = 0; #``i``; m_clock = 1; #``i``; end end
