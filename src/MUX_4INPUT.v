@@ -3,13 +3,13 @@ module MUX_3
 	parameter BUS_WIDTH = 1	//BUS_WIDTH can be changed in module instantiation
 )
 (
-	input logic [1:0]			control,
-	input logic [BUS_WIDTH:0] 	input_0,
-	input logic [BUS_WIDTH:0] 	input_1,
-	input logic [BUS_WIDTH:0] 	input_2,
-	input logic [BUS_WIDTH:0]	input_3,
+	input logic [1:0]				control,
+	input logic [BUS_WIDTH-1:0] 	input_0,
+	input logic [BUS_WIDTH-1:0] 	input_1,
+	input logic [BUS_WIDTH-1:0] 	input_2,
+	input logic [BUS_WIDTH-1:0]		input_3,
 
-	output logic [BUS_WIDTH:0] resolved
+	output logic [BUS_WIDTH-1:0]	resolved
 );
 
 	always_comb begin

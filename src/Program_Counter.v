@@ -1,6 +1,6 @@
 module Program_Counter(
-	input 	logic [31:0] address_input,
 	input	logic clk,
+	input 	logic [31:0] address_input,
 	input	logic enable, //active low
 	output	logic [31:0] address_output
 
