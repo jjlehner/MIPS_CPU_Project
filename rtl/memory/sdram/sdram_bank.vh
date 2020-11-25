@@ -36,6 +36,16 @@ module sdram_bank(
   logic[511:0][31:0] data_out;
   assign row = write_enable? 16384'bZ : data_out;
 
+  /////////////////////////////////////////////////////////////////////////
+  // Mode change delay on changing from read to write mode or vice versa //
+  /////////////////////////////////////////////////////////////////////////
+
+  always @(write_enable) begin
+    wait_signal <= 1;
+    #150;
+    wait_signal <= 0;
+  end
+
   //////////////////////////////////////////////////////////////////////
   // If the ram is not "busy", either update it or send the read data //
   //////////////////////////////////////////////////////////////////////
@@ -43,9 +53,17 @@ module sdram_bank(
   always @(posedge clock) begin
     if (~wait_signal) begin
       if (write_enable) begin
+        wait_signal <= 1;
+        #8;
         ram[column_address] <= row;
+        #140;
+        wait_signal <= 0;
       end else begin
+        wait_signal <= 1;
+        #18;
         data_out <= ram[column_address];
+        #54;
+        wait_signal <= 0;
       end
     end
   end
