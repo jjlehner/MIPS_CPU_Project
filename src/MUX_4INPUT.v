@@ -7,6 +7,7 @@ module MUX_3
 	input logic [BUS_WIDTH:0] 	input_0,
 	input logic [BUS_WIDTH:0] 	input_1,
 	input logic [BUS_WIDTH:0] 	input_2,
+	input logic [BUS_WIDTH:0]	input_3,
 
 	output logic [BUS_WIDTH:0] resolved
 );
@@ -16,7 +17,7 @@ module MUX_3
 			2'b00 	:	resolved = input_0;
 			2'b01	:	resolved = input_1;
 			2'b10	:	resolved = input_2;
-			2'b11	:	resolved = {BUS_WIDTH{1'bx}}; //Something has gone wrong if this case has been reached
+			2'b11	:	resolved = input_3;
 		endcase
 	end
 
