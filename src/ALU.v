@@ -1,3 +1,4 @@
+//SHAMT will be routed to the ALU via input_1
 module ALU
 (
 	input 	logic [5:0]		ALU_operation,
@@ -52,7 +53,7 @@ module ALU
 			6'b100111:	ALU_output = ~(input_1|input_2);						//NOR
 			6'b101010:	ALU_output = ($signed(input_1) < $signed(input_2)) ? {{31{1'b0}},1'b1} : {32{1'b0}};	//SLT
 			6'b101011:	ALU_output = (input_1 < input_2) ? {{31{1'b0}},1'b1} : {32{1'b0}};						//SLTU
-			default:	ALU_output = {32{1'bx}}; 		//Not a recognised operation
+			default:	ALU_output = {32{1'bx}}; 								//Not a recognised operation
 		endcase
 	end
 endmodule
