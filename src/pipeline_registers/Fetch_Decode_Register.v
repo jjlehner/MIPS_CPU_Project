@@ -5,10 +5,10 @@ module Fetch_Decode_Register
 	input 	logic	clear,
 
 	input	logic [31:0]	instruction_fetch,
-	input	logic [31:0]	PC_plus_four_fetch,
+	input	logic [31:0]	program_counter_plus_four_fetch,
 	
 	output	logic [31:0]	instruction_decode,
-	output	logic [31:0]	PC_plus_four_decode
+	output	logic [31:0]	program_counter_plus_four_decode
 
 );
 
@@ -16,10 +16,10 @@ module Fetch_Decode_Register
 		if(!enable) begin
 			if(clear) begin
 				instruction_decode <= 0;
-				PC_plus_four_decode <= 0;
+				program_counter_plus_four_decode <= 0;
 			end else if(clk) begin
 				instruction_decode <= instruction_fetch;
-				PC_plus_four_decode <= PC_plus_four_fetch;
+				program_counter_plus_four_decode <= program_counter_plus_four_fetch;
 			end
 		end
 	end
