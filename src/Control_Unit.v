@@ -8,7 +8,8 @@ module Control_Unit(
 	output logic ALU_src_B,
 	output logic register_destination,
 	output logic branch,
-	output logic high_lo_register_write
+	output logic hi_lo_register_write,
+	output logic [5:0] ALU_function
 
 );
 
@@ -28,7 +29,8 @@ module Control_Unit(
 					ALU_src_B				= 0;
 					register_destination 	= 1;
 					branch					= 0;
-					high_lo_register_write	= ( funct == 6'b011000 || funct ==  funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 ); //checks if instruction is mult/multu/div/divu
+					hi_lo_register_write	= ( funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 ); //checks if instruction is mult/multu/div/divu
+					ALU_function			= funct;
 			end
 			/*
 			6'b000001:	begin		//BLTZ instruction or BGEZ instruction
@@ -64,11 +66,11 @@ module Control_Unit(
 				register_write			= 1'bx;
 				memory_to_register		= 1'bx;
 				memory_write			= 1'bx;
-				ALU_src					= 1'bx;
-				register_destination 	= 2'bxx;
+				ALU_src_A				= 1'bx;
+				ALU_src_B				= 1'bx;
+				register_destination 	= 1'bx;
 				branch					= 1'bx;
-				high_register_write		= 1'bx;
-				low_register_low		= 1'bx;
+				hi_lo_register_write	= 1'bx;
 			end
 		endcase
 	end

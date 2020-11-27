@@ -1,9 +1,9 @@
 module And_Gate
 (
-	input logic branch_d,
-	input logic equal_id,
+	input logic input_A,
+	input logic input_B,
 
-	output logic PC_src_D
+	output logic output_C
 );
-	assign PC_src_D = branch_d && equal_id;
+	assign output_C = input_A && input_B;
 endmodule

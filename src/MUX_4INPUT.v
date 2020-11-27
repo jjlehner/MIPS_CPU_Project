@@ -1,4 +1,4 @@
-module MUX_3
+module MUX_4INPUT
 #(
 	parameter BUS_WIDTH = 1	//BUS_WIDTH can be changed in module instantiation
 )
