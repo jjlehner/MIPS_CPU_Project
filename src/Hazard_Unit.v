@@ -2,8 +2,8 @@ module Hazard_Unit(
 	input	logic 		branch_decode,
 	input	logic [4:0]	Rs_decode,
 	input	logic [4:0]	Rt_decode,
-	input	logic [4:0]	Rs_encode,
-	input	logic [4:0]	Rt_encode,
+	input	logic [4:0]	Rs_execute,
+	input	logic [4:0]	Rt_execute,
 	input	logic [4:0]	write_register_execute,
 	input	logic		memory_to_register_execute,
 	input	logic		register_write_execute,
@@ -17,9 +17,9 @@ module Hazard_Unit(
 	output	logic 		stall_decode,
 	output	logic 		forward_register_file_output_1_decode,
 	output	logic 		forward_register_file_output_2_decode,
-	output	logic 		flush_execution_register,
-	output	logic [1:0] forward_register_file_output_1_execution,
-	output	logic [1:0] forward_register_file_output_2_execution
+	output	logic 		flush_execute_register,
+	output	logic [1:0] forward_register_file_output_1_execute,
+	output	logic [1:0] forward_register_file_output_2_execute
 );
 
 	logic lwstall;
@@ -27,25 +27,25 @@ module Hazard_Unit(
 
 	always_comb begin
 		//Forwarding data hazards
-		if ((Rs_encode !=0) && (Rs_encode == write_register_memory) && register_write_memory) begin		
-			forward_register_file_output_1_execution = 2'b10;
-		end else if ((Rs_encode !=0) && (Rs_encode == write_register_writeback) && register_write_writeback) begin
-			forward_register_file_output_1_execution = 2'b01;
+		if ((Rs_execute !=0) && (Rs_execute == write_register_memory) && register_write_memory) begin		
+			forward_register_file_output_1_execute = 2'b10;
+		end else if ((Rs_execute !=0) && (Rs_execute == write_register_writeback) && register_write_writeback) begin
+			forward_register_file_output_1_execute = 2'b01;
 		end else begin
-			forward_register_file_output_1_execution = 2'b00;
+			forward_register_file_output_1_execute = 2'b00;
 		end
 
-		if ((Rt_encode !=0) && (Rt_encode == write_register_memory) && register_write_memory) begin		
-			forward_register_file_output_2_execution = 2'b10;
-		end else if ((Rt_encode !=0) && (Rt_encode == write_register_writeback) && register_write_writeback) begin
-			forward_register_file_output_2_execution = 2'b01;
+		if ((Rt_execute !=0) && (Rt_execute == write_register_memory) && register_write_memory) begin		
+			forward_register_file_output_2_execute = 2'b10;
+		end else if ((Rt_execute !=0) && (Rt_execute == write_register_writeback) && register_write_writeback) begin
+			forward_register_file_output_2_execute = 2'b01;
 		end else begin
-			forward_register_file_output_2_execution = 2'b00;
+			forward_register_file_output_2_execute = 2'b00;
 		end
 		//^^^^^^^^^^^^^^^^^^^
 
 		//Data hazards solvable by stalls
-		lwstall = ((Rs_decode == Rt_encode) || (Rt_decode == Rt_encode)) && memory_to_register_execute;
+		lwstall = ((Rs_decode == Rt_execute) || (Rt_decode == Rt_execute)) && memory_to_register_execute;
 
 		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -58,7 +58,7 @@ module Hazard_Unit(
 
 		stall_fetch = branchstall || lwstall;
 		stall_decode = branchstall || lwstall;
-		flush_execution_register = branchstall || lwstall;
+		flush_execute_register = branchstall || lwstall;
 
 	end
 endmodule

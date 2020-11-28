@@ -54,6 +54,7 @@ module Decode_Execute_Register
 
 			read_data_one_execute <= 0;
 			read_data_two_execute <= 0;
+			
 		end else if(clk) begin
 			register_write_execute <= register_write_decode;
 			memory_to_register_execute <= memory_to_register_decode;
@@ -70,5 +71,6 @@ module Decode_Execute_Register
 			read_data_two_execute <= read_data_two_decode;
 		end
 	end
+	
 
 endmodule

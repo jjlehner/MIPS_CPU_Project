@@ -12,11 +12,15 @@ module Execute_Memory_Register
 	output	logic			memory_to_write_memory,
 
 	//datapath
-	input	logic [31:0]	ALU_out_execute,
+	input	logic [31:0]	ALU_output_execute,
+	input	logic [31:0]	ALU_HI_output_execute,
+	input	logic [63:0]	ALU_LO_output_execute,
 	input	logic [31:0]	write_data_execute,
 	input	logic [4:0]		write_register_execute,
 
-	output	logic [31:0]	ALU_out_memory,
+	output	logic [31:0]	ALU_output_memory,
+	output	logic [31:0]	ALU_HI_output_memory,
+	output	logic [31:0]	ALU_LO_output_memory,
 	output	logic [31:0]	write_data_memory,
 	output	logic [4:0]		write_register_memory
 
@@ -26,7 +30,7 @@ module Execute_Memory_Register
 		register_write_memory <= register_write_execute;
 		memory_to_register_memory <=memory_to_register_execute;
 		memory_to_write_memory <= memory_to_write_execute;
-		ALU_out_memory <= ALU_out_execute;
+		ALU_output_memory <= ALU_output_execute;
 		write_data_memory <= write_data_execute;
 		write_register_memory <= write_register_execute;
 	end

@@ -6,7 +6,8 @@ module ALU
 	input	logic [31:0]	input_2,
 
 	output	logic [31:0]	ALU_output,
-	output	logic [63:0]	ALU_HI_LO_output
+	output	logic [31:0]	ALU_HI_output,
+	output	logic [31:0]	ALU_LO_output
 
 );
 
@@ -15,8 +16,9 @@ module ALU
 	logic [63:0] sign_extened_input_2 = { { 32{ input_2[31] } }, input_2[31:0] };			
 	logic [63:0] extended_input_1 = { { 32{ 1'b0 } }, input_1 };
 	logic [63:0] extended_input_2 = { { 32{ 1'b0 } }, input_2 };
-
-	
+	logic [63:0] ALU_HI_LO_output;
+	assign ALU_HI_output = ALU_HI_LO_output[63:32];
+	assign ALU_LO_output = ALU_HI_LO_output[31:0];
 	always_comb begin
 		ALU_HI_LO_output = {64{1'bx}};
 		ALU_output = {32{1'bx}};
