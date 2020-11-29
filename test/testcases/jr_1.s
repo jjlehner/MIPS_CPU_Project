@@ -1,4 +1,4 @@
-#jr testing
+#jr
 #245
 #jr_1
 #test dependencies: lui

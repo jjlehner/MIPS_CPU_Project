@@ -1,4 +1,4 @@
-#lw testing
+#lw 
 #0
 #lw_1
 #testing dependencies: lui, addiu, subu, sw

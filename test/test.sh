@@ -6,7 +6,7 @@ tocuh test/results/result.csv
 ### get file input 
 ### DEPENDS ON TESTBENCH.V NEED TO FIX
 
-TESTS = "test/tests/*.txt"
+TESTS = "test/tests/*.s"
 for t in TESTS; do
 
 	exec 2< $t
