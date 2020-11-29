@@ -92,13 +92,15 @@ module mips_cpu(
     //Writeback controls
     logic register_write_writeback;
     logic HI_LO_write_writeback;
+    logic memory_to_register_writeback;
 
     //Writeback datapath
     logic [4:0] write_register_writeback;
     logic [31:0] result_writeback;
-    logic [31:0] result_HI_writeback;
-    logic [31:0] result_LO_writeback;
-
+    logic [31:0] ALU_HI_output_writeback;
+    logic [31:0] ALU_LO_output_writeback;
+    logic [31:0] ALU_output_writeback;
+    logic [31:0] read_data_writeback;
     //Memory controls
     logic       register_write_memory;
     logic [4:0] write_register_memory;
@@ -133,8 +135,8 @@ module mips_cpu(
         .read_address_2(read_address_2), 
         .write_address(write_register_writeback), 
         .write_data(result_writeback), 
-        .HI_write_data(result_HI_writeback), 
-        .LO_write_data(result_LO_writeback), 
+        .HI_write_data(ALU_HI_output_writeback), 
+        .LO_write_data(ALU_LO_output_writeback), 
         .read_data_1(register_file_output_A_decode),
         .read_data_2(register_file_output_B_decode)
     );
@@ -329,6 +331,33 @@ module mips_cpu(
         .write_register_memory(write_register_memory)
     );
 
+
+    Memory_Writeback_Register memory_writeback_register(
+        .clk(internal_clk),
+        .register_write_memory(register_write_memory),
+        .memory_to_register_memory(memory_to_register_memory),
+        .register_write_writeback(register_write_writeback),
+        .memory_to_register_writeback(memory_to_register_writeback),
+
+        .ALU_output_memory(ALU_output_memory),
+        .write_register_memory(write_register_memory),
+        .ALU_HI_output_memory(ALU_HI_output_memory),
+        .ALU_LO_output_memory(ALU_LO_output_memory),
+        .read_data_memory(read_data_memory),
+        .ALU_output_writeback(ALU_output_writeback),
+        .write_register_writeback(write_register_writeback),
+        .ALU_HI_output_writeback(ALU_HI_output_writeback),
+        .ALU_LO_output_writeback(ALU_LO_output_writeback),
+        .read_data_writeback(read_data_writeback)
+
+    );
+
+    MUX_2INPUT #(.BUS_WIDTH(32)) writeback_mux(
+        .control(memory_to_register_writeback),
+        .input_0(read_data_writeback),
+        .input_1(ALU_output_writeback),
+        .resolved(result_writeback)
+    );
     Hazard_Unit hazard_unit(
         .branch_decode(branch_decode),
 	    .Rs_decode(Rs_decode),
