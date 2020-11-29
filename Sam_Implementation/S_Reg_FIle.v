@@ -12,8 +12,8 @@ integer i;
 wire sen;
 
 assign sen = clk||rst; //Clock OR Rst are high (rst is active low)
-
-always @ (posedge sen)
+//aDDED ALWAYS FF to make sure it works as a ff
+always_ff @ (posedge sen)
 begin
     if(EN == 1)
         begin
