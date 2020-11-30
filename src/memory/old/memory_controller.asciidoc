@@ -15,7 +15,7 @@ This means that the interconnect must resolve our generalised write, read, lock,
 
 === Input
 
-[cols=3*,options="header"]
+[cols="2,1,5",options="header"]
 |=======================================================================================================================================
 | Name                 | Width | Description                                                                                            
 | Read_Data            |    32 | The data which is being sent by a slave in a read operation                                            
@@ -27,7 +27,7 @@ This means that the interconnect must resolve our generalised write, read, lock,
 
 === Output
 
-[cols=3*,options="header"]
+[cols="2,1,5",options="header"]
 |======================================================================================================================
 | Name         | Width | Description                                                                                   
 | Address      |    32 | The word-aligned address of the memory data we want to read/write                             
@@ -55,7 +55,7 @@ I suspect it is bad practice to be sending a constant read request, so it may be
 
 === Input
 Input to CPU is still tenative, as the bus controller has not yet been created.
-[cols=3*,options="header"]
+[cols="2,1,5",options="header"]
 |=========================================================================
 | Name          | Width | Description
 | Read_Address  | 32    | The virtual address where a read is requested
@@ -66,7 +66,7 @@ Input to CPU is still tenative, as the bus controller has not yet been created.
 
 === Output
 Output to CPU is still tenative, as the bus controller has not yet been created.
-[cols=3*,options="header"]
+[cols="2,1,5",options="header"]
 |==========================================================================================
 | Name         | Width | Description
 | Read_Data    | 32    | The data which is the result of the read request

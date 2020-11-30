@@ -4,7 +4,6 @@ module Control_Unit(
 	output logic register_write,
 	output logic memory_to_register,
 	output logic memory_write,
-	output logic ALU_src_A,
 	output logic ALU_src_B,
 	output logic register_destination,
 	output logic branch,
@@ -13,19 +12,17 @@ module Control_Unit(
 
 );
 
-	logic [5:0] op = instruction[31:26];
-	logic [4:0] rs = instruction[25:21];
-	logic [4:0] rt = instruction[20:16];
-	logic [4:0] rd = instruction[15:11];
-	logic [5:0] funct = instruction[5:0];	
+	logic [5:0] op;
+	logic [5:0] funct;	
 	
 	always_comb begin
+		op = instruction[31:26];
+		funct = instruction[5:0];
 		case(op)
 			6'b000000:	begin		//R-type instruction
 					register_write			= 1;
 					memory_to_register		= 0;
 					memory_write			= 0;
-					ALU_src_A				= 0;
 					ALU_src_B				= 0;
 					register_destination 	= 1;
 					branch					= 0;
@@ -66,11 +63,11 @@ module Control_Unit(
 				register_write			= 1'bx;
 				memory_to_register		= 1'bx;
 				memory_write			= 1'bx;
-				ALU_src_A				= 1'bx;
 				ALU_src_B				= 1'bx;
 				register_destination 	= 1'bx;
 				branch					= 1'bx;
-				hi_lo_register_write	= 1'bx;
+				hi_lo_register_write	= 1'bx; //checks if instruction is mult/multu/div/divu
+				ALU_function			= 6'bxxxxxx;
 			end
 		endcase
 	end
