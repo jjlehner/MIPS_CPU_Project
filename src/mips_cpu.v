@@ -1,8 +1,8 @@
 //Harvard bus
 //TODO  fix naming of hi, lo modules to HI, LO
 //TODO  add support for HI LO moving commands(multiplexers)
-module mips_cpu(
-	input logic clk,
+module mips_cpu (
+	  input logic clk,
     input logic reset,
     output logic active,
     output logic [31:0] register_v0,
