@@ -1,4 +1,5 @@
 module Control_Unit(
+	/* verilator lint_off UNUSED */
 	input logic[31:0] instruction,
 
 	output logic register_write,

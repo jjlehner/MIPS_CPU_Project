@@ -27,8 +27,6 @@ module ALU
 
 
 	always_comb begin
-		ALU_HI_LO_output = {64{1'bx}};
-		ALU_output = {32{1'bx}};
 		case(ALU_operation)
 			6'b000000: 	ALU_output = input_2 << shift_amount; 					//SLL
 			6'b000001:	ALU_output = input_2 >> shift_amount; 					//SRL
@@ -64,5 +62,7 @@ module ALU
 			6'b101011:	ALU_output = (input_1 < input_2) ? {{31{1'b0}},1'b1} : {32{1'b0}};						//SLTU
 			default:	ALU_output = {32{1'bx}}; 								//Not a recognised operation
 		endcase
+		ALU_HI_output = ALU_HI_LO_output[63:32];
+		ALU_LO_output = ALU_HI_LO_output[31:0];
 	end
 endmodule
