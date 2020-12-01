@@ -27,12 +27,15 @@ module Execute_Memory_Register
 );
 
 	always_ff @(posedge clk) begin
-		register_write_memory <= register_write_execute;
-		memory_to_register_memory <=memory_to_register_execute;
-		memory_to_write_memory <= memory_to_write_execute;
-		ALU_output_memory <= ALU_output_execute;
-		write_data_memory <= write_data_execute;
-		write_register_memory <= write_register_execute;
+		register_write_memory <= register_write_decode;
+		memory_to_register_memory <= memory_to_register_decode;
+		memory_to_write_memory <= memory_to_write_decode;
+
+		ALU_output_memory <=ALU_output_decode;
+		ALU_HI_output_memory <=ALU_HI_output_decode;
+		ALU_LO_output_memory <=ALU_LO_output_decode;
+		write_data_memory <=write_data_decode;
+		write_register_memory <=write_register_decode;
 	end
 
 endmodule

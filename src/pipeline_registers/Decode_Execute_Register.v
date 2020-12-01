@@ -43,14 +43,16 @@ module Decode_Execute_Register
 		if(clear) begin
 			register_write_execute <= 0;
 			memory_to_register_execute <= 0;
-			memory_to_write_execute <= 0;
-			ALU_operation_id_execute <= 0;
-			ALU_src_execute <= 0;
+			memory_write_execute <= 0;
+			ALU_src_A_execute <= 0;
+			ALU_src_B_execute <= 0;
 			register_destination_execute <= 0;
-			Rd_execute <= 0;
+			hi_lo_register_write_execute <= 0;
+			ALU_function_execute <= 0;
 			Rs_execute <= 0;
 			Rt_execute <= 0;
-			Sign_Imm_execute <= 0;
+			Rd_execute <= 0;
+			sign_imm_execute <= 0;
 
 			read_data_one_execute <= 0;
 			read_data_two_execute <= 0;
@@ -58,14 +60,16 @@ module Decode_Execute_Register
 		end else if(clk) begin
 			register_write_execute <= register_write_decode;
 			memory_to_register_execute <= memory_to_register_decode;
-			memory_to_write_execute <= memory_to_write_decode;
-			ALU_operation_id_execute <= ALU_operation_id_decode;
-			ALU_src_execute <= ALU_src_decode;
+			memory_write_execute <= memory_write_decode;
+			ALU_src_A_execute <= ALU_src_A_decode;
+			ALU_src_B_execute <= ALU_src_B_decode;
 			register_destination_execute <= register_destination_decode;
+			hi_lo_register_write_execute <= hi_lo_register_write_decode;
+			ALU_function_execute <= ALU_function_decode;
+			Rs_execute <= Rs_decode;
 			Rt_execute <= Rt_decode;
 			Rd_execute <= Rd_decode;
-			Rs_execute <= Rs_decode;
-			Sign_Imm_execute <= Sign_Imm_decode;
+			sign_imm_execute <= sign_imm_decode;
 
 			read_data_one_execute <= read_data_one_decode;
 			read_data_two_execute <= read_data_two_decode;
