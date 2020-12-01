@@ -11,21 +11,14 @@ module ALU
 
 );
 
-	logic [4:0] shift_amount;
-	logic [63:0] sign_extened_input_1;
-	logic [63:0] sign_extened_input_2;
-	logic [63:0] extended_input_1;
-	logic [63:0] extended_input_2;
+	logic [4:0] shift_amount = input_1[10:6];
+	logic [63:0] sign_extened_input_1 = { { 32{ input_1[31] } }, input_1[31:0] };			
+	logic [63:0] sign_extened_input_2 = { { 32{ input_2[31] } }, input_2[31:0] };			
+	logic [63:0] extended_input_1 = { { 32{ 1'b0 } }, input_1 };
+	logic [63:0] extended_input_2 = { { 32{ 1'b0 } }, input_2 };
 	logic [63:0] ALU_HI_LO_output;
-		
-	assign shift_amount = input_1[10:6];
-	assign sign_extened_input_1 = { { 32{ input_1[31] } }, input_1[31:0] };			
-	assign sign_extened_input_2 = { { 32{ input_2[31] } }, input_2[31:0] };			
-	assign extended_input_1 =  { { 32{ 1'b0 } }, input_1 };
-	assign extended_input_2 = { { 32{ 1'b0 } }, input_2 };
-
-
-
+	assign ALU_HI_output = ALU_HI_LO_output[63:32];
+	assign ALU_LO_output = ALU_HI_LO_output[31:0];
 	always_comb begin
 		ALU_HI_LO_output = {64{1'bx}};
 		ALU_output = {32{1'bx}};

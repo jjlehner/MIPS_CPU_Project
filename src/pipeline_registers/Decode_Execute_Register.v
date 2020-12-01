@@ -7,7 +7,6 @@ module Decode_Execute_Register
 	input	logic 			register_write_decode,
 	input 	logic			memory_to_register_decode,
 	input	logic			memory_write_decode,
-	input	logic			ALU_src_A_decode,
 	input	logic			ALU_src_B_decode,
 	input	logic			register_destination_decode,
 	input	logic			hi_lo_register_write_decode,
@@ -20,7 +19,6 @@ module Decode_Execute_Register
 	output	logic 			register_write_execute,
 	output 	logic			memory_to_register_execute,
 	output	logic			memory_write_execute,
-	output	logic			ALU_src_A_execute,
 	output	logic			ALU_src_B_execute,
 	output	logic			register_destination_execute,
 	output	logic			hi_lo_register_write_execute,
@@ -44,24 +42,22 @@ module Decode_Execute_Register
 			register_write_execute <= 0;
 			memory_to_register_execute <= 0;
 			memory_write_execute <= 0;
-			ALU_src_A_execute <= 0;
 			ALU_src_B_execute <= 0;
 			register_destination_execute <= 0;
 			hi_lo_register_write_execute <= 0;
-			ALU_function_execute <= 0;
-			Rs_execute <= 0;
-			Rt_execute <= 0;
-			Rd_execute <= 0;
-			sign_imm_execute <= 0;
+			ALU_function_execute <= {6{1'b0}};
+			Rt_execute <= {5{1'b0}};
+			Rd_execute <= {5{1'b0}};
+			Rs_execute <= {5{1'b0}};
+			sign_imm_execute <= {32{1'b0}};
 
-			read_data_one_execute <= 0;
-			read_data_two_execute <= 0;
+			read_data_one_execute <= {32{1'b0}};
+			read_data_two_execute <= {32{1'b0}};
 			
 		end else if(clk) begin
 			register_write_execute <= register_write_decode;
 			memory_to_register_execute <= memory_to_register_decode;
 			memory_write_execute <= memory_write_decode;
-			ALU_src_A_execute <= ALU_src_A_decode;
 			ALU_src_B_execute <= ALU_src_B_decode;
 			register_destination_execute <= register_destination_decode;
 			hi_lo_register_write_execute <= hi_lo_register_write_decode;

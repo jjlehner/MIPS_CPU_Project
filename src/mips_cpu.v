@@ -2,9 +2,9 @@
 //TODO  fix naming of hi, lo modules to HI, LO
 //TODO  add support for HI LO moving commands(multiplexers)
 module mips_cpu (
-	  input logic clk,
+	input logic clk,
     input logic reset,
-    output logic active,
+    /* verilator lint_off UNDRIVEN */output logic active,
     output logic [31:0] register_v0,
 
     /* New clock enable. See below. */
@@ -26,17 +26,17 @@ module mips_cpu (
     
     logic HI_LO_output;
 
-    //Fetch datapath
+
+    //Fetch control
     logic [31:0] program_counter_prime;
     logic [31:0] program_counter_fetch;
     logic [31:0] program_counter_plus_four_fetch;
-    
+    logic [31:0] instruction_fetch;
     //decode Controls
     logic       program_counter_source_decode;
     logic       register_write_decode;
     logic       memory_to_register_decode;
     logic       memory_write_decode;
-    logic       ALU_src_A_decode;
     logic       ALU_src_B_decode;
     logic       register_destination_decode;
     logic       branch_decode;
@@ -51,10 +51,16 @@ module mips_cpu (
     logic [31:0]    instruction_decode;
     logic [31:0]    program_counter_plus_four_decode;
     
-    logic [4:0]     read_address_1, Rs_decode = instruction_decode[25:21];
-    logic [4:0]     read_address_2,Rt_decode = instruction_decode[20:16];
-    logic [4:0]     Rd_decode = instruction_decode[15:11];
-    logic [15:0]    immediate = instruction_decode[15:0];
+    logic [4:0]     read_address_1, Rs_decode;
+        assign read_address_1 = instruction_decode[25:21];
+        assign Rs_decode = instruction_decode[25:21];
+    logic [4:0]     read_address_2,Rt_decode;
+        assign read_address_2 = instruction_decode[20:16];
+        assign Rt_decode = instruction_decode[20:16];
+    logic [4:0]     Rd_decode;
+        assign Rd_decode = instruction_decode[15:11];
+    logic [15:0]    immediate;
+        assign immediate = instruction_decode[15:0];
     
     logic [31:0]    shifter_output_decode;
     logic [31:0]    register_file_output_A_decode;
@@ -68,12 +74,10 @@ module mips_cpu (
     logic           memory_to_register_execute;
     logic           memory_write_execute;
     logic [4:0]     write_register_execute;
-    logic           ALU_src_A_execute;
     logic           ALU_src_B_execute;
     logic [5:0]     ALU_function_execute;
     logic           hi_lo_register_write_execute;
     logic           register_write_execute;
-    logic           memory_to_write_execute;
     
     //Execute Datapath
     logic [31:0]    register_file_output_A_execute;
@@ -84,10 +88,24 @@ module mips_cpu (
     logic [31:0]    ALU_output_execute;
     logic [31:0]    ALU_HI_output_execute;
     logic [31:0]    ALU_LO_output_execute;
-    logic [5:0]     Rs_execute;
+    logic [4:0]     Rs_execute;
     logic [4:0]     Rt_execute;
     logic [4:0]     Rd_execute;
     logic [31:0]    sign_imm_execute;
+
+    //Memory controls
+    logic       register_write_memory;
+    logic [4:0] write_register_memory;
+    logic       memory_to_register_memory;
+    logic       memory_write_memory;
+    logic       hi_lo_register_write_memory;
+
+    //Memory datapath
+    logic [31:0] ALU_output_memory;
+    logic [31:0] ALU_HI_output_memory;
+    logic [31:0] ALU_LO_output_memory;
+    logic [31:0] read_data_memory;
+    logic [31:0] write_data_memory;
 
     //Writeback controls
     logic register_write_writeback;
@@ -101,18 +119,6 @@ module mips_cpu (
     logic [31:0] ALU_LO_output_writeback;
     logic [31:0] ALU_output_writeback;
     logic [31:0] read_data_writeback;
-    //Memory controls
-    logic       register_write_memory;
-    logic [4:0] write_register_memory;
-    logic       memory_to_register_memory;
-    logic       memory_to_write_memory;
-
-    //Memory datapath
-    logic [31:0] ALU_output_memory;
-    logic [31:0] ALU_HI_output_memory;
-    logic [31:0] ALU_LO_output_memory;
-    logic [31:0] read_data_memory;
-    logic [31:0] write_data_memory;
 
     //Hazard Unit Outputs
     logic       stall_fetch;
@@ -124,7 +130,17 @@ module mips_cpu (
     logic [1:0] forward_B_execute;
 
     assign internal_clk = clk && clk_enable;
-    assign instr_address = program_counter_prime;
+
+    //Data Memory
+    assign read_data_memory = data_readdata;
+    assign data_address = ALU_output_memory;
+    assign data_writedata = write_data_memory;
+    assign data_write = 1;
+    assign data_read = 1;
+
+    //Instruction memory
+    assign instr_address = program_counter_fetch;
+    assign instruction_fetch = instr_readdata;
 
     Register_File register_file(
         .clk(internal_clk),.pipelined(1), 
@@ -165,7 +181,7 @@ module mips_cpu (
         .clk(internal_clk),
         .enable(stall_decode),
         .clear(program_counter_source_decode),
-        .instruction_fetch(data_readdata),
+        .instruction_fetch(instruction_fetch),
         .program_counter_plus_four_fetch(program_counter_plus_four_fetch),
         .instruction_decode(instruction_decode),
         .program_counter_plus_four_decode(program_counter_plus_four_decode)
@@ -176,7 +192,6 @@ module mips_cpu (
         .register_write(register_write_decode),
         .memory_to_register(memory_to_register_decode),
         .memory_write(memory_write_decode),
-        .ALU_src_A(ALU_src_A_decode),
         .ALU_src_B(ALU_src_B_decode),
         .register_destination(register_destination_decode),
         .branch(branch_decode),
@@ -188,7 +203,7 @@ module mips_cpu (
     (
         .control(forward_A_decode),
         .input_0(register_file_output_A_decode),
-        .input_1(/*Either Result_write_back or high register output*/),
+        .input_1(ALU_output_memory),
         .resolved(register_file_output_A_resolved_decode)
     );
 
@@ -196,7 +211,7 @@ module mips_cpu (
     (
         .control(forward_B_decode),
         .input_0(register_file_output_B_decode),
-        .input_1(/*Either Result_write_back or lo register output*/),
+        .input_1(ALU_output_memory),
         .resolved(register_file_output_B_resolved_decode)
     );
 
@@ -234,8 +249,7 @@ module mips_cpu (
         .register_write_decode(register_write_decode),
         .memory_to_register_decode(memory_to_register_decode),
         .memory_write_decode(memory_write_decode),
-        .ALU_src_A_decode(register_file_output_A_resolved_decode),
-        .ALU_src_B_decode(register_file_output_B_resolved_decode),
+        .ALU_src_B_decode(ALU_src_B_decode),
         .register_destination_decode(register_destination_decode),
         .hi_lo_register_write_decode(hi_lo_register_write_decode),
         .ALU_function_decode(ALU_function_decode),
@@ -247,7 +261,6 @@ module mips_cpu (
         .register_write_execute(register_write_decode),
         .memory_to_register_execute(memory_to_register_execute),
         .memory_write_execute(memory_write_execute),
-        .ALU_src_A_execute(ALU_src_A_execute),
         .ALU_src_B_execute(ALU_src_B_execute),
         .register_destination_execute(register_destination_execute),
         .hi_lo_register_write_execute(hi_lo_register_write_execute),
@@ -275,7 +288,7 @@ module mips_cpu (
         .input_0(register_file_output_A_execute),
         .input_1(result_writeback),
         .input_2(ALU_output_memory),
-        .input_3(), //intentionally left unconnected
+        .input_3(ALU_LO_output_writeback),
 
         .resolved(source_A_ALU_execute)
     );
@@ -285,7 +298,7 @@ module mips_cpu (
         .input_0(register_file_output_B_execute),
         .input_1(result_writeback),
         .input_2(ALU_output_memory),
-        .input_3(), //intentionally left unconnected
+        .input_3(ALU_HI_output_writeback),
 
         .resolved(write_data_execute)
     );
@@ -312,11 +325,11 @@ module mips_cpu (
         .clk(internal_clk),
         .register_write_execute(register_write_execute),
         .memory_to_register_execute(memory_to_register_execute),
-        .memory_to_write_execute(memory_to_write_execute),
+        .memory_write_execute(memory_write_execute),
 
         .register_write_memory(register_write_memory),
         .memory_to_register_memory(memory_to_register_memory),
-        .memory_to_write_memory(memory_to_write_memory),
+        .memory_write_memory(memory_write_memory),
 
         .ALU_output_execute(ALU_output_execute),
         .ALU_HI_output_execute(ALU_HI_output_execute),
