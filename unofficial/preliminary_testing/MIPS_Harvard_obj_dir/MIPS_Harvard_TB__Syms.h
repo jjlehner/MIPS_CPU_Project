@@ -1,0 +1,35 @@
+// Verilated -*- C++ -*-
+// DESCRIPTION: Verilator output: Symbol table internal header
+//
+// Internal details; most calling programs do not need this header,
+// unless using verilator public meta comments.
+
+#ifndef _MIPS_HARVARD_TB__SYMS_H_
+#define _MIPS_HARVARD_TB__SYMS_H_  // guard
+
+#include "verilated.h"
+
+// INCLUDE MODULE CLASSES
+#include "MIPS_Harvard_TB.h"
+
+// SYMS CLASS
+class MIPS_Harvard_TB__Syms : public VerilatedSyms {
+  public:
+    
+    // LOCAL STATE
+    const char* __Vm_namep;
+    bool __Vm_didInit;
+    
+    // SUBCELL STATE
+    MIPS_Harvard_TB*               TOPp;
+    
+    // CREATORS
+    MIPS_Harvard_TB__Syms(MIPS_Harvard_TB* topp, const char* namep);
+    ~MIPS_Harvard_TB__Syms() {}
+    
+    // METHODS
+    inline const char* name() { return __Vm_namep; }
+    
+} VL_ATTR_ALIGNED(VL_CACHE_LINE_BYTES);
+
+#endif  // guard

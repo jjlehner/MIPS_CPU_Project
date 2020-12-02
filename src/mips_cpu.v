@@ -129,8 +129,6 @@ module mips_cpu (
     logic [1:0] forward_A_execute;
     logic [1:0] forward_B_execute;
 
-    assign internal_clk = clk && clk_enable;
-
     //Data Memory
     assign read_data_memory = data_readdata;
     assign data_address = ALU_output_memory;
@@ -403,8 +401,9 @@ module mips_cpu (
 
     always_ff @(posedge clk) begin
         if (reset) begin
-            
         end
+        internal_clk <= clk && clk_enable;
+
     end
 
 

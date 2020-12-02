@@ -14,10 +14,12 @@ module Control_Unit(
 );
 
 	logic [5:0] op;
+	logic [4:0] rt;
 	logic [5:0] funct;	
 	
 	always_comb begin
 		op = instruction[31:26];
+		rt = instruction[20:16]; 
 		funct = instruction[5:0];
 		case(op)
 			6'b000000:	begin		//R-type instruction
@@ -49,10 +51,22 @@ module Control_Unit(
 			6'b001100: 	controls <= {12{1'bx}};	//ANDI
 			6'b001101: 	controls <= {12{1'bx}};	//ORI
 			6'b001110: 	controls <= {12{1'bx}};	//XORI
-			6'b001111: 	controls <= {12{1'bx}};	//LUI
+			*/
+			6'b001111: 	begin
+				register_write			= 1;
+				memory_to_register		= 1;
+				memory_write			= 0;
+				ALU_src_B				= 1;
+				register_destination 	= 0;
+				branch					= 0;
+				hi_lo_register_write	= 0; //checks if instruction is mult/multu/div/divu
+				ALU_function			= 6'b111111;
+			end
+			
+			/*
 			6'b100000: 	controls <= {12{1'bx}};	//LB
 			6'b100001: 	controls <= {12{1'bx}};	//LH
-			6'b100011: 	controls <= {12{1'bx}};	//LW
+			6'b100011:					//LW
 			6'b100100: 	controls <= {12{1'bx}};	//LBU
 			6'b100101: 	controls <= {12{1'bx}};	//LHU
 			6'b101000: 	controls <= {12{1'bx}};	//SB

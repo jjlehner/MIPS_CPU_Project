@@ -12,16 +12,18 @@ module Fetch_Decode_Register
 
 );
 
-	always_ff @(posedge clk, posedge clear, negedge enable) begin
+	always_ff @(posedge clk) begin
+		
 		if(!enable) begin
 			if(clear) begin
 				instruction_decode <= 0;
 				program_counter_plus_four_decode <= {32{1'b0}};
-			end else if(clk) begin
+			end else begin
 				instruction_decode <= instruction_fetch;
 				program_counter_plus_four_decode <= program_counter_plus_four_fetch;
 			end
 		end
 	end
+	
 	
 endmodule

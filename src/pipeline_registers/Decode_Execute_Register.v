@@ -37,7 +37,7 @@ module Decode_Execute_Register
 
 );
 
-	always_ff @(posedge clk, posedge clear) begin
+	always_ff @(posedge clk) begin
 		if(clear) begin
 			register_write_execute <= 0;
 			memory_to_register_execute <= 0;
@@ -53,7 +53,7 @@ module Decode_Execute_Register
 
 			read_data_one_execute <= {32{1'b0}};
 			read_data_two_execute <= {32{1'b0}};
-		end else if(clk) begin
+		end else begin
 			register_write_execute <= register_write_decode;
 			memory_to_register_execute <= memory_to_register_decode;
 			memory_write_execute <= memory_write_decode;
