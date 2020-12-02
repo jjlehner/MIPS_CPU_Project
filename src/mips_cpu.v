@@ -109,7 +109,7 @@ module mips_cpu (
 
     //Writeback controls
     logic register_write_writeback;
-    logic HI_LO_write_writeback;
+    logic hi_lo_register_write_writeback;
     logic memory_to_register_writeback;
 
     //Writeback datapath
@@ -135,7 +135,7 @@ module mips_cpu (
     assign read_data_memory = data_readdata;
     assign data_address = ALU_output_memory;
     assign data_writedata = write_data_memory;
-    assign data_write = 1;
+    assign data_write = memory_write_memory;
     assign data_read = 1;
 
     //Instruction memory
@@ -146,7 +146,7 @@ module mips_cpu (
         .clk(internal_clk),.pipelined(1), 
         .HI_LO_output(HI_LO_output), 
         .write_enable(register_write_writeback), 
-        .HI_LO_write_enable(HI_LO_write_writeback),
+        .hi_lo_register_write_enable(hi_lo_register_write_writeback),
         .read_address_1(read_address_1), 
         .read_address_2(read_address_2), 
         .write_address(write_register_writeback), 
@@ -326,10 +326,12 @@ module mips_cpu (
         .register_write_execute(register_write_execute),
         .memory_to_register_execute(memory_to_register_execute),
         .memory_write_execute(memory_write_execute),
+        .hi_lo_register_write_execute(hi_lo_register_write_execute),
 
         .register_write_memory(register_write_memory),
         .memory_to_register_memory(memory_to_register_memory),
         .memory_write_memory(memory_write_memory),
+        .hi_lo_register_write_memory(hi_lo_register_write_memory),
 
         .ALU_output_execute(ALU_output_execute),
         .ALU_HI_output_execute(ALU_HI_output_execute),
@@ -349,8 +351,10 @@ module mips_cpu (
         .clk(internal_clk),
         .register_write_memory(register_write_memory),
         .memory_to_register_memory(memory_to_register_memory),
+        .hi_lo_register_write_memory(hi_lo_register_write_memory),
         .register_write_writeback(register_write_writeback),
         .memory_to_register_writeback(memory_to_register_writeback),
+        .hi_lo_register_write_writeback(hi_lo_register_write_writeback),
 
         .ALU_output_memory(ALU_output_memory),
         .write_register_memory(write_register_memory),

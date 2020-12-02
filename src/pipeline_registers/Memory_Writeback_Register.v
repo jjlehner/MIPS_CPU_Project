@@ -5,10 +5,11 @@ module Memory_Writeback_Register
 	//control logic forwarding
 	input	logic 			register_write_memory,
 	input 	logic			memory_to_register_memory,
+	input	logic 			hi_lo_register_write_memory,
 
 	output	logic 			register_write_writeback,
 	output 	logic			memory_to_register_writeback,
-
+	output	logic			hi_lo_register_write_writeback,
 	//datapath
 	input	logic [31:0]	ALU_output_memory,
 	input	logic [4:0]		write_register_memory,
@@ -26,6 +27,7 @@ module Memory_Writeback_Register
 	always_ff @(posedge clk) begin
 		register_write_writeback <= register_write_memory;
 		memory_to_register_writeback <=memory_to_register_memory;
+		hi_lo_register_write_writeback <= hi_lo_register_write_memory;
 
 		ALU_output_writeback <= ALU_output_memory;
 		write_register_writeback <= write_register_memory;
