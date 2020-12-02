@@ -1,0 +1,16 @@
+#bgtz
+#4112
+#bgtz_2
+#testing dependencies: lui, addiu, jr
+
+main:
+	lui $3, 0x0000
+
+	bgtz $3, Target
+
+	addiu $3, $3, 0x1000
+
+Target: addiu $2, $3, 0x0010
+
+jr $0
+
