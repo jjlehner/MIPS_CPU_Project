@@ -1,13 +1,12 @@
-`include "src/memory/utils.vh"
-
+//`include "src/memory/util.vh"
+`include "util.vh"
 /*
-  I've done 4kB of cache presently however this is easy to change.
-  I need to look more into whjat an optimal amount is.
+  I've done [weird amount] of cache presently however this is easy to change.
+  I need to look more into what an optimal amount is.
   
-  Word size: 8 bits/1 byte (it just makes sense)
-  Block Size: 4 words
-  Set Size: 4 Blocks
-  Cache Size: 4096 Sets
+  Block: Tag: 18 bits, word: 32 bits
+  Set:   4 blocks
+  Cache: 4096 Sets
 */
 
 module cache (
@@ -26,37 +25,46 @@ module cache (
     output logic[3:0] byteenable,
     input logic[31:0] readdata
   );
-
   //  Cache signals //
-  logic miss;
-  logic[3:0][8:0] l1_cache[3:0][4095:0]; // We can change size easily enough
+  logic miss = 0;
+  logic[3:0][49:0] cache[4095:0]; // We can change size easily enough, size is weird because tag...
   wire[11:0] cache_address;
   wire [1:0] offset;
   wire[17:0] tag;
   
   // Signals from CPU interface //
-  logic cpu_write, cpu_read, cpu_wait;
+  //logic cpu_write, cpu_read, cpu_wait;
   // more to come
   
   assign offset = address[1:0];
   assign cache_address = address[13:2]; // address % 12 ignoring offset
   assign tag = address[31:14];
 
-  always @(posedge cpu_write) `do (
-    // Write to both cache and RAM
-    // When to release wait_request?
-    // I assume as soon as cache is done?
+  always @(posedge write) `do (
+    $display("writing %h to %h, tag: %h", writedata, address, tag);
+    waitrequest <= 1;
+    cache[cache_address][3] <= cache[cache_address][2];
+    cache[cache_address][2] <= cache[cache_address][1];
+    cache[cache_address][1] <= cache[cache_address][0];
+    cache[cache_address][0] <= {tag, writedata};
+    $display("Wrote %h to cache", cache[cache_address][0]);
+    waitrequest <= 0;
   )
 
-  always @(posedge cpu_read) `do (
-    // Look in cache for read address
+  always @(posedge read) `do (
+    $display("reading %h, looking for %h", address, tag);
+    waitrequest <= 1;
+    readdata <= cache[cache_address][0][49:32] == tag?
+      cache[cache_address][0][31:0] : cache[cache_address][1][49:32] == tag?
+      cache[cache_address][1][31:0] : cache[cache_address][2][49:32] == tag?
+      cache[cache_address][2][31:0] : cache[cache_address][3][49:32] == tag?
+      cache[cache_address][0][31:0] : 50'hz;
+    miss <= readdata == 50'hz;
+    waitrequest <= 0;
   )
   
   always @(posedge miss) `do (
+    $display("miss on %h", address);
     // Look in RAM for read address
   )
-
-
-  
-
 endmodule
