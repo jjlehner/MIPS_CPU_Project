@@ -17,8 +17,16 @@ module cpu_interface (
     input logic[31:0] readdata
   );
 
-  logic cpu_clock, wr_en, re_en;
+  logic cpu_enable, wr_en, re_en;
   logic[31:0] instr_ad, instr_rd, data_ad, data_rd;
+  
+  // Is this right? I feel like it'd work but will vastly restrict speed
+  // by only running the CPU when the data is requested from the cache
+  // ie. only about half the time
+
+  assign cpu_enable = ~waitrequest;
+  
+  
 
   /*
     Somehow I want to detect when the CPU wants something it can't
@@ -34,7 +42,7 @@ module cpu_interface (
     My brain's telling me this will never send a clock to the CPU but
     at the same time I'm not sure?
   */
-
+  /*
   always @(clk) if (!wait_request) `do (
     cpu_clock <= clk;
     if (wr_en) `do (
@@ -73,7 +81,7 @@ module cpu_interface (
       read <= 0;
     )
   )
-
+*/
   mips_cpu cpu (
     .clk(cpu_clock),
     .reset(reset),
@@ -87,4 +95,5 @@ module cpu_interface (
     .data_writedata(writedata),
     .data_readdata(data_rd)
   );
+
 endmodule
