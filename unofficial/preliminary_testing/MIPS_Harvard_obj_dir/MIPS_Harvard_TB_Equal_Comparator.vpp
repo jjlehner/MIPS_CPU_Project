@@ -1,0 +1,13 @@
+`begin_keywords "1800-2017"
+`line 1 "../../src/Equal_Comparator.v" 1
+module Equal_Comparator
+(
+	input logic 	[31:0] a,
+	input logic 	[31:0] b,
+
+`line 6 "../../src/Equal_Comparator.v" 0
+	output logic 	c
+);
+	assign c = (a == b);
+endmodule
+`line 10 "../../src/Equal_Comparator.v" 2

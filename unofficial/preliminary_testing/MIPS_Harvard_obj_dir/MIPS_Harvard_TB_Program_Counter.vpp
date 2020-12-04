@@ -1,0 +1,21 @@
+`begin_keywords "1800-2017"
+`line 1 "../../src/Program_Counter.v" 1
+module Program_Counter(
+	input	logic clk,
+	input 	logic [31:0] address_input,
+	input	logic enable,  
+	output	logic [31:0] address_output
+
+`line 7 "../../src/Program_Counter.v" 0
+);
+
+`line 9 "../../src/Program_Counter.v" 0
+	always_ff @(posedge clk) begin
+		if (!enable) begin
+			address_output <= address_input;
+		end
+	end
+
+`line 15 "../../src/Program_Counter.v" 0
+endmodule
+`line 16 "../../src/Program_Counter.v" 2

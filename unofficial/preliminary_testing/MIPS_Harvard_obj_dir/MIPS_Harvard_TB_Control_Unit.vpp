@@ -1,0 +1,122 @@
+`begin_keywords "1800-2017"
+`line 1 "../../src/Control_Unit.v" 1
+module Control_Unit(
+	/*verilator lint_off UNUSED*/ 
+	input logic[31:0] instruction,
+
+`line 5 "../../src/Control_Unit.v" 0
+	output logic register_write,
+	output logic memory_to_register,
+	output logic memory_write,
+	output logic ALU_src_B,
+	output logic register_destination,
+	output logic branch,
+	output logic hi_lo_register_write,
+	output logic [5:0] ALU_function
+
+`line 14 "../../src/Control_Unit.v" 0
+);
+
+`line 16 "../../src/Control_Unit.v" 0
+	logic [5:0] op;
+	logic [4:0] rt;
+	logic [5:0] funct;	
+	
+	always_comb begin
+		op = instruction[31:26];
+		rt = instruction[20:16]; 
+		funct = instruction[5:0];
+		case(op)
+			6'b000000:	begin		 
+					register_write			= 1;
+					memory_to_register		= 0;
+					memory_write			= 0;
+					ALU_src_B				= 0;
+					register_destination 	= 1;
+					branch					= 0;
+					hi_lo_register_write	= ( funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 );  
+					ALU_function			= funct;
+			end
+			
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+
+`line 54 "../../src/Control_Unit.v" 0
+ 
+			6'b001111: 	begin
+				register_write			= 1;
+				memory_to_register		= 1;
+				memory_write			= 0;
+				ALU_src_B				= 1;
+				register_destination 	= 0;
+				branch					= 0;
+				hi_lo_register_write	= 0;  
+				ALU_function			= 6'b111111;
+			end
+			
+			
+
+`line 76 "../../src/Control_Unit.v" 0
+
+`line 76 "../../src/Control_Unit.v" 0
+
+`line 76 "../../src/Control_Unit.v" 0
+
+`line 76 "../../src/Control_Unit.v" 0
+
+`line 76 "../../src/Control_Unit.v" 0
+
+`line 76 "../../src/Control_Unit.v" 0
+
+`line 76 "../../src/Control_Unit.v" 0
+
+`line 76 "../../src/Control_Unit.v" 0
+
+`line 76 "../../src/Control_Unit.v" 0
+ 
+			default : begin						 
+				register_write			= 1'bx;
+				memory_to_register		= 1'bx;
+				memory_write			= 1'bx;
+				ALU_src_B				= 1'bx;
+				register_destination 	= 1'bx;
+				branch					= 1'bx;
+				hi_lo_register_write	= 1'bx;  
+				ALU_function			= 6'bxxxxxx;
+			end
+		endcase
+	end
+endmodule
+`line 90 "../../src/Control_Unit.v" 2

@@ -4,7 +4,7 @@
 # Execute this makefile from the object directory:
 #    make -f MIPS_Harvard_TB.mk
 
-default: MIPS_Harvard_TB__ALL.a
+default: MIPS_Harvard_TB
 
 ### Constants...
 # Perl executable (from $PERL)
@@ -33,15 +33,18 @@ VM_PREFIX = MIPS_Harvard_TB
 VM_MODPREFIX = MIPS_Harvard_TB
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
+	-std=c++17 -g \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
+	mips_v0 \
 
 # User .cpp directories (from .cpp's on Verilator command line)
 VM_USER_DIR = \
+	. \
 
 
 ### Default rules...
@@ -49,5 +52,16 @@ VM_USER_DIR = \
 include MIPS_Harvard_TB_classes.mk
 # Include global rules
 include $(VERILATOR_ROOT)/include/verilated.mk
+
+### Executable rules... (from --exe)
+VPATH += $(VM_USER_DIR)
+
+mips_v0.o: mips_v0.cpp
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+
+### Link rules... (from --exe)
+MIPS_Harvard_TB: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a
+	$(LINK) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@ $(LIBS) $(SC_LIBS)
+
 
 # Verilated -*- Makefile -*-

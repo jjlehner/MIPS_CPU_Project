@@ -13,6 +13,8 @@
 //==========
 
 class MIPS_Harvard_TB__Syms;
+class MIPS_Harvard_TB_VerilatedVcd;
+
 
 //----------
 
@@ -42,6 +44,7 @@ VL_MODULE(MIPS_Harvard_TB) {
         CData/*0:0*/ mips_cpu__DOT__internal_clk;
         CData/*0:0*/ mips_cpu__DOT__HI_LO_output;
         CData/*0:0*/ mips_cpu__DOT__program_counter_source_decode;
+        CData/*0:0*/ mips_cpu__DOT__register_write_decode;
         CData/*0:0*/ mips_cpu__DOT__memory_to_register_decode;
         CData/*0:0*/ mips_cpu__DOT__memory_write_decode;
         CData/*0:0*/ mips_cpu__DOT__ALU_src_B_decode;
@@ -102,9 +105,9 @@ VL_MODULE(MIPS_Harvard_TB) {
         IData/*31:0*/ mips_cpu__DOT__ALU_HI_output_writeback;
         IData/*31:0*/ mips_cpu__DOT__ALU_LO_output_writeback;
         IData/*31:0*/ mips_cpu__DOT__ALU_output_writeback;
-        IData/*31:0*/ mips_cpu__DOT__read_data_writeback;
     };
     struct {
+        IData/*31:0*/ mips_cpu__DOT__read_data_writeback;
         IData/*31:0*/ mips_cpu__DOT__register_file__DOT__HI_reg;
         IData/*31:0*/ mips_cpu__DOT__register_file__DOT__LO_reg;
         QData/*63:0*/ mips_cpu__DOT__alu__DOT__ALU_HI_LO_output;
@@ -117,6 +120,7 @@ VL_MODULE(MIPS_Harvard_TB) {
     CData/*0:0*/ __Vclklast__TOP__clk;
     CData/*0:0*/ __Vclklast__TOP____VinpClk__TOP__mips_cpu__DOT__internal_clk;
     CData/*0:0*/ __Vchglast__TOP__mips_cpu__DOT__internal_clk;
+    IData/*31:0*/ __Vm_traceActivity;
     
     // INTERNAL VARIABLES
     // Internals; generally not touched by application code
@@ -132,6 +136,8 @@ VL_MODULE(MIPS_Harvard_TB) {
     MIPS_Harvard_TB(const char* name = "TOP");
     /// Destroy the model; called (often implicitly) by application code
     ~MIPS_Harvard_TB();
+    /// Trace signals in the model; called by application code
+    void trace(VerilatedVcdC* tfp, int levels, int options = 0);
     
     // API METHODS
     /// Evaluate the model.  Application must call when inputs change.
@@ -162,6 +168,22 @@ VL_MODULE(MIPS_Harvard_TB) {
     static void _sequent__TOP__4(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
     static void _sequent__TOP__5(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
     static void _settle__TOP__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;
+    static void traceChgThis(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__2(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__4(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__5(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__6(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__7(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__8(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__9(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceFullThis(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code) VL_ATTR_COLD;
+    static void traceFullThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code) VL_ATTR_COLD;
+    static void traceInitThis(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code) VL_ATTR_COLD;
+    static void traceInitThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code) VL_ATTR_COLD;
+    static void traceInit(VerilatedVcd* vcdp, void* userthis, uint32_t code);
+    static void traceFull(VerilatedVcd* vcdp, void* userthis, uint32_t code);
+    static void traceChg(VerilatedVcd* vcdp, void* userthis, uint32_t code);
 } VL_ATTR_ALIGNED(VL_CACHE_LINE_BYTES);
 
 //----------

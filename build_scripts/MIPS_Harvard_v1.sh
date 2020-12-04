@@ -2,17 +2,47 @@
 set -e
 cd "$(dirname "$0")"
 cd ../src
+
+top_level=("../../src/mips_cpu.v")
+lower_level=(
+    "../../src/Adder.v"
+    "../../src/ALU.v"
+    "../../src/And_Gate.v"
+    "../../src/Control_Unit.v"
+    "../../src/Equal_Comparator.v"
+    "../../src/Hazard_Unit.v"
+    "../../src/Left_Shift.v"
+    "../../src/MUX_2INPUT.v"
+    "../../src/MUX_4INPUT.v"
+    "../../src/Program_Counter.v"
+    "../../src/Register_File.v"
+    "../../src/Sign_Extension.v"
+    "../../src/pipeline_registers/Decode_Execute_Register.v"
+    "../../src/pipeline_registers/Execute_Memory_Register.v"
+    "../../src/pipeline_registers/Fetch_Decode_Register.v"
+    "../../src/pipeline_registers/Memory_Writeback_Register.v"
+)
 while getopts bcl flag
 do
     case "${flag}" in
         b) verilator -Wall --trace +1800-2012ext+.v -cc mips_cpu.v *[^mips_cpu].v pipeline_registers/*.v --prefix MIPS_Harvard_TB --Mdir ../unofficial/preliminary_testing/MIPS_Harvard_obj_dir;
 			exit 0 ;;
-        c) verilator -Wall --trace +1800-2012ext+.v -cc mips_cpu.v *[^mips_cpu].v pipeline_registers/*.v --prefix MIPS_Harvard_TB --Mdir ../unofficial/preliminary_testing/MIPS_Harvard_obj_dir --exe ./unofficial/preliminary_testing/mips_v0.cpp -CFLAGS "-std=c++11";
+        c)  cd ../unofficial/preliminary_testing;
+            verilator -Wall --trace +1800-2012ext+.v --debug -cc  $top_level ${lower_level[@]} --prefix MIPS_Harvard_TB --Mdir MIPS_Harvard_obj_dir --exe mips_v0.cpp -CFLAGS "-std=c++17 -g";
+            echo "compiling"
+            
+            cd MIPS_Harvard_obj_dir;
+            make -j4 -f MIPS_Harvard_TB.mk MIPS_Harvard_TB;
+            
+            ./MIPS_Harvard_TB;
+            gtkwave trace.vcd;
             exit 0 ;;
         l) verilator -Wall +1800-2012ext+.v -cc mips_cpu.v *[^mips_cpu].v pipeline_registers/*.v --lint-only --top-module mips_cpu;
 			exit 0 ;;
     esac
 done
-
-echo "No flag passed options are -b for build -l for lint"
+echo "No flag passed options are:"
+echo "  (-b for build)"
+echo "  (-l for lint)"
+echo "  (-c for compile and run)"
 exit 1

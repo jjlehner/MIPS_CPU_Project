@@ -1,0 +1,48 @@
+`begin_keywords "1800-2017"
+`line 1 "../../src/pipeline_registers/Memory_Writeback_Register.v" 1
+module Memory_Writeback_Register
+(
+	input	logic 	clk,
+
+`line 5 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
+	 
+	input	logic 			register_write_memory,
+	input 	logic			memory_to_register_memory,
+	input	logic 			hi_lo_register_write_memory,
+
+`line 10 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
+	output	logic 			register_write_writeback,
+	output 	logic			memory_to_register_writeback,
+	output	logic			hi_lo_register_write_writeback,
+	 
+	input	logic [31:0]	ALU_output_memory,
+	input	logic [4:0]		write_register_memory,
+	input 	logic [31:0]	ALU_HI_output_memory,
+	input	logic [31:0]	ALU_LO_output_memory,
+	input 	logic [31:0]	read_data_memory,
+
+`line 20 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
+	output	logic [31:0]	ALU_output_writeback,
+	output	logic [4:0]		write_register_writeback,
+	output	logic [31:0]	ALU_HI_output_writeback,
+	output	logic [31:0]	ALU_LO_output_writeback,
+	output	logic [31:0]	read_data_writeback
+);
+
+`line 27 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
+	always_ff @(posedge clk) begin
+		register_write_writeback <= register_write_memory;
+		memory_to_register_writeback <=memory_to_register_memory;
+		hi_lo_register_write_writeback <= hi_lo_register_write_memory;
+
+`line 32 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
+		ALU_output_writeback <= ALU_output_memory;
+		write_register_writeback <= write_register_memory;
+		ALU_HI_output_writeback <= ALU_HI_output_memory;
+		ALU_LO_output_writeback <= ALU_LO_output_memory;
+		read_data_writeback <= read_data_memory;
+	end
+
+`line 39 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
+endmodule
+`line 40 "../../src/pipeline_registers/Memory_Writeback_Register.v" 2

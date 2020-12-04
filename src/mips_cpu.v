@@ -256,7 +256,7 @@ module mips_cpu (
         .Rd_decode(Rd_decode),
         .sign_imm_decode(sign_imm_decode),
 
-        .register_write_execute(register_write_decode),
+        .register_write_execute(register_write_execute),
         .memory_to_register_execute(memory_to_register_execute),
         .memory_write_execute(memory_write_execute),
         .ALU_src_B_execute(ALU_src_B_execute),

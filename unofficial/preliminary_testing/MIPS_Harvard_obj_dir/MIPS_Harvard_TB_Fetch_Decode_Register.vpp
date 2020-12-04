@@ -1,0 +1,35 @@
+`begin_keywords "1800-2017"
+`line 1 "../../src/pipeline_registers/Fetch_Decode_Register.v" 1
+module Fetch_Decode_Register
+(
+	input	logic 	clk,
+	input	logic	enable,  
+	input 	logic	clear,
+
+`line 7 "../../src/pipeline_registers/Fetch_Decode_Register.v" 0
+	input	logic [31:0]	instruction_fetch,
+	input	logic [31:0]	program_counter_plus_four_fetch,
+	
+	output	logic [31:0]	instruction_decode,
+	output	logic [31:0]	program_counter_plus_four_decode
+
+`line 13 "../../src/pipeline_registers/Fetch_Decode_Register.v" 0
+);
+
+`line 15 "../../src/pipeline_registers/Fetch_Decode_Register.v" 0
+	always_ff @(posedge clk) begin
+		
+		if(!enable) begin
+			if(clear) begin
+				instruction_decode <= 0;
+				program_counter_plus_four_decode <= {32{1'b0}};
+			end else begin
+				instruction_decode <= instruction_fetch;
+				program_counter_plus_four_decode <= program_counter_plus_four_fetch;
+			end
+		end
+	end
+	
+	
+endmodule
+`line 30 "../../src/pipeline_registers/Fetch_Decode_Register.v" 2
