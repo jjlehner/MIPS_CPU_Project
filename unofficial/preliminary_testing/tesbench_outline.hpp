@@ -6,6 +6,7 @@
 class TESTBENCH
 {
 public:
+	const unsigned int TIME_UNIT = 2;
 	unsigned long m_tickcount;
 	VerilatedVcdC *m_trace = nullptr;
 	MIPS_Harvard_TB *m_core = nullptr;
@@ -76,13 +77,13 @@ public:
 		//	Dump values to our trace file
 		//
 		if ( trace )
-			m_trace->dump( 10 * m_tickcount - 2 );
+			m_trace->dump( TIME_UNIT * m_tickcount - 2 );
 
 		// Repeat for the positive edge of the clock
 		m_core->clk = 1;
 		m_core->eval();
 		if ( trace )
-			m_trace->dump( 10 * m_tickcount );
+			m_trace->dump( TIME_UNIT * m_tickcount );
 
 		// Now the negative edge
 		m_core->clk = 0;
@@ -92,7 +93,7 @@ public:
 			// This portion, though, is a touch different.
 			// After dumping our values as they exist on the
 			// negative clock edge ...
-			m_trace->dump( 10 * m_tickcount + 5 );
+			m_trace->dump( TIME_UNIT * m_tickcount + TIME_UNIT / 2);
 			//
 			// We'll also need to make sure we flush any I/O to
 			// the trace file, so that we can use the assert()

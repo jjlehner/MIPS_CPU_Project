@@ -26,21 +26,23 @@ void MIPS_Harvard_TB::traceChgThis(MIPS_Harvard_TB__Syms* __restrict vlSymsp, Ve
     {
         if (VL_UNLIKELY((1U & (vlTOPp->__Vm_traceActivity 
                                | (vlTOPp->__Vm_traceActivity 
-                                  >> 2U))))) {
+                                  >> 1U))))) {
             vlTOPp->traceChgThis__2(vlSymsp, vcdp, code);
+        }
+        if (VL_UNLIKELY((1U & (vlTOPp->__Vm_traceActivity 
+                               | (vlTOPp->__Vm_traceActivity 
+                                  >> 2U))))) {
+            vlTOPp->traceChgThis__3(vlSymsp, vcdp, code);
         }
         if (VL_UNLIKELY((1U & ((vlTOPp->__Vm_traceActivity 
                                 | (vlTOPp->__Vm_traceActivity 
                                    >> 2U)) | (vlTOPp->__Vm_traceActivity 
                                               >> 4U))))) {
-            vlTOPp->traceChgThis__3(vlSymsp, vcdp, code);
+            vlTOPp->traceChgThis__4(vlSymsp, vcdp, code);
         }
         if (VL_UNLIKELY((1U & (vlTOPp->__Vm_traceActivity 
                                | (vlTOPp->__Vm_traceActivity 
                                   >> 4U))))) {
-            vlTOPp->traceChgThis__4(vlSymsp, vcdp, code);
-        }
-        if (VL_UNLIKELY((2U & vlTOPp->__Vm_traceActivity))) {
             vlTOPp->traceChgThis__5(vlSymsp, vcdp, code);
         }
         if (VL_UNLIKELY((4U & vlTOPp->__Vm_traceActivity))) {
@@ -66,51 +68,8 @@ void MIPS_Harvard_TB::traceChgThis__2(MIPS_Harvard_TB__Syms* __restrict vlSymsp,
     if (0 && vcdp && c) {}  // Prevent unused
     // Body
     {
-        vcdp->chgBit(c+1,(vlTOPp->mips_cpu__DOT__register_write_decode));
-        vcdp->chgBit(c+9,(vlTOPp->mips_cpu__DOT__memory_to_register_decode));
-        vcdp->chgBit(c+17,(vlTOPp->mips_cpu__DOT__memory_write_decode));
-        vcdp->chgBit(c+25,(vlTOPp->mips_cpu__DOT__ALU_src_B_decode));
-        vcdp->chgBit(c+33,(vlTOPp->mips_cpu__DOT__register_destination_decode));
-        vcdp->chgBit(c+41,(vlTOPp->mips_cpu__DOT__branch_decode));
-        vcdp->chgBit(c+49,(vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode));
-        vcdp->chgBus(c+57,(vlTOPp->mips_cpu__DOT__ALU_function_decode),6);
-        vcdp->chgBus(c+65,(((vlTOPp->mips_cpu__DOT__sign_imm_decode 
-                             << 2U) + vlTOPp->mips_cpu__DOT__program_counter_plus_four_decode)),32);
-        vcdp->chgBus(c+73,((vlTOPp->mips_cpu__DOT__sign_imm_decode 
-                            << 2U)),32);
-        vcdp->chgBus(c+81,(vlTOPp->mips_cpu__DOT__sign_imm_decode),32);
-        vcdp->chgBus(c+89,(vlTOPp->mips_cpu__DOT__write_register_execute),5);
-        vcdp->chgBus(c+97,(vlTOPp->mips_cpu__DOT__source_A_ALU_execute),32);
-        vcdp->chgBus(c+105,(vlTOPp->mips_cpu__DOT__source_B_ALU_execute),32);
-        vcdp->chgBus(c+113,(vlTOPp->mips_cpu__DOT__write_data_execute),32);
-        vcdp->chgBus(c+121,(vlTOPp->mips_cpu__DOT__ALU_output_execute),32);
-        vcdp->chgBus(c+129,(vlTOPp->mips_cpu__DOT__ALU_HI_output_execute),32);
-        vcdp->chgBus(c+137,(vlTOPp->mips_cpu__DOT__ALU_LO_output_execute),32);
-        vcdp->chgBus(c+145,(vlTOPp->mips_cpu__DOT__result_writeback),32);
-        vcdp->chgBit(c+153,(vlTOPp->mips_cpu__DOT__stall_fetch));
-        vcdp->chgBit(c+161,(vlTOPp->mips_cpu__DOT__stall_decode));
-        vcdp->chgBit(c+169,(vlTOPp->mips_cpu__DOT__flush_execute_register));
-        vcdp->chgBus(c+177,(vlTOPp->mips_cpu__DOT__forward_A_execute),2);
-        vcdp->chgBus(c+185,(vlTOPp->mips_cpu__DOT__forward_B_execute),2);
-        vcdp->chgBus(c+193,(vlTOPp->mips_cpu__DOT__control_unit__DOT__op),6);
-        vcdp->chgBus(c+201,(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct),6);
-        vcdp->chgBus(c+209,((0x1fU & (vlTOPp->mips_cpu__DOT__source_A_ALU_execute 
-                                      >> 6U))),5);
-        vcdp->chgQuad(c+217,((((QData)((IData)(VL_NEGATE_I((IData)(
-                                                                   (1U 
-                                                                    & (vlTOPp->mips_cpu__DOT__source_A_ALU_execute 
-                                                                       >> 0x1fU)))))) 
-                               << 0x20U) | (QData)((IData)(vlTOPp->mips_cpu__DOT__source_A_ALU_execute)))),64);
-        vcdp->chgQuad(c+233,((((QData)((IData)(VL_NEGATE_I((IData)(
-                                                                   (1U 
-                                                                    & (vlTOPp->mips_cpu__DOT__source_B_ALU_execute 
-                                                                       >> 0x1fU)))))) 
-                               << 0x20U) | (QData)((IData)(vlTOPp->mips_cpu__DOT__source_B_ALU_execute)))),64);
-        vcdp->chgQuad(c+249,((QData)((IData)(vlTOPp->mips_cpu__DOT__source_A_ALU_execute))),64);
-        vcdp->chgQuad(c+265,((QData)((IData)(vlTOPp->mips_cpu__DOT__source_B_ALU_execute))),64);
-        vcdp->chgQuad(c+281,(vlTOPp->mips_cpu__DOT__alu__DOT__ALU_HI_LO_output),64);
-        vcdp->chgBit(c+297,(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall));
-        vcdp->chgBit(c+305,(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall));
+        vcdp->chgBit(c+1,(vlTOPp->mips_cpu__DOT__internal_clk));
+        vcdp->chgBit(c+9,((1U & (~ (IData)(vlTOPp->mips_cpu__DOT__internal_clk)))));
     }
 }
 
@@ -120,11 +79,65 @@ void MIPS_Harvard_TB::traceChgThis__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp,
     if (0 && vcdp && c) {}  // Prevent unused
     // Body
     {
-        vcdp->chgBus(c+313,(((IData)(vlTOPp->mips_cpu__DOT__program_counter_source_decode)
+        vcdp->chgBit(c+17,(vlTOPp->mips_cpu__DOT__register_write_decode));
+        vcdp->chgBit(c+25,(vlTOPp->mips_cpu__DOT__memory_to_register_decode));
+        vcdp->chgBit(c+33,(vlTOPp->mips_cpu__DOT__memory_write_decode));
+        vcdp->chgBit(c+41,(vlTOPp->mips_cpu__DOT__ALU_src_B_decode));
+        vcdp->chgBit(c+49,(vlTOPp->mips_cpu__DOT__register_destination_decode));
+        vcdp->chgBit(c+57,(vlTOPp->mips_cpu__DOT__branch_decode));
+        vcdp->chgBit(c+65,(vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode));
+        vcdp->chgBus(c+73,(vlTOPp->mips_cpu__DOT__ALU_function_decode),6);
+        vcdp->chgBus(c+81,(((vlTOPp->mips_cpu__DOT__sign_imm_decode 
+                             << 2U) + vlTOPp->mips_cpu__DOT__program_counter_plus_four_decode)),32);
+        vcdp->chgBus(c+89,((vlTOPp->mips_cpu__DOT__sign_imm_decode 
+                            << 2U)),32);
+        vcdp->chgBus(c+97,(vlTOPp->mips_cpu__DOT__sign_imm_decode),32);
+        vcdp->chgBus(c+105,(vlTOPp->mips_cpu__DOT__write_register_execute),5);
+        vcdp->chgBus(c+113,(vlTOPp->mips_cpu__DOT__source_A_ALU_execute),32);
+        vcdp->chgBus(c+121,(vlTOPp->mips_cpu__DOT__source_B_ALU_execute),32);
+        vcdp->chgBus(c+129,(vlTOPp->mips_cpu__DOT__write_data_execute),32);
+        vcdp->chgBus(c+137,(vlTOPp->mips_cpu__DOT__ALU_output_execute),32);
+        vcdp->chgBus(c+145,(vlTOPp->mips_cpu__DOT__ALU_HI_output_execute),32);
+        vcdp->chgBus(c+153,(vlTOPp->mips_cpu__DOT__ALU_LO_output_execute),32);
+        vcdp->chgBus(c+161,(vlTOPp->mips_cpu__DOT__result_writeback),32);
+        vcdp->chgBit(c+169,(vlTOPp->mips_cpu__DOT__stall_fetch));
+        vcdp->chgBit(c+177,(vlTOPp->mips_cpu__DOT__stall_decode));
+        vcdp->chgBit(c+185,(vlTOPp->mips_cpu__DOT__flush_execute_register));
+        vcdp->chgBus(c+193,(vlTOPp->mips_cpu__DOT__forward_A_execute),2);
+        vcdp->chgBus(c+201,(vlTOPp->mips_cpu__DOT__forward_B_execute),2);
+        vcdp->chgBus(c+209,(vlTOPp->mips_cpu__DOT__control_unit__DOT__op),6);
+        vcdp->chgBus(c+217,(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct),6);
+        vcdp->chgBus(c+225,((0x1fU & (vlTOPp->mips_cpu__DOT__source_A_ALU_execute 
+                                      >> 6U))),5);
+        vcdp->chgQuad(c+233,((((QData)((IData)(VL_NEGATE_I((IData)(
+                                                                   (1U 
+                                                                    & (vlTOPp->mips_cpu__DOT__source_A_ALU_execute 
+                                                                       >> 0x1fU)))))) 
+                               << 0x20U) | (QData)((IData)(vlTOPp->mips_cpu__DOT__source_A_ALU_execute)))),64);
+        vcdp->chgQuad(c+249,((((QData)((IData)(VL_NEGATE_I((IData)(
+                                                                   (1U 
+                                                                    & (vlTOPp->mips_cpu__DOT__source_B_ALU_execute 
+                                                                       >> 0x1fU)))))) 
+                               << 0x20U) | (QData)((IData)(vlTOPp->mips_cpu__DOT__source_B_ALU_execute)))),64);
+        vcdp->chgQuad(c+265,((QData)((IData)(vlTOPp->mips_cpu__DOT__source_A_ALU_execute))),64);
+        vcdp->chgQuad(c+281,((QData)((IData)(vlTOPp->mips_cpu__DOT__source_B_ALU_execute))),64);
+        vcdp->chgQuad(c+297,(vlTOPp->mips_cpu__DOT__alu__DOT__ALU_HI_LO_output),64);
+        vcdp->chgBit(c+313,(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall));
+        vcdp->chgBit(c+321,(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall));
+    }
+}
+
+void MIPS_Harvard_TB::traceChgThis__4(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code) {
+    MIPS_Harvard_TB* __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
+    int c = code;
+    if (0 && vcdp && c) {}  // Prevent unused
+    // Body
+    {
+        vcdp->chgBus(c+329,(((IData)(vlTOPp->mips_cpu__DOT__program_counter_source_decode)
                               ? ((vlTOPp->mips_cpu__DOT__sign_imm_decode 
                                   << 2U) + vlTOPp->mips_cpu__DOT__program_counter_plus_four_decode)
-                              : ((IData)(0xfU) + vlTOPp->mips_cpu__DOT__program_counter_fetch))),32);
-        vcdp->chgBit(c+321,((((((0U != (0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
+                              : ((IData)(4U) + vlTOPp->mips_cpu__DOT__program_counter_fetch))),32);
+        vcdp->chgBit(c+337,((((((0U != (0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
                                                  >> 0x15U))) 
                                 & ((0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
                                              >> 0x15U)) 
@@ -141,7 +154,7 @@ void MIPS_Harvard_TB::traceChgThis__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp,
                                   & (IData)(vlTOPp->mips_cpu__DOT__register_write_memory))
                                   ? vlTOPp->mips_cpu__DOT__ALU_output_memory
                                   : vlTOPp->mips_cpu__DOT__register_file_output_B_decode))));
-        vcdp->chgBus(c+329,(((((0U != (0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
+        vcdp->chgBus(c+345,(((((0U != (0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
                                                 >> 0x15U))) 
                                & ((0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
                                             >> 0x15U)) 
@@ -149,7 +162,7 @@ void MIPS_Harvard_TB::traceChgThis__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp,
                               & (IData)(vlTOPp->mips_cpu__DOT__register_write_memory))
                               ? vlTOPp->mips_cpu__DOT__ALU_output_memory
                               : vlTOPp->mips_cpu__DOT__register_file_output_A_decode)),32);
-        vcdp->chgBus(c+337,(((((0U != (0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
+        vcdp->chgBus(c+353,(((((0U != (0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
                                                 >> 0x10U))) 
                                & ((0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
                                             >> 0x10U)) 
@@ -160,26 +173,15 @@ void MIPS_Harvard_TB::traceChgThis__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp,
     }
 }
 
-void MIPS_Harvard_TB::traceChgThis__4(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code) {
-    MIPS_Harvard_TB* __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
-    int c = code;
-    if (0 && vcdp && c) {}  // Prevent unused
-    // Body
-    {
-        vcdp->chgBit(c+345,(vlTOPp->mips_cpu__DOT__program_counter_source_decode));
-        vcdp->chgBus(c+353,(vlTOPp->mips_cpu__DOT__register_file_output_A_decode),32);
-        vcdp->chgBus(c+361,(vlTOPp->mips_cpu__DOT__register_file_output_B_decode),32);
-    }
-}
-
 void MIPS_Harvard_TB::traceChgThis__5(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code) {
     MIPS_Harvard_TB* __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
     int c = code;
     if (0 && vcdp && c) {}  // Prevent unused
     // Body
     {
-        vcdp->chgBit(c+369,(vlTOPp->mips_cpu__DOT__internal_clk));
-        vcdp->chgBit(c+377,((1U & (~ (IData)(vlTOPp->mips_cpu__DOT__internal_clk)))));
+        vcdp->chgBit(c+361,(vlTOPp->mips_cpu__DOT__program_counter_source_decode));
+        vcdp->chgBus(c+369,(vlTOPp->mips_cpu__DOT__register_file_output_A_decode),32);
+        vcdp->chgBus(c+377,(vlTOPp->mips_cpu__DOT__register_file_output_B_decode),32);
     }
 }
 
@@ -190,7 +192,7 @@ void MIPS_Harvard_TB::traceChgThis__6(MIPS_Harvard_TB__Syms* __restrict vlSymsp,
     // Body
     {
         vcdp->chgBus(c+385,(vlTOPp->mips_cpu__DOT__program_counter_fetch),32);
-        vcdp->chgBus(c+393,(((IData)(0xfU) + vlTOPp->mips_cpu__DOT__program_counter_fetch)),32);
+        vcdp->chgBus(c+393,(((IData)(4U) + vlTOPp->mips_cpu__DOT__program_counter_fetch)),32);
         vcdp->chgBus(c+401,(vlTOPp->mips_cpu__DOT__instruction_decode),32);
         vcdp->chgBus(c+409,(vlTOPp->mips_cpu__DOT__program_counter_plus_four_decode),32);
         vcdp->chgBus(c+417,((0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 

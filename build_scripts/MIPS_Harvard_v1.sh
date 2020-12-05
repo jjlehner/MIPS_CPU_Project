@@ -37,8 +37,11 @@ do
             ./MIPS_Harvard_TB;
             gtkwave trace.vcd;
             exit 0 ;;
-        l) verilator -Wall +1800-2012ext+.v -cc mips_cpu.v *[^mips_cpu].v pipeline_registers/*.v --lint-only --top-module mips_cpu;
-			exit 0 ;;
+        l) cd ../unofficial/preliminary_testing;
+            echo "linting";
+            verilator -Wall --trace +1800-2012ext+.v $top_level ${lower_level[@]} --lint-only;
+            
+            exit 0 ;;
     esac
 done
 echo "No flag passed options are:"

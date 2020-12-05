@@ -116,10 +116,7 @@ VL_MODULE(MIPS_Harvard_TB) {
     
     // LOCAL VARIABLES
     // Internals; generally not touched by application code
-    CData/*0:0*/ __VinpClk__TOP__mips_cpu__DOT__internal_clk;
-    CData/*0:0*/ __Vclklast__TOP__clk;
-    CData/*0:0*/ __Vclklast__TOP____VinpClk__TOP__mips_cpu__DOT__internal_clk;
-    CData/*0:0*/ __Vchglast__TOP__mips_cpu__DOT__internal_clk;
+    CData/*0:0*/ __Vclklast__TOP__mips_cpu__DOT__internal_clk;
     IData/*31:0*/ __Vm_traceActivity;
     
     // INTERNAL VARIABLES
@@ -152,6 +149,9 @@ VL_MODULE(MIPS_Harvard_TB) {
     void __Vconfigure(MIPS_Harvard_TB__Syms* symsp, bool first);
   private:
     static QData _change_request(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
+  public:
+    static void _combo__TOP__2(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
+  private:
     void _ctor_var_reset() VL_ATTR_COLD;
   public:
     static void _eval(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
@@ -164,7 +164,6 @@ VL_MODULE(MIPS_Harvard_TB) {
     static void _eval_settle(MIPS_Harvard_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     static void _initial__TOP__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     static void _multiclk__TOP__6(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
-    static void _sequent__TOP__2(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
     static void _sequent__TOP__4(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
     static void _sequent__TOP__5(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
     static void _settle__TOP__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;

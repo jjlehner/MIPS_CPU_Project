@@ -45,7 +45,18 @@ module Control_Unit(
 			6'b000110: 	controls <= {12{1'bx}};	//BLEZ instruction
 			6'b000111: 	controls <= {12{1'bx}};	//BGTZ instruction
 			6'b001000: 	controls <= {12{1'bx}};	//ADDI
-			6'b001001: 	controls <= {12{1'bx}};	//ADDIU
+			*/
+			6'b001001: begin					//ADDIU
+				register_write			= 1;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 1;
+				register_destination 	= 0;
+				branch					= 0;
+				hi_lo_register_write	= 0;
+				ALU_function			= 6'b100001;
+			end
+			/*
 			6'b001010: 	controls <= {12{1'bx}};	//SLTI
 			6'b001011: 	contorls <= {12{1'bx}};	//SLTIU
 			6'b001100: 	controls <= {12{1'bx}};	//ANDI

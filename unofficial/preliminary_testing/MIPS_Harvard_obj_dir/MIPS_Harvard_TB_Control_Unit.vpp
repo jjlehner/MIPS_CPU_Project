@@ -39,41 +39,51 @@ module Control_Unit(
 			end
 			
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 48 "../../src/Control_Unit.v" 0
+ 
+			6'b001001: begin					 
+				register_write			= 1;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 1;
+				register_destination 	= 0;
+				branch					= 0;
+				hi_lo_register_write	= 0;
+				ALU_function			= 6'b100001;
+			end
+			
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 65 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 65 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 65 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 65 "../../src/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
-
-`line 54 "../../src/Control_Unit.v" 0
+`line 65 "../../src/Control_Unit.v" 0
  
 			6'b001111: 	begin
 				register_write			= 1;
@@ -88,23 +98,23 @@ module Control_Unit(
 			
 			
 
-`line 76 "../../src/Control_Unit.v" 0
+`line 87 "../../src/Control_Unit.v" 0
 
-`line 76 "../../src/Control_Unit.v" 0
+`line 87 "../../src/Control_Unit.v" 0
 
-`line 76 "../../src/Control_Unit.v" 0
+`line 87 "../../src/Control_Unit.v" 0
 
-`line 76 "../../src/Control_Unit.v" 0
+`line 87 "../../src/Control_Unit.v" 0
 
-`line 76 "../../src/Control_Unit.v" 0
+`line 87 "../../src/Control_Unit.v" 0
 
-`line 76 "../../src/Control_Unit.v" 0
+`line 87 "../../src/Control_Unit.v" 0
 
-`line 76 "../../src/Control_Unit.v" 0
+`line 87 "../../src/Control_Unit.v" 0
 
-`line 76 "../../src/Control_Unit.v" 0
+`line 87 "../../src/Control_Unit.v" 0
 
-`line 76 "../../src/Control_Unit.v" 0
+`line 87 "../../src/Control_Unit.v" 0
  
 			default : begin						 
 				register_write			= 1'bx;
@@ -119,4 +129,4 @@ module Control_Unit(
 		endcase
 	end
 endmodule
-`line 90 "../../src/Control_Unit.v" 2
+`line 101 "../../src/Control_Unit.v" 2
