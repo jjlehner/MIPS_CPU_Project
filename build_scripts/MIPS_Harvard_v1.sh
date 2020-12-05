@@ -22,11 +22,14 @@ lower_level=(
     "../../src/pipeline_registers/Fetch_Decode_Register.v"
     "../../src/pipeline_registers/Memory_Writeback_Register.v"
 )
-while getopts bcl flag
+while getopts gcl flag
 do
     case "${flag}" in
-        b) verilator -Wall --trace +1800-2012ext+.v -cc mips_cpu.v *[^mips_cpu].v pipeline_registers/*.v --prefix MIPS_Harvard_TB --Mdir ../unofficial/preliminary_testing/MIPS_Harvard_obj_dir;
-			exit 0 ;;
+        g) cd ../unofficial/preliminary_testing;
+            verilator -Wall --trace +1800-2012ext+.v --debug -cc  $top_level ${lower_level[@]} --prefix MIPS_Harvard_TB --Mdir MIPS_Harvard_obj_dir;
+            echo "generating c++ code"
+            
+            exit 0 ;;
         c)  cd ../unofficial/preliminary_testing;
             verilator -Wall --trace +1800-2012ext+.v --debug -cc  $top_level ${lower_level[@]} --prefix MIPS_Harvard_TB --Mdir MIPS_Harvard_obj_dir --exe mips_v0.cpp -CFLAGS "-std=c++17 -g";
             echo "compiling"
@@ -45,7 +48,7 @@ do
     esac
 done
 echo "No flag passed options are:"
-echo "  (-b for build)"
+echo "  (-g to generate c++ headers from verilog)"
 echo "  (-l for lint)"
 echo "  (-c for compile and run)"
 exit 1
