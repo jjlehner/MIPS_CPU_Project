@@ -52,6 +52,8 @@ VL_MODULE(MIPS_Harvard_TB) {
         CData/*0:0*/ mips_cpu__DOT__branch_decode;
         CData/*0:0*/ mips_cpu__DOT__hi_lo_register_write_decode;
         CData/*5:0*/ mips_cpu__DOT__ALU_function_decode;
+        CData/*0:0*/ mips_cpu__DOT__program_counter_multiplexer_jump_decode;
+        CData/*0:0*/ mips_cpu__DOT__flush_decode_execute_register;
         CData/*0:0*/ mips_cpu__DOT__register_destination_execute;
         CData/*0:0*/ mips_cpu__DOT__memory_to_register_execute;
         CData/*0:0*/ mips_cpu__DOT__memory_write_execute;
@@ -60,6 +62,7 @@ VL_MODULE(MIPS_Harvard_TB) {
         CData/*5:0*/ mips_cpu__DOT__ALU_function_execute;
         CData/*0:0*/ mips_cpu__DOT__hi_lo_register_write_execute;
         CData/*0:0*/ mips_cpu__DOT__register_write_execute;
+        CData/*0:0*/ mips_cpu__DOT__program_counter_multiplexer_jump_execute;
         CData/*4:0*/ mips_cpu__DOT__Rs_execute;
         CData/*4:0*/ mips_cpu__DOT__Rt_execute;
         CData/*4:0*/ mips_cpu__DOT__Rd_execute;
@@ -68,21 +71,24 @@ VL_MODULE(MIPS_Harvard_TB) {
         CData/*0:0*/ mips_cpu__DOT__memory_to_register_memory;
         CData/*0:0*/ mips_cpu__DOT__memory_write_memory;
         CData/*0:0*/ mips_cpu__DOT__hi_lo_register_write_memory;
+        CData/*0:0*/ mips_cpu__DOT__program_counter_multiplexer_jump_memory;
         CData/*0:0*/ mips_cpu__DOT__register_write_writeback;
         CData/*0:0*/ mips_cpu__DOT__hi_lo_register_write_writeback;
         CData/*0:0*/ mips_cpu__DOT__memory_to_register_writeback;
+        CData/*0:0*/ mips_cpu__DOT__program_counter_multiplexer_jump_writeback;
         CData/*4:0*/ mips_cpu__DOT__write_register_writeback;
         CData/*0:0*/ mips_cpu__DOT__stall_fetch;
         CData/*0:0*/ mips_cpu__DOT__stall_decode;
         CData/*0:0*/ mips_cpu__DOT__flush_execute_register;
         CData/*1:0*/ mips_cpu__DOT__forward_A_execute;
         CData/*1:0*/ mips_cpu__DOT__forward_B_execute;
+        CData/*0:0*/ mips_cpu__DOT__flush_fetch_decode_register;
         CData/*5:0*/ mips_cpu__DOT__control_unit__DOT__op;
         CData/*5:0*/ mips_cpu__DOT__control_unit__DOT__funct;
         CData/*0:0*/ mips_cpu__DOT__hazard_unit__DOT__lwstall;
         CData/*0:0*/ mips_cpu__DOT__hazard_unit__DOT__branchstall;
-        IData/*31:0*/ mips_cpu__DOT__program_counter_prime;
         IData/*31:0*/ mips_cpu__DOT__program_counter_fetch;
+        IData/*31:0*/ mips_cpu__DOT__program_counter_mux_1_out;
         IData/*31:0*/ mips_cpu__DOT__instruction_decode;
         IData/*31:0*/ mips_cpu__DOT__program_counter_plus_four_decode;
         IData/*31:0*/ mips_cpu__DOT__register_file_output_A_decode;
@@ -99,14 +105,14 @@ VL_MODULE(MIPS_Harvard_TB) {
         IData/*31:0*/ mips_cpu__DOT__sign_imm_execute;
         IData/*31:0*/ mips_cpu__DOT__ALU_output_memory;
         IData/*31:0*/ mips_cpu__DOT__ALU_HI_output_memory;
+    };
+    struct {
         IData/*31:0*/ mips_cpu__DOT__ALU_LO_output_memory;
         IData/*31:0*/ mips_cpu__DOT__write_data_memory;
         IData/*31:0*/ mips_cpu__DOT__result_writeback;
         IData/*31:0*/ mips_cpu__DOT__ALU_HI_output_writeback;
         IData/*31:0*/ mips_cpu__DOT__ALU_LO_output_writeback;
         IData/*31:0*/ mips_cpu__DOT__ALU_output_writeback;
-    };
-    struct {
         IData/*31:0*/ mips_cpu__DOT__read_data_writeback;
         IData/*31:0*/ mips_cpu__DOT__register_file__DOT__HI_reg;
         IData/*31:0*/ mips_cpu__DOT__register_file__DOT__LO_reg;

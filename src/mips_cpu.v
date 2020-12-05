@@ -34,6 +34,8 @@ module mips_cpu (
 	logic [31:0] program_counter_fetch;
 	logic [31:0] program_counter_plus_four_fetch;
 	logic [31:0] instruction_fetch;
+	logic [31:0] program_counter_mux_1_out;
+
 	//decode Controls
 	logic       program_counter_source_decode;
 	logic       register_write_decode;
@@ -45,6 +47,8 @@ module mips_cpu (
 	logic       hi_lo_register_write_decode;
 	logic       equal_decode;
 	logic [5:0] ALU_function_decode;
+	logic 		program_counter_multiplexer_jump_decode;
+	logic		flush_decode_execute_register;
 
 	//decode datapath
 	//TODO move instruction logic to control
@@ -80,7 +84,8 @@ module mips_cpu (
 	logic [5:0]     ALU_function_execute;
 	logic           hi_lo_register_write_execute;
 	logic           register_write_execute;
-	
+	logic 			program_counter_multiplexer_jump_execute;
+
 	//Execute Datapath
 	logic [31:0]    register_file_output_A_execute;
 	logic [31:0]    register_file_output_B_execute;
@@ -101,6 +106,7 @@ module mips_cpu (
 	logic       memory_to_register_memory;
 	logic       memory_write_memory;
 	logic       hi_lo_register_write_memory;
+	logic 		program_counter_multiplexer_jump_memory;
 
 	//Memory datapath
 	logic [31:0] ALU_output_memory;
@@ -113,6 +119,7 @@ module mips_cpu (
 	logic register_write_writeback;
 	logic hi_lo_register_write_writeback;
 	logic memory_to_register_writeback;
+	logic program_counter_multiplexer_jump_writeback;
 
 	//Writeback datapath
 	logic [4:0] write_register_writeback;
@@ -130,6 +137,7 @@ module mips_cpu (
 	logic       flush_execute_register;
 	logic [1:0] forward_A_execute;
 	logic [1:0] forward_B_execute;
+	logic 		flush_fetch_decode_register;
 
 	//Data Memory
 	assign read_data_memory = data_readdata;
@@ -174,13 +182,20 @@ module mips_cpu (
 		.control(program_counter_source_decode),
 		.input_0(program_counter_plus_four_fetch),
 		.input_1(program_counter_branch_decode),
+		.resolved(program_counter_mux_1_out)
+	);
+
+	MUX_2INPUT #(.BUS_WIDTH(32)) program_counter_multiplexer_two (
+		.control(program_counter_multiplexer_jump_writeback),
+		.input_0(program_counter_mux_1_out),
+		.input_1(result_writeback),
 		.resolved(program_counter_prime)
 	);
 
 	Fetch_Decode_Register fetch_decode_register(
 		.clk(internal_clk),
 		.enable(stall_decode),
-		.clear(program_counter_source_decode),
+		.clear(flush_fetch_decode_register),
 		.instruction_fetch(instruction_fetch),
 		.program_counter_plus_four_fetch(program_counter_plus_four_fetch),
 		.instruction_decode(instruction_decode),
@@ -196,7 +211,8 @@ module mips_cpu (
 		.register_destination(register_destination_decode),
 		.branch(branch_decode),
 		.hi_lo_register_write(hi_lo_register_write_decode),
-		.ALU_function(ALU_function_decode)
+		.ALU_function(ALU_function_decode),
+		.program_counter_multiplexer_jump(program_counter_multiplexer_jump_decode)
 	);
 
 	MUX_2INPUT #(.BUS_WIDTH(32)) register_file_output_A_mux 
@@ -257,6 +273,7 @@ module mips_cpu (
 		.Rt_decode(Rt_decode),
 		.Rd_decode(Rd_decode),
 		.sign_imm_decode(sign_imm_decode),
+		.program_counter_multiplexer_jump_decode(program_counter_multiplexer_jump_decode),
 
 		.register_write_execute(register_write_execute),
 		.memory_to_register_execute(memory_to_register_execute),
@@ -269,6 +286,7 @@ module mips_cpu (
 		.Rt_execute(Rt_execute),
 		.Rd_execute(Rd_execute),
 		.sign_imm_execute(sign_imm_execute),
+		.program_counter_multiplexer_jump_execute(program_counter_multiplexer_jump_execute),
 
 		.read_data_one_decode(register_file_output_A_decode),
 		.read_data_two_decode(register_file_output_B_decode),
@@ -327,11 +345,14 @@ module mips_cpu (
 		.memory_to_register_execute(memory_to_register_execute),
 		.memory_write_execute(memory_write_execute),
 		.hi_lo_register_write_execute(hi_lo_register_write_execute),
+		.program_counter_multiplexer_jump_execute(program_counter_multiplexer_jump_execute),
 
 		.register_write_memory(register_write_memory),
 		.memory_to_register_memory(memory_to_register_memory),
 		.memory_write_memory(memory_write_memory),
 		.hi_lo_register_write_memory(hi_lo_register_write_memory),
+		.program_counter_multiplexer_jump_memory(program_counter_multiplexer_jump_memory),
+
 
 		.ALU_output_execute(ALU_output_execute),
 		.ALU_HI_output_execute(ALU_HI_output_execute),
@@ -352,9 +373,12 @@ module mips_cpu (
 		.register_write_memory(register_write_memory),
 		.memory_to_register_memory(memory_to_register_memory),
 		.hi_lo_register_write_memory(hi_lo_register_write_memory),
+		.program_counter_multiplexer_jump_memory(program_counter_multiplexer_jump_memory),
 		.register_write_writeback(register_write_writeback),
 		.memory_to_register_writeback(memory_to_register_writeback),
 		.hi_lo_register_write_writeback(hi_lo_register_write_writeback),
+		.program_counter_multiplexer_jump_writeback(program_counter_multiplexer_jump_writeback),
+
 
 		.ALU_output_memory(ALU_output_memory),
 		.write_register_memory(write_register_memory),
@@ -389,7 +413,7 @@ module mips_cpu (
 		.register_write_memory(register_write_memory),
 		.write_register_writeback(write_register_writeback),
 		.register_write_writeback(register_write_writeback),
-
+		.program_counter_multiplexer_jump_writeback(program_counter_multiplexer_jump_writeback),
 		.stall_fetch(stall_fetch),
 		.stall_decode(stall_decode),
 		.forward_register_file_output_1_decode(forward_A_decode),
@@ -398,7 +422,12 @@ module mips_cpu (
 		.forward_register_file_output_1_execute(forward_A_execute),
 		.forward_register_file_output_2_execute(forward_B_execute)
 	);
- 
+	
+	Or_Gate or_gate(
+		.input_A(program_counter_multiplexer_jump_writeback),
+		.input_B(program_counter_source_decode),
+		.output_C(flush_fetch_decode_register)
+	);
 	assign internal_clk = clk && clk_enable;
 
 

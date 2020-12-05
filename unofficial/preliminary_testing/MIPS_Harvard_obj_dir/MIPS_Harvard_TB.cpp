@@ -171,49 +171,247 @@ void MIPS_Harvard_TB::_settle__TOP__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp)
                   >> 0x1aU));
     vlTOPp->mips_cpu__DOT__control_unit__DOT__funct 
         = (0x3fU & vlTOPp->mips_cpu__DOT__instruction_decode);
-    if ((0U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
-        vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
-        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
-        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
-        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
-        vlTOPp->mips_cpu__DOT__register_destination_decode = 1U;
-        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
-        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode 
-            = ((((0x18U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)) 
-                 | (0x19U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct))) 
-                | (0x1aU == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct))) 
-               | (0x1bU == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)));
-        vlTOPp->mips_cpu__DOT__ALU_function_decode 
-            = vlTOPp->mips_cpu__DOT__control_unit__DOT__funct;
-    } else {
-        if ((9U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
-            vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
+    if ((0x20U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+        if ((0x10U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
             vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
             vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
-            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
+            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
             vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
             vlTOPp->mips_cpu__DOT__branch_decode = 0U;
             vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
-            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x21U;
+            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
         } else {
-            if ((0xfU == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
-                vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
-                vlTOPp->mips_cpu__DOT__memory_to_register_decode = 1U;
-                vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
-                vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
-                vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
-                vlTOPp->mips_cpu__DOT__branch_decode = 0U;
-                vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
-                vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x3fU;
+            if ((8U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                if ((4U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                    vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                } else {
+                    if ((2U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                        if ((1U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x21U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        } else {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        }
+                    } else {
+                        vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                    }
+                }
             } else {
-                vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
-                vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
-                vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
-                vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
-                vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
-                vlTOPp->mips_cpu__DOT__branch_decode = 0U;
-                vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
-                vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                if ((4U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                    vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                } else {
+                    if ((2U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                        if ((1U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x21U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        } else {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        }
+                    } else {
+                        vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                    }
+                }
+            }
+        }
+    } else {
+        if ((0x10U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+        } else {
+            if ((8U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                if ((4U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                    if ((2U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                        if ((1U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x3fU;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        } else {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        }
+                    } else {
+                        vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                    }
+                } else {
+                    if ((2U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                        vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                    } else {
+                        if ((1U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x21U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        } else {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        }
+                    }
+                }
+            } else {
+                if ((4U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                    vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                } else {
+                    if ((2U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                        vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                    } else {
+                        if ((1U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        } else {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode 
+                                = ((((0x18U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)) 
+                                     | (0x19U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct))) 
+                                    | (0x1aU == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct))) 
+                                   | (0x1bU == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)));
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode 
+                                = vlTOPp->mips_cpu__DOT__control_unit__DOT__funct;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode 
+                                = ((8U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)) 
+                                   | (9U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)));
+                        }
+                    }
+                }
             }
         }
     }
@@ -270,8 +468,9 @@ void MIPS_Harvard_TB::_settle__TOP__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp)
     vlTOPp->mips_cpu__DOT__stall_decode = ((IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall) 
                                            | (IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall));
     vlTOPp->mips_cpu__DOT__flush_execute_register = 
-        ((IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall) 
-         | (IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall));
+        (((IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall) 
+          | (IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall)) 
+         | (IData)(vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_writeback));
     vlTOPp->mips_cpu__DOT__program_counter_source_decode 
         = ((IData)(vlTOPp->mips_cpu__DOT__branch_decode) 
            & (((((0U != (0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
@@ -292,11 +491,14 @@ void MIPS_Harvard_TB::_settle__TOP__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp)
     vlTOPp->mips_cpu__DOT__source_B_ALU_execute = ((IData)(vlTOPp->mips_cpu__DOT__ALU_src_B_execute)
                                                     ? vlTOPp->mips_cpu__DOT__sign_imm_execute
                                                     : vlTOPp->mips_cpu__DOT__write_data_execute);
-    vlTOPp->mips_cpu__DOT__program_counter_prime = 
-        ((IData)(vlTOPp->mips_cpu__DOT__program_counter_source_decode)
-          ? ((vlTOPp->mips_cpu__DOT__sign_imm_decode 
-              << 2U) + vlTOPp->mips_cpu__DOT__program_counter_plus_four_decode)
-          : ((IData)(4U) + vlTOPp->mips_cpu__DOT__program_counter_fetch));
+    vlTOPp->mips_cpu__DOT__flush_fetch_decode_register 
+        = ((IData)(vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_writeback) 
+           | (IData)(vlTOPp->mips_cpu__DOT__program_counter_source_decode));
+    vlTOPp->mips_cpu__DOT__program_counter_mux_1_out 
+        = ((IData)(vlTOPp->mips_cpu__DOT__program_counter_source_decode)
+            ? ((vlTOPp->mips_cpu__DOT__sign_imm_decode 
+                << 2U) + vlTOPp->mips_cpu__DOT__program_counter_plus_four_decode)
+            : ((IData)(4U) + vlTOPp->mips_cpu__DOT__program_counter_fetch));
     vlTOPp->mips_cpu__DOT__ALU_output_execute = 0U;
     if ((0x20U & (IData)(vlTOPp->mips_cpu__DOT__ALU_function_execute))) {
         vlTOPp->mips_cpu__DOT__ALU_output_execute = 
@@ -445,11 +647,6 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__4(MIPS_Harvard_TB__Syms* __re
     MIPS_Harvard_TB* __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
     // Body
     vlTOPp->mips_cpu__DOT__write_data_memory = vlTOPp->mips_cpu__DOT__write_data_execute;
-    if ((1U & (~ (IData)(vlTOPp->mips_cpu__DOT__stall_decode)))) {
-        vlTOPp->mips_cpu__DOT__program_counter_plus_four_decode 
-            = ((IData)(vlTOPp->mips_cpu__DOT__program_counter_source_decode)
-                ? 0U : ((IData)(4U) + vlTOPp->mips_cpu__DOT__program_counter_fetch));
-    }
     vlTOPp->mips_cpu__DOT__ALU_LO_output_writeback 
         = vlTOPp->mips_cpu__DOT__ALU_LO_output_memory;
     vlTOPp->mips_cpu__DOT__sign_imm_execute = ((IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)
@@ -464,19 +661,25 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__4(MIPS_Harvard_TB__Syms* __re
     vlTOPp->mips_cpu__DOT__register_file_output_A_execute 
         = ((IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)
             ? 0U : vlTOPp->mips_cpu__DOT__register_file_output_A_decode);
-    vlTOPp->mips_cpu__DOT__ALU_src_B_execute = ((~ (IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)) 
-                                                & (IData)(vlTOPp->mips_cpu__DOT__ALU_src_B_decode));
     vlTOPp->mips_cpu__DOT__ALU_HI_output_writeback 
         = vlTOPp->mips_cpu__DOT__ALU_HI_output_memory;
+    vlTOPp->mips_cpu__DOT__ALU_src_B_execute = ((~ (IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)) 
+                                                & (IData)(vlTOPp->mips_cpu__DOT__ALU_src_B_decode));
     vlTOPp->mips_cpu__DOT__register_destination_execute 
         = ((~ (IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)) 
            & (IData)(vlTOPp->mips_cpu__DOT__register_destination_decode));
     vlTOPp->mips_cpu__DOT__register_file_output_B_execute 
         = ((IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)
             ? 0U : vlTOPp->mips_cpu__DOT__register_file_output_B_decode);
+    if ((1U & (~ (IData)(vlTOPp->mips_cpu__DOT__stall_decode)))) {
+        vlTOPp->mips_cpu__DOT__program_counter_plus_four_decode 
+            = ((IData)(vlTOPp->mips_cpu__DOT__flush_fetch_decode_register)
+                ? 0U : ((IData)(4U) + vlTOPp->mips_cpu__DOT__program_counter_fetch));
+    }
     vlTOPp->mips_cpu__DOT__read_data_writeback = vlTOPp->data_readdata;
     vlTOPp->mips_cpu__DOT__memory_to_register_writeback 
         = vlTOPp->mips_cpu__DOT__memory_to_register_memory;
+    vlTOPp->mips_cpu__DOT__ALU_output_writeback = vlTOPp->mips_cpu__DOT__ALU_output_memory;
     vlTOPp->mips_cpu__DOT__Rd_execute = ((IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)
                                           ? 0U : (0x1fU 
                                                   & (vlTOPp->mips_cpu__DOT__instruction_decode 
@@ -485,20 +688,15 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__4(MIPS_Harvard_TB__Syms* __re
                                           ? 0U : (0x1fU 
                                                   & (vlTOPp->mips_cpu__DOT__instruction_decode 
                                                      >> 0x15U)));
-    vlTOPp->mips_cpu__DOT__ALU_output_writeback = vlTOPp->mips_cpu__DOT__ALU_output_memory;
+    vlTOPp->mips_cpu__DOT__write_register_writeback 
+        = vlTOPp->mips_cpu__DOT__write_register_memory;
     vlTOPp->mips_cpu__DOT__Rt_execute = ((IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)
                                           ? 0U : (0x1fU 
                                                   & (vlTOPp->mips_cpu__DOT__instruction_decode 
                                                      >> 0x10U)));
-    vlTOPp->mips_cpu__DOT__write_register_writeback 
-        = vlTOPp->mips_cpu__DOT__write_register_memory;
     vlTOPp->mips_cpu__DOT__register_write_writeback 
         = vlTOPp->mips_cpu__DOT__register_write_memory;
     vlTOPp->data_writedata = vlTOPp->mips_cpu__DOT__write_data_memory;
-    if ((1U & (~ (IData)(vlTOPp->mips_cpu__DOT__stall_fetch)))) {
-        vlTOPp->mips_cpu__DOT__program_counter_fetch 
-            = vlTOPp->mips_cpu__DOT__program_counter_prime;
-    }
     vlTOPp->mips_cpu__DOT__ALU_LO_output_memory = vlTOPp->mips_cpu__DOT__ALU_LO_output_execute;
     vlTOPp->mips_cpu__DOT__hi_lo_register_write_memory 
         = vlTOPp->mips_cpu__DOT__hi_lo_register_write_execute;
@@ -507,27 +705,35 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__4(MIPS_Harvard_TB__Syms* __re
                                                    (~ (IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)) 
                                                    & (IData)(vlTOPp->mips_cpu__DOT__memory_write_decode));
     vlTOPp->mips_cpu__DOT__ALU_HI_output_memory = vlTOPp->mips_cpu__DOT__ALU_HI_output_execute;
+    if ((1U & (~ (IData)(vlTOPp->mips_cpu__DOT__stall_fetch)))) {
+        vlTOPp->mips_cpu__DOT__program_counter_fetch 
+            = ((IData)(vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_writeback)
+                ? vlTOPp->mips_cpu__DOT__result_writeback
+                : vlTOPp->mips_cpu__DOT__program_counter_mux_1_out);
+    }
     vlTOPp->mips_cpu__DOT__memory_to_register_memory 
         = vlTOPp->mips_cpu__DOT__memory_to_register_execute;
+    vlTOPp->mips_cpu__DOT__ALU_output_memory = vlTOPp->mips_cpu__DOT__ALU_output_execute;
+    vlTOPp->mips_cpu__DOT__write_register_memory = vlTOPp->mips_cpu__DOT__write_register_execute;
+    if ((1U & (~ (IData)(vlTOPp->mips_cpu__DOT__stall_decode)))) {
+        vlTOPp->mips_cpu__DOT__instruction_decode = 
+            ((IData)(vlTOPp->mips_cpu__DOT__flush_fetch_decode_register)
+              ? 0U : vlTOPp->instr_readdata);
+    }
+    vlTOPp->mips_cpu__DOT__register_write_memory = vlTOPp->mips_cpu__DOT__register_write_execute;
     vlTOPp->mips_cpu__DOT__result_writeback = ((IData)(vlTOPp->mips_cpu__DOT__memory_to_register_writeback)
                                                 ? vlTOPp->mips_cpu__DOT__read_data_writeback
                                                 : vlTOPp->mips_cpu__DOT__ALU_output_writeback);
-    vlTOPp->mips_cpu__DOT__ALU_output_memory = vlTOPp->mips_cpu__DOT__ALU_output_execute;
-    if ((1U & (~ (IData)(vlTOPp->mips_cpu__DOT__stall_decode)))) {
-        vlTOPp->mips_cpu__DOT__instruction_decode = 
-            ((IData)(vlTOPp->mips_cpu__DOT__program_counter_source_decode)
-              ? 0U : vlTOPp->instr_readdata);
-    }
-    vlTOPp->mips_cpu__DOT__write_register_memory = vlTOPp->mips_cpu__DOT__write_register_execute;
-    vlTOPp->mips_cpu__DOT__register_write_memory = vlTOPp->mips_cpu__DOT__register_write_execute;
     vlTOPp->mips_cpu__DOT__write_register_execute = 
         ((IData)(vlTOPp->mips_cpu__DOT__register_destination_execute)
           ? (IData)(vlTOPp->mips_cpu__DOT__Rd_execute)
           : (IData)(vlTOPp->mips_cpu__DOT__Rt_execute));
-    vlTOPp->instr_address = vlTOPp->mips_cpu__DOT__program_counter_fetch;
     vlTOPp->mips_cpu__DOT__hi_lo_register_write_execute 
         = ((~ (IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)) 
            & (IData)(vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode));
+    vlTOPp->instr_address = vlTOPp->mips_cpu__DOT__program_counter_fetch;
+    vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_writeback 
+        = vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_memory;
     vlTOPp->mips_cpu__DOT__memory_to_register_execute 
         = ((~ (IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)) 
            & (IData)(vlTOPp->mips_cpu__DOT__memory_to_register_decode));
@@ -571,57 +777,6 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__4(MIPS_Harvard_TB__Syms* __re
                                                   & (IData)(vlTOPp->mips_cpu__DOT__register_write_writeback))
                                                   ? 1U
                                                   : 0U));
-    vlTOPp->mips_cpu__DOT__control_unit__DOT__op = 
-        (0x3fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
-                  >> 0x1aU));
-    vlTOPp->mips_cpu__DOT__control_unit__DOT__funct 
-        = (0x3fU & vlTOPp->mips_cpu__DOT__instruction_decode);
-    if ((0U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
-        vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
-        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
-        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
-        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
-        vlTOPp->mips_cpu__DOT__register_destination_decode = 1U;
-        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
-        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode 
-            = ((((0x18U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)) 
-                 | (0x19U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct))) 
-                | (0x1aU == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct))) 
-               | (0x1bU == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)));
-        vlTOPp->mips_cpu__DOT__ALU_function_decode 
-            = vlTOPp->mips_cpu__DOT__control_unit__DOT__funct;
-    } else {
-        if ((9U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
-            vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
-            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
-            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
-            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
-            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
-            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
-            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
-            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x21U;
-        } else {
-            if ((0xfU == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
-                vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
-                vlTOPp->mips_cpu__DOT__memory_to_register_decode = 1U;
-                vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
-                vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
-                vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
-                vlTOPp->mips_cpu__DOT__branch_decode = 0U;
-                vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
-                vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x3fU;
-            } else {
-                vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
-                vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
-                vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
-                vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
-                vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
-                vlTOPp->mips_cpu__DOT__branch_decode = 0U;
-                vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
-                vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
-            }
-        }
-    }
     vlTOPp->mips_cpu__DOT__source_A_ALU_execute = (
                                                    (2U 
                                                     & (IData)(vlTOPp->mips_cpu__DOT__forward_A_execute))
@@ -647,36 +802,8 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__4(MIPS_Harvard_TB__Syms* __re
                                                    & (IData)(vlTOPp->mips_cpu__DOT__forward_B_execute))
                                                    ? vlTOPp->mips_cpu__DOT__result_writeback
                                                    : vlTOPp->mips_cpu__DOT__register_file_output_B_execute));
-    vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall 
-        = ((((0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
-                       >> 0x15U)) == (IData)(vlTOPp->mips_cpu__DOT__Rt_execute)) 
-            | ((0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
-                         >> 0x10U)) == (IData)(vlTOPp->mips_cpu__DOT__Rt_execute))) 
-           & (IData)(vlTOPp->mips_cpu__DOT__memory_to_register_execute));
-    vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall 
-        = ((((IData)(vlTOPp->mips_cpu__DOT__branch_decode) 
-             & (IData)(vlTOPp->mips_cpu__DOT__register_write_execute)) 
-            & (((IData)(vlTOPp->mips_cpu__DOT__write_register_execute) 
-                == (0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
-                             >> 0x15U))) | ((IData)(vlTOPp->mips_cpu__DOT__write_register_execute) 
-                                            == (0x1fU 
-                                                & (vlTOPp->mips_cpu__DOT__instruction_decode 
-                                                   >> 0x10U))))) 
-           | (((IData)(vlTOPp->mips_cpu__DOT__branch_decode) 
-               & (IData)(vlTOPp->mips_cpu__DOT__memory_to_register_memory)) 
-              & (((IData)(vlTOPp->mips_cpu__DOT__write_register_memory) 
-                  == (0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
-                               >> 0x15U))) | ((IData)(vlTOPp->mips_cpu__DOT__write_register_memory) 
-                                              == (0x1fU 
-                                                  & (vlTOPp->mips_cpu__DOT__instruction_decode 
-                                                     >> 0x10U))))));
-    vlTOPp->mips_cpu__DOT__stall_fetch = ((IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall) 
-                                          | (IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall));
-    vlTOPp->mips_cpu__DOT__stall_decode = ((IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall) 
-                                           | (IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall));
-    vlTOPp->mips_cpu__DOT__flush_execute_register = 
-        ((IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall) 
-         | (IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall));
+    vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_memory 
+        = vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_execute;
     vlTOPp->mips_cpu__DOT__source_B_ALU_execute = ((IData)(vlTOPp->mips_cpu__DOT__ALU_src_B_execute)
                                                     ? vlTOPp->mips_cpu__DOT__sign_imm_execute
                                                     : vlTOPp->mips_cpu__DOT__write_data_execute);
@@ -821,6 +948,289 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__4(MIPS_Harvard_TB__Syms* __re
                                                            (vlTOPp->mips_cpu__DOT__alu__DOT__ALU_HI_LO_output 
                                                             >> 0x20U));
     vlTOPp->mips_cpu__DOT__ALU_LO_output_execute = (IData)(vlTOPp->mips_cpu__DOT__alu__DOT__ALU_HI_LO_output);
+    vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_execute 
+        = ((~ (IData)(vlTOPp->mips_cpu__DOT__flush_execute_register)) 
+           & (IData)(vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode));
+    vlTOPp->mips_cpu__DOT__control_unit__DOT__op = 
+        (0x3fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
+                  >> 0x1aU));
+    vlTOPp->mips_cpu__DOT__control_unit__DOT__funct 
+        = (0x3fU & vlTOPp->mips_cpu__DOT__instruction_decode);
+    if ((0x20U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+        if ((0x10U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+        } else {
+            if ((8U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                if ((4U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                    vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                } else {
+                    if ((2U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                        if ((1U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x21U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        } else {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        }
+                    } else {
+                        vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                    }
+                }
+            } else {
+                if ((4U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                    vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                } else {
+                    if ((2U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                        if ((1U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x21U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        } else {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        }
+                    } else {
+                        vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                    }
+                }
+            }
+        }
+    } else {
+        if ((0x10U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+        } else {
+            if ((8U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                if ((4U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                    if ((2U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                        if ((1U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x3fU;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        } else {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        }
+                    } else {
+                        vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                    }
+                } else {
+                    if ((2U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                        vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                    } else {
+                        if ((1U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0x21U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        } else {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        }
+                    }
+                }
+            } else {
+                if ((4U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                    vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                    vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                } else {
+                    if ((2U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                        vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                        vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                    } else {
+                        if ((1U & (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode = 0U;
+                        } else {
+                            vlTOPp->mips_cpu__DOT__register_write_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__ALU_src_B_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__register_destination_decode = 1U;
+                            vlTOPp->mips_cpu__DOT__branch_decode = 0U;
+                            vlTOPp->mips_cpu__DOT__hi_lo_register_write_decode 
+                                = ((((0x18U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)) 
+                                     | (0x19U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct))) 
+                                    | (0x1aU == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct))) 
+                                   | (0x1bU == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)));
+                            vlTOPp->mips_cpu__DOT__ALU_function_decode 
+                                = vlTOPp->mips_cpu__DOT__control_unit__DOT__funct;
+                            vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_decode 
+                                = ((8U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)) 
+                                   | (9U == (IData)(vlTOPp->mips_cpu__DOT__control_unit__DOT__funct)));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall 
+        = ((((0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
+                       >> 0x15U)) == (IData)(vlTOPp->mips_cpu__DOT__Rt_execute)) 
+            | ((0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
+                         >> 0x10U)) == (IData)(vlTOPp->mips_cpu__DOT__Rt_execute))) 
+           & (IData)(vlTOPp->mips_cpu__DOT__memory_to_register_execute));
+    vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall 
+        = ((((IData)(vlTOPp->mips_cpu__DOT__branch_decode) 
+             & (IData)(vlTOPp->mips_cpu__DOT__register_write_execute)) 
+            & (((IData)(vlTOPp->mips_cpu__DOT__write_register_execute) 
+                == (0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
+                             >> 0x15U))) | ((IData)(vlTOPp->mips_cpu__DOT__write_register_execute) 
+                                            == (0x1fU 
+                                                & (vlTOPp->mips_cpu__DOT__instruction_decode 
+                                                   >> 0x10U))))) 
+           | (((IData)(vlTOPp->mips_cpu__DOT__branch_decode) 
+               & (IData)(vlTOPp->mips_cpu__DOT__memory_to_register_memory)) 
+              & (((IData)(vlTOPp->mips_cpu__DOT__write_register_memory) 
+                  == (0x1fU & (vlTOPp->mips_cpu__DOT__instruction_decode 
+                               >> 0x15U))) | ((IData)(vlTOPp->mips_cpu__DOT__write_register_memory) 
+                                              == (0x1fU 
+                                                  & (vlTOPp->mips_cpu__DOT__instruction_decode 
+                                                     >> 0x10U))))));
+    vlTOPp->mips_cpu__DOT__stall_fetch = ((IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall) 
+                                          | (IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall));
+    vlTOPp->mips_cpu__DOT__stall_decode = ((IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall) 
+                                           | (IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall));
+    vlTOPp->mips_cpu__DOT__flush_execute_register = 
+        (((IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__branchstall) 
+          | (IData)(vlTOPp->mips_cpu__DOT__hazard_unit__DOT__lwstall)) 
+         | (IData)(vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_writeback));
 }
 
 VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__5(MIPS_Harvard_TB__Syms* __restrict vlSymsp) {
@@ -888,11 +1298,14 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_multiclk__TOP__6(MIPS_Harvard_TB__Syms* __r
                    & (IData)(vlTOPp->mips_cpu__DOT__register_write_memory))
                    ? vlTOPp->mips_cpu__DOT__ALU_output_memory
                    : vlTOPp->mips_cpu__DOT__register_file_output_B_decode)));
-    vlTOPp->mips_cpu__DOT__program_counter_prime = 
-        ((IData)(vlTOPp->mips_cpu__DOT__program_counter_source_decode)
-          ? ((vlTOPp->mips_cpu__DOT__sign_imm_decode 
-              << 2U) + vlTOPp->mips_cpu__DOT__program_counter_plus_four_decode)
-          : ((IData)(4U) + vlTOPp->mips_cpu__DOT__program_counter_fetch));
+    vlTOPp->mips_cpu__DOT__flush_fetch_decode_register 
+        = ((IData)(vlTOPp->mips_cpu__DOT__program_counter_multiplexer_jump_writeback) 
+           | (IData)(vlTOPp->mips_cpu__DOT__program_counter_source_decode));
+    vlTOPp->mips_cpu__DOT__program_counter_mux_1_out 
+        = ((IData)(vlTOPp->mips_cpu__DOT__program_counter_source_decode)
+            ? ((vlTOPp->mips_cpu__DOT__sign_imm_decode 
+                << 2U) + vlTOPp->mips_cpu__DOT__program_counter_plus_four_decode)
+            : ((IData)(4U) + vlTOPp->mips_cpu__DOT__program_counter_fetch));
 }
 
 void MIPS_Harvard_TB::_eval(MIPS_Harvard_TB__Syms* __restrict vlSymsp) {
@@ -984,8 +1397,8 @@ void MIPS_Harvard_TB::_ctor_var_reset() {
     data_readdata = VL_RAND_RESET_I(32);
     mips_cpu__DOT__internal_clk = VL_RAND_RESET_I(1);
     mips_cpu__DOT__HI_LO_output = VL_RAND_RESET_I(1);
-    mips_cpu__DOT__program_counter_prime = VL_RAND_RESET_I(32);
     mips_cpu__DOT__program_counter_fetch = VL_RAND_RESET_I(32);
+    mips_cpu__DOT__program_counter_mux_1_out = VL_RAND_RESET_I(32);
     mips_cpu__DOT__program_counter_source_decode = VL_RAND_RESET_I(1);
     mips_cpu__DOT__register_write_decode = VL_RAND_RESET_I(1);
     mips_cpu__DOT__memory_to_register_decode = VL_RAND_RESET_I(1);
@@ -995,6 +1408,8 @@ void MIPS_Harvard_TB::_ctor_var_reset() {
     mips_cpu__DOT__branch_decode = VL_RAND_RESET_I(1);
     mips_cpu__DOT__hi_lo_register_write_decode = VL_RAND_RESET_I(1);
     mips_cpu__DOT__ALU_function_decode = VL_RAND_RESET_I(6);
+    mips_cpu__DOT__program_counter_multiplexer_jump_decode = VL_RAND_RESET_I(1);
+    mips_cpu__DOT__flush_decode_execute_register = VL_RAND_RESET_I(1);
     mips_cpu__DOT__instruction_decode = VL_RAND_RESET_I(32);
     mips_cpu__DOT__program_counter_plus_four_decode = VL_RAND_RESET_I(32);
     mips_cpu__DOT__register_file_output_A_decode = VL_RAND_RESET_I(32);
@@ -1008,6 +1423,7 @@ void MIPS_Harvard_TB::_ctor_var_reset() {
     mips_cpu__DOT__ALU_function_execute = VL_RAND_RESET_I(6);
     mips_cpu__DOT__hi_lo_register_write_execute = VL_RAND_RESET_I(1);
     mips_cpu__DOT__register_write_execute = VL_RAND_RESET_I(1);
+    mips_cpu__DOT__program_counter_multiplexer_jump_execute = VL_RAND_RESET_I(1);
     mips_cpu__DOT__register_file_output_A_execute = VL_RAND_RESET_I(32);
     mips_cpu__DOT__register_file_output_B_execute = VL_RAND_RESET_I(32);
     mips_cpu__DOT__source_A_ALU_execute = VL_RAND_RESET_I(32);
@@ -1025,6 +1441,7 @@ void MIPS_Harvard_TB::_ctor_var_reset() {
     mips_cpu__DOT__memory_to_register_memory = VL_RAND_RESET_I(1);
     mips_cpu__DOT__memory_write_memory = VL_RAND_RESET_I(1);
     mips_cpu__DOT__hi_lo_register_write_memory = VL_RAND_RESET_I(1);
+    mips_cpu__DOT__program_counter_multiplexer_jump_memory = VL_RAND_RESET_I(1);
     mips_cpu__DOT__ALU_output_memory = VL_RAND_RESET_I(32);
     mips_cpu__DOT__ALU_HI_output_memory = VL_RAND_RESET_I(32);
     mips_cpu__DOT__ALU_LO_output_memory = VL_RAND_RESET_I(32);
@@ -1032,6 +1449,7 @@ void MIPS_Harvard_TB::_ctor_var_reset() {
     mips_cpu__DOT__register_write_writeback = VL_RAND_RESET_I(1);
     mips_cpu__DOT__hi_lo_register_write_writeback = VL_RAND_RESET_I(1);
     mips_cpu__DOT__memory_to_register_writeback = VL_RAND_RESET_I(1);
+    mips_cpu__DOT__program_counter_multiplexer_jump_writeback = VL_RAND_RESET_I(1);
     mips_cpu__DOT__write_register_writeback = VL_RAND_RESET_I(5);
     mips_cpu__DOT__result_writeback = VL_RAND_RESET_I(32);
     mips_cpu__DOT__ALU_HI_output_writeback = VL_RAND_RESET_I(32);
@@ -1043,6 +1461,7 @@ void MIPS_Harvard_TB::_ctor_var_reset() {
     mips_cpu__DOT__flush_execute_register = VL_RAND_RESET_I(1);
     mips_cpu__DOT__forward_A_execute = VL_RAND_RESET_I(2);
     mips_cpu__DOT__forward_B_execute = VL_RAND_RESET_I(2);
+    mips_cpu__DOT__flush_fetch_decode_register = VL_RAND_RESET_I(1);
     { int __Vi0=0; for (; __Vi0<32; ++__Vi0) {
             mips_cpu__DOT__register_file__DOT__registers[__Vi0] = VL_RAND_RESET_I(32);
     }}

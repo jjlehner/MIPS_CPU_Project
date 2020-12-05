@@ -20,6 +20,7 @@ digraph v3graph {
 	n14	[fontsize=8 label="Execute_Memory_Register", color=black];
 	n15	[fontsize=8 label="Memory_Writeback_Register", color=black];
 	n16	[fontsize=8 label="Hazard_Unit", color=black];
+	n17	[fontsize=8 label="Or_Gate", color=black];
 	n0 -> n1 [fontsize=8 label="" weight=1 color=red];
 	n0 -> n2 [fontsize=8 label="" weight=1 color=red];
 	n0 -> n3 [fontsize=8 label="" weight=1 color=red];
@@ -36,4 +37,5 @@ digraph v3graph {
 	n0 -> n14 [fontsize=8 label="" weight=1 color=red];
 	n0 -> n15 [fontsize=8 label="" weight=1 color=red];
 	n0 -> n16 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n17 [fontsize=8 label="" weight=1 color=red];
 }

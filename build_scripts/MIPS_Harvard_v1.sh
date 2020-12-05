@@ -17,6 +17,7 @@ lower_level=(
     "../../src/Program_Counter.v"
     "../../src/Register_File.v"
     "../../src/Sign_Extension.v"
+    "../../src/Or_Gate.v"
     "../../src/pipeline_registers/Decode_Execute_Register.v"
     "../../src/pipeline_registers/Execute_Memory_Register.v"
     "../../src/pipeline_registers/Fetch_Decode_Register.v"

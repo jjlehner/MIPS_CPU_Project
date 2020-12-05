@@ -15,6 +15,7 @@ module Decode_Execute_Register
 	input 	logic [4:0]		Rt_decode,
 	input	logic [4:0]		Rd_decode,
 	input	logic [31:0]	sign_imm_decode,		
+	input	logic			program_counter_multiplexer_jump_decode,
 
 	output	logic 			register_write_execute,
 	output 	logic			memory_to_register_execute,
@@ -26,7 +27,8 @@ module Decode_Execute_Register
 	output 	logic [4:0]		Rs_execute,
 	output	logic [4:0]		Rt_execute,
 	output	logic [4:0]		Rd_execute,
-	output	logic [31:0]	sign_imm_execute,	
+	output	logic [31:0]	sign_imm_execute,
+	output	logic 			program_counter_multiplexer_jump_execute,
 
 	//datapath
 	input	logic [31:0]	read_data_one_decode,
@@ -50,6 +52,7 @@ module Decode_Execute_Register
 			Rd_execute <= {5{1'b0}};
 			Rs_execute <= {5{1'b0}};
 			sign_imm_execute <= {32{1'b0}};
+			program_counter_multiplexer_jump_execute <= 0;
 
 			read_data_one_execute <= {32{1'b0}};
 			read_data_two_execute <= {32{1'b0}};
@@ -65,7 +68,8 @@ module Decode_Execute_Register
 			Rt_execute <= Rt_decode;
 			Rd_execute <= Rd_decode;
 			sign_imm_execute <= sign_imm_decode;
-
+			program_counter_multiplexer_jump_execute <= program_counter_multiplexer_jump_decode;
+			
 			read_data_one_execute <= read_data_one_decode;
 			read_data_two_execute <= read_data_two_decode;
 		end

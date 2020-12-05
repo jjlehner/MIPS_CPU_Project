@@ -4,17 +4,8 @@
 #include <iostream>
 
 uint32_t getRamValue(uint32_t addr){
-	addr /= 4;
-	if((addr % 2) == 0 && addr != 0){
-
-		return uint32_t(0b00100110010100000000000000000101);
-	}
-	if((addr % 2) == 1 && addr != 1){
-
-		return uint32_t(0b00000010001100001000100000100000);
-	}
-
-	return uint32_t(0);
+	
+	return uint32_t(0x00000008);
 }
 int main( int argc, char **argv, char **env )
 {
