@@ -1,7 +1,7 @@
 #lw 
 #0
-#lw_1
-#testing dependencies: lui, addiu, subu, sw
+#1
+#additional comment : none
 
 lui $4, 0x3600
 

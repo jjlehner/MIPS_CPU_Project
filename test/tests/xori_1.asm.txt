@@ -1,0 +1,8 @@
+#xori
+#92
+#1
+#none
+
+addi $1, $0, 3
+xori $1, $1, 0x5F
+jr $0

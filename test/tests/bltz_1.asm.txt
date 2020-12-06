@@ -1,7 +1,7 @@
 #bltz
 #15
-#bltz_1
-#testing dependencies: lui, addiu, jr
+#1
+#additional comment : none
 
 main:
 	lui $3, 0xFFFF

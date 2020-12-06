@@ -1,7 +1,7 @@
 #jr
 #245
-#jr_1
-#test dependencies: lui
+#1
+#additional comment : none
 
 lui $4, 0x2000
 jr $4
