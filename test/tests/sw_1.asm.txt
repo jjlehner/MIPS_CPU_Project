@@ -1,7 +1,7 @@
 #sw
 #5
-#sw_1
-#testing dependencies: addiu, lw, jr
+#1
+#additional comment : none
 
 addiu $3, $0, 5 
 addiu $4, $0, 32

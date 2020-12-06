@@ -1,7 +1,7 @@
 #beq
 #65552
-#beq_1
-#testing dependencies: lui, addiu, jr
+#1
+#additional comments: none
 
 main:
 	lui $3, 0x0001

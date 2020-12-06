@@ -1,7 +1,7 @@
 #bgez
 #16
-#bgez_2
-#testing dependencies: lui, addiu, jr
+#2
+#additional comments: none
 
 main:
 	lui $3, 0x0000

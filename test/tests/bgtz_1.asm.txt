@@ -1,7 +1,7 @@
 #bgtz
 #65552
-#bgtz_1
-#testing dependencies: lui, addiu, jr
+#1
+#additional comment : none
 
 main:
 	lui $3, 0x0001
