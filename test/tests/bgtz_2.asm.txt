@@ -1,14 +1,15 @@
 #bgtz
-#4112
+#256
 #2
-#additional comment : none
+#none
 
-main:
 	lui $3, 0x0000
 
 	bgtz $3, Target
 
-	addiu $3, $3, 0x1000
+	addiu $2, $3, 0x0100
+
+	jr $0
 
 Target: addiu $2, $3, 0x0010
 
