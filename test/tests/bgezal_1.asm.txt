@@ -1,16 +1,18 @@
 #bgezal
-#65552
+#69648
 #1
-#additional comments: testing the bgez part first
+#additional comments: testing the bgez and link 
 
 main:
 	lui $3, 0x0001
 
 	bgezal $3, Target
 
-	addiu $3, $3, 0x1000
+	addiu $2, $3, 0x1000
+	
+	jr $0
 
-Target: addiu $2, $3, 0x0010
+Target: addiu $3, $3, 0x0010
 
-jr $0
+jr $ra
 
