@@ -1,0 +1,18 @@
+#bgezal
+#4111
+#3
+#additional comment : testing bgezal part first
+
+main:
+	lui $3, 0xFFFF
+	addiu $3, $3, 0xFFFF 
+	#is 0xFFFF represented as -1 im not sure
+
+	bgezal $3, Target
+
+	addiu $3, $3, 0x1000
+
+Target: addiu $2, $3, 0x0010
+
+jr $0
+

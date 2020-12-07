@@ -1,0 +1,16 @@
+#bgezal
+#65552
+#1
+#additional comments: testing the bgez part first
+
+main:
+	lui $3, 0x0001
+
+	bgezal $3, Target
+
+	addiu $3, $3, 0x1000
+
+Target: addiu $2, $3, 0x0010
+
+jr $0
+
