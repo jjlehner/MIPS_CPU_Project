@@ -9,7 +9,7 @@ lower_level=(
     "../../src/ALU.v"
     "../../src/And_Gate.v"
     "../../src/Control_Unit.v"
-    "../../src/Equal_Comparator.v"
+    "../../src/Comparator.v"
     "../../src/Hazard_Unit.v"
     "../../src/Left_Shift.v"
     "../../src/MUX_2INPUT.v"

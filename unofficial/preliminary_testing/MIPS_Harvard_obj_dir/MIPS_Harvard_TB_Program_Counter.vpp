@@ -4,18 +4,24 @@ module Program_Counter(
 	input	logic clk,
 	input 	logic [31:0] address_input,
 	input	logic enable,  
+	input	logic reset,
+	output	logic halt,
 	output	logic [31:0] address_output
 
-`line 7 "../../src/Program_Counter.v" 0
-);
-
 `line 9 "../../src/Program_Counter.v" 0
-	always_ff @(posedge clk) begin
-		if (!enable) begin
+);
+	always_comb begin
+		halt = (address_output == 0);
+	end
+	always_ff @(posedge clk, posedge reset) begin
+		if(reset) begin
+			address_output <= 32'hBFC00000;
+		end
+		if (!enable && !reset) begin
 			address_output <= address_input;
 		end
 	end
 
-`line 15 "../../src/Program_Counter.v" 0
+`line 22 "../../src/Program_Counter.v" 0
 endmodule
-`line 16 "../../src/Program_Counter.v" 2
+`line 23 "../../src/Program_Counter.v" 2

@@ -10,7 +10,7 @@ digraph v3graph {
 	n4	[fontsize=8 label="MUX_2INPUT", color=black];
 	n5	[fontsize=8 label="Fetch_Decode_Register", color=black];
 	n6	[fontsize=8 label="Control_Unit", color=black];
-	n7	[fontsize=8 label="Equal_Comparator", color=black];
+	n7	[fontsize=8 label="Comparator", color=black];
 	n8	[fontsize=8 label="And_Gate", color=black];
 	n9	[fontsize=8 label="Sign_Extension", color=black];
 	n10	[fontsize=8 label="Left_Shift", color=black];

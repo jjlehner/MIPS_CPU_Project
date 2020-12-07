@@ -1,6 +1,7 @@
 module Execute_Memory_Register
 (
 	input	logic 	clk,
+	input	logic	reset,
 
 	//control logic forwarding
 	input	logic 			register_write_execute,
@@ -30,18 +31,33 @@ module Execute_Memory_Register
 
 );
 
-	always_ff @(posedge clk) begin
-		register_write_memory <= register_write_execute;
-		memory_to_register_memory <= memory_to_register_execute;
-		memory_write_memory <= memory_write_execute;
-		hi_lo_register_write_memory <= hi_lo_register_write_execute;
-		program_counter_multiplexer_jump_memory <= program_counter_multiplexer_jump_execute;
+	always_ff @(posedge clk, posedge reset) begin
+		if(reset) begin
+			register_write_memory <= 0;
+			memory_to_register_memory <= 0;
+			memory_write_memory <= 0;
+			hi_lo_register_write_memory <= 0;
+			program_counter_multiplexer_jump_memory <= 0;
+			ALU_output_memory <= 0;
+			ALU_HI_output_memory <= 0;
+			ALU_LO_output_memory <= 0;
+			write_data_memory <= 0;
+			write_register_memory <= 0;
+		end
+		else begin
+			register_write_memory <= register_write_execute;
+			memory_to_register_memory <= memory_to_register_execute;
+			memory_write_memory <= memory_write_execute;
+			hi_lo_register_write_memory <= hi_lo_register_write_execute;
+			program_counter_multiplexer_jump_memory <= program_counter_multiplexer_jump_execute;
 
-		ALU_output_memory <=ALU_output_execute;
-		ALU_HI_output_memory <=ALU_HI_output_execute;
-		ALU_LO_output_memory <=ALU_LO_output_execute;
-		write_data_memory <=write_data_execute;
-		write_register_memory <=write_register_execute;
+			ALU_output_memory <=ALU_output_execute;
+			ALU_HI_output_memory <=ALU_HI_output_execute;
+			ALU_LO_output_memory <=ALU_LO_output_execute;
+			write_data_memory <=write_data_execute;
+			write_register_memory <=write_register_execute;
+		end
+
 	end
 
 endmodule

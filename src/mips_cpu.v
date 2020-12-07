@@ -35,6 +35,7 @@ module mips_cpu (
 	logic [31:0] program_counter_plus_four_fetch;
 	logic [31:0] instruction_fetch;
 	logic [31:0] program_counter_mux_1_out;
+	logic 		 halt;
 
 	//decode Controls
 	logic       program_counter_source_decode;
@@ -76,6 +77,7 @@ module mips_cpu (
 	logic [31:0]    register_file_output_A_resolved_decode;
 	logic [31:0]    register_file_output_B_resolved_decode;
 	logic [31:0]    sign_imm_decode;
+
 
 	//Execute Controls
 	logic           register_destination_execute;
@@ -146,7 +148,7 @@ module mips_cpu (
 	assign data_address = ALU_output_memory;
 	assign data_writedata = write_data_memory;
 	assign data_write = memory_write_memory;
-	assign data_read = 1;
+	assign data_read = memory_to_register_memory;
 
 	//Instruction memory
 	assign instr_address = program_counter_fetch;
@@ -164,14 +166,18 @@ module mips_cpu (
 		.HI_write_data(ALU_HI_output_writeback), 
 		.LO_write_data(ALU_LO_output_writeback), 
 		.read_data_1(register_file_output_A_decode),
-		.read_data_2(register_file_output_B_decode)
+		.read_data_2(register_file_output_B_decode),
+		.read_register_2(register_v0)
+
 	);
 
 	Program_Counter pc (
 		.clk(internal_clk),
 		.address_input(program_counter_prime),
+		.reset(reset),
 		.enable(stall_fetch),
-		.address_output(program_counter_fetch)
+		.address_output(program_counter_fetch),
+		.halt(halt)
 	);
 
 	Adder plus_four_adder(
@@ -196,6 +202,7 @@ module mips_cpu (
 
 	Fetch_Decode_Register fetch_decode_register(
 		.clk(internal_clk),
+		.reset(reset),
 		.enable(stall_decode),
 		.clear(flush_fetch_decode_register),
 		.instruction_fetch(instruction_fetch),
@@ -266,6 +273,7 @@ module mips_cpu (
 	Decode_Execute_Register decode_execute_register(
 		.clk(internal_clk),
 		.clear(flush_execute_register),
+		.reset(reset),
 		.register_write_decode(register_write_decode),
 		.memory_to_register_decode(memory_to_register_decode),
 		.memory_write_decode(memory_write_decode),
@@ -345,6 +353,7 @@ module mips_cpu (
 
 	Execute_Memory_Register execute_memory_register(
 		.clk(internal_clk),
+		.reset(reset),
 		.register_write_execute(register_write_execute),
 		.memory_to_register_execute(memory_to_register_execute),
 		.memory_write_execute(memory_write_execute),
@@ -374,6 +383,7 @@ module mips_cpu (
 
 	Memory_Writeback_Register memory_writeback_register(
 		.clk(internal_clk),
+		.reset(reset),
 		.register_write_memory(register_write_memory),
 		.memory_to_register_memory(memory_to_register_memory),
 		.hi_lo_register_write_memory(hi_lo_register_write_memory),
@@ -433,8 +443,7 @@ module mips_cpu (
 		.output_C(flush_fetch_decode_register)
 	);
 	assign internal_clk = clk && clk_enable;
-
-
+	assign active = !halt;
 
 
 

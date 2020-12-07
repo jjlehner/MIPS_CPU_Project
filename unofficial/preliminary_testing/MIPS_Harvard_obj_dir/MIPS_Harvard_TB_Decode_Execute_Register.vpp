@@ -4,8 +4,7 @@ module Decode_Execute_Register
 (
 	input	logic 	clk,
 	input 	logic	clear,
-
-`line 6 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
+	input	logic	reset,
 	 
 	input	logic 			register_write_decode,
 	input 	logic			memory_to_register_decode,
@@ -47,8 +46,8 @@ module Decode_Execute_Register
 );
 
 `line 42 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
-	always_ff @(posedge clk) begin
-		if(clear) begin
+	always_ff @(posedge clk, posedge reset) begin
+		if(clear || reset) begin
 			register_write_execute <= 0;
 			memory_to_register_execute <= 0;
 			memory_write_execute <= 0;

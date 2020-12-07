@@ -6,7 +6,8 @@ module Register_File(
 	input 	logic			write_enable,	hi_lo_register_write_enable,
 	input	logic [4:0]		read_address_1, read_address_2, write_address,
 	input	logic [31:0]	write_data,		HI_write_data,	LO_write_data,
-	output	logic [31:0]	read_data_1,	read_data_2
+	output	logic [31:0]	read_data_1,	read_data_2,
+	output	logic [31:0]	read_register_2
 );
 	
 	logic [31:0] registers[31:0];
@@ -20,7 +21,7 @@ module Register_File(
 	assign read_data_2_pre_mux = (read_address_2 != 0) ? registers[read_address_2] : 0;
 	assign read_data_1 = HI_LO_output ? LO_reg : read_data_1_pre_mux;
 	assign read_data_2 = HI_LO_output ? HI_reg : read_data_2_pre_mux;
-
+	assign read_register_2 = registers[2];
 	//If the register file is pipelined, the register file should be updated on
 	//the negative clock edge rather than the positive clock edge. A bitwise xor
 	//acts like a controllable not gate, allowing the module to be set whether

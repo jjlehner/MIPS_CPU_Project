@@ -2,7 +2,7 @@ module Decode_Execute_Register
 (
 	input	logic 	clk,
 	input 	logic	clear,
-
+	input	logic	reset,
 	//control logic forwarding
 	input	logic 			register_write_decode,
 	input 	logic			memory_to_register_decode,
@@ -39,8 +39,8 @@ module Decode_Execute_Register
 
 );
 
-	always_ff @(posedge clk) begin
-		if(clear) begin
+	always_ff @(posedge clk, posedge reset) begin
+		if(clear || reset) begin
 			register_write_execute <= 0;
 			memory_to_register_execute <= 0;
 			memory_write_execute <= 0;

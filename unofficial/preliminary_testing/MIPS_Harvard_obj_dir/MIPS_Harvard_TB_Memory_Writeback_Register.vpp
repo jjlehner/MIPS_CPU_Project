@@ -3,8 +3,7 @@
 module Memory_Writeback_Register
 (
 	input	logic 	clk,
-
-`line 5 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
+	input	logic	reset,
 	 
 	input	logic 			register_write_memory,
 	input 	logic			memory_to_register_memory,
@@ -34,20 +33,37 @@ module Memory_Writeback_Register
 );
 
 `line 30 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
-	always_ff @(posedge clk) begin
-		register_write_writeback <= register_write_memory;
-		memory_to_register_writeback <=memory_to_register_memory;
-		hi_lo_register_write_writeback <= hi_lo_register_write_memory;
-		program_counter_multiplexer_jump_writeback <= program_counter_multiplexer_jump_memory;
+	always_ff @(posedge clk, posedge reset) begin
+		if(reset) begin
+			register_write_writeback <= register_write_memory;
+			memory_to_register_writeback <=memory_to_register_memory;
+			hi_lo_register_write_writeback <= hi_lo_register_write_memory;
+			program_counter_multiplexer_jump_writeback <= program_counter_multiplexer_jump_memory;
 
-`line 36 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
-		ALU_output_writeback <= ALU_output_memory;
-		write_register_writeback <= write_register_memory;
-		ALU_HI_output_writeback <= ALU_HI_output_memory;
-		ALU_LO_output_writeback <= ALU_LO_output_memory;
-		read_data_writeback <= read_data_memory;
+`line 37 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
+			ALU_output_writeback <= ALU_output_memory;
+			write_register_writeback <= write_register_memory;
+			ALU_HI_output_writeback <= ALU_HI_output_memory;
+			ALU_LO_output_writeback <= ALU_LO_output_memory;
+			read_data_writeback <= read_data_memory;
+		end
+		else begin
+			register_write_writeback <= register_write_memory;
+			memory_to_register_writeback <=memory_to_register_memory;
+			hi_lo_register_write_writeback <= hi_lo_register_write_memory;
+			program_counter_multiplexer_jump_writeback <= program_counter_multiplexer_jump_memory;
+
+`line 49 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
+			ALU_output_writeback <= ALU_output_memory;
+			write_register_writeback <= write_register_memory;
+			ALU_HI_output_writeback <= ALU_HI_output_memory;
+			ALU_LO_output_writeback <= ALU_LO_output_memory;
+			read_data_writeback <= read_data_memory;
+		end
+
+`line 56 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
 	end
 
-`line 43 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
+`line 58 "../../src/pipeline_registers/Memory_Writeback_Register.v" 0
 endmodule
-`line 44 "../../src/pipeline_registers/Memory_Writeback_Register.v" 2
+`line 59 "../../src/pipeline_registers/Memory_Writeback_Register.v" 2
