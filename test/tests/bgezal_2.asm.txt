@@ -1,9 +1,9 @@
 #bgezal
 #4112
 #2
-#additional comments: testing bgez and link together
+#testing bgez and link together
 
-main:
+
 	lui $3, 0x0000
 
 	bgezal $3, Target
@@ -14,5 +14,5 @@ main:
 
 Target: addiu $3, $3, 0x0010
 
-jr $ra
+jr $31
 

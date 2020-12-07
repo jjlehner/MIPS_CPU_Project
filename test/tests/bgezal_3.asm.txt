@@ -1,7 +1,7 @@
 #bgezal
 #4111
 #3
-#additional comment : testing bgezal part only, check no branching when $3<0
+#testing bgezal part only, check no branching when $3<0
 
 main:
 	lui $3, 0xFFFF
