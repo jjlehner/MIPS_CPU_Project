@@ -1,12 +1,11 @@
 #bgez
 #4111
 #3
-#additional comment : none
+#0xFFFF as -1, signed
 
-main:
 	lui $3, 0xFFFF
 	addiu $3, $3, 0xFFFF 
-	#is 0xFFFF represented as -1 im not sure
+	
 
 	bgez $3, Target
 

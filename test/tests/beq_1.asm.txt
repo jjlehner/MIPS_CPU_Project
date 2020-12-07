@@ -1,9 +1,8 @@
 #beq
 #65552
 #1
-#additional comments: none
+#none
 
-main:
 	lui $3, 0x0001
 	lui $4, 0x0001
 

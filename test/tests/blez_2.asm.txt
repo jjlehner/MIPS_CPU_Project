@@ -1,9 +1,8 @@
 #blez
 #16
 #2
-#additional comment : none
+#none
 
-main:
 	lui $3, 0x0000
 
 	blez $3, Target

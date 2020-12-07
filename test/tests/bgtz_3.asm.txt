@@ -1,12 +1,10 @@
 #bgtz
 #4111
 #3
-#additional comment : none
+#0xFFFF rerpesented as -1, signed
 
-main:
 	lui $3, 0xFFFF
 	addiu $3, $3, 0xFFFF 
-	#0xFFFF represented as -1 signed
 
 	bgtz $3, Target
 

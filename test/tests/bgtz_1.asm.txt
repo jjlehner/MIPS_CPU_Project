@@ -1,9 +1,8 @@
 #bgtz
 #65552
 #1
-#additional comment : none
+#none
 
-main:
 	lui $3, 0x0001
 
 	bgtz $3, Target

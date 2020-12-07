@@ -1,9 +1,8 @@
 #bltz
 #69648
 #3
-#additional comment : none
+#none
 
-main:
 	lui $3, 0x0001
 
 	bltz $3, Target

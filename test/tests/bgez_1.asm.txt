@@ -1,8 +1,8 @@
 #bgez
 #65552
 #1
-#additional comments: none
-main:
+#none
+
 	lui $3, 0x0001
 
 	bgez $3, Target
