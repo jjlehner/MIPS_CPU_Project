@@ -24,28 +24,82 @@ module Control_Unit(
 		funct = instruction[5:0];
 		case(op)
 			6'b000000:	begin		//R-type instruction
-					register_write			= 1;
-					memory_to_register		= 0;
-					memory_write			= 0;
-					ALU_src_B				= 0;
-					register_destination 	= 1;
-					branch					= 0;
-					hi_lo_register_write	= ( funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 ); //checks if instruction is mult/multu/div/divu
-					ALU_function			= funct;
-					program_counter_multiplexer_jump = ( funct ==  6'b001000 || funct == 6'b001001 ); //checks if instruction is jr or jalr
+				register_write			= 1;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 0;
+				register_destination 	= 1;
+				branch					= 0;
+				hi_lo_register_write	= ( funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 ); //checks if instruction is mult/multu/div/divu
+				ALU_function			= funct;
+				program_counter_multiplexer_jump = ( funct ==  6'b001000 || funct == 6'b001001 ); //checks if instruction is jr or jalr
+			end
+			
+			6'b000001:	begin		//BLTZ,BLTZAL, BGEZ,BGEZAL instruction
+				register_write			= 0;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 0;
+				register_destination 	= 0;
+				branch					= 1;
+				hi_lo_register_write	= 0;
+				ALU_function			= 6'b111111;
+				program_counter_multiplexer_jump = 0;
 			end
 			/*
-			6'b000001:	begin		//BLTZ instruction or BGEZ instruction
-				
-			end
 			6'b000010: 	begin		//J instruction
 				
 			end
 			6'b000011: 	controls <= {12{1'bx}};	//JAL instruction
-			6'b000100: 	controls <= {12{1'bx}};	//BEQ instruction
-			6'b000101: 	controls <= {12{1'bx}};	//BNE instruction
-			6'b000110: 	controls <= {12{1'bx}};	//BLEZ instruction
-			6'b000111: 	controls <= {12{1'bx}};	//BGTZ instruction
+			*/
+			6'b000100: 	begin 		//BEQ instruction
+				register_write			= 0;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 0;
+				register_destination 	= 0;
+				branch					= 1;
+				hi_lo_register_write	= 0;
+				ALU_function			= 6'b111111;
+				program_counter_multiplexer_jump = 0;
+			end
+			
+			6'b000101: 	begin		//BNE
+				register_write			= 0;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 0;
+				register_destination 	= 0;
+				branch					= 1;
+				hi_lo_register_write	= 0;
+				ALU_function			= 6'b111111;
+				program_counter_multiplexer_jump = 0;
+			end
+			
+			
+			6'b000110:	begin					//BLEZ instruction
+				register_write			= 0;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 0;
+				register_destination 	= 0;
+				branch					= 1;
+				hi_lo_register_write	= 0;
+				ALU_function			= 6'b111111;
+				program_counter_multiplexer_jump = 0;
+			end	
+			6'b000111:	begin					//BGTZ 
+				register_write			= 0;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 0;
+				register_destination 	= 0;
+				branch					= 1;
+				hi_lo_register_write	= 0;
+				ALU_function			= 6'b111111;
+				program_counter_multiplexer_jump = 0;
+			end
+			/*
 			6'b001000: 	controls <= {12{1'bx}};	//ADDI
 			*/
 			6'b001001: begin					//ADDIU

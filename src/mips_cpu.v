@@ -57,6 +57,8 @@ module mips_cpu (
 	logic [31:0]    instruction_decode;
 	logic [31:0]    program_counter_plus_four_decode;
 	
+	logic [5:0]		op;
+		assign op = instruction_decode[31:26];
 	logic [4:0]     read_address_1, Rs_decode;
 		assign read_address_1 = instruction_decode[25:21];
 		assign Rs_decode = instruction_decode[25:21];
@@ -231,7 +233,9 @@ module mips_cpu (
 		.resolved(register_file_output_B_resolved_decode)
 	);
 
-	Equal_Comparator reg_output_comparator(
+	Comparator reg_output_comparator(
+		.op(op),
+		.rt(Rt_decode),
 		.a(register_file_output_A_resolved_decode),
 		.b(register_file_output_B_resolved_decode),
 		.c(equal_decode)
