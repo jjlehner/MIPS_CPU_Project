@@ -7,7 +7,9 @@
 
 	bgtz $3, Target
 
-	addiu $3, $3, 0x1000
+	addiu $2, $3, 0x1000
+
+	jr $0
 
 Target: addiu $2, $3, 0x0010
 

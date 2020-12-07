@@ -1,5 +1,5 @@
 #bne
-#69648
+#69632
 #2
 #none
 
@@ -8,7 +8,9 @@
 
 	bne $3, $4, Target
 
-	addiu $3, $3, 0x1000
+	addiu $2, $3, 0x1000
+
+	jr $0
 
 Target: addiu $2, $3, 0x0010
 

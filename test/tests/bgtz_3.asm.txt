@@ -1,14 +1,16 @@
 #bgtz
-#4111
+#255
 #3
-#0xFFFF rerpesented as -1, signed
+#0xFFFFFFFF rerpesented as -1, signed
 
 	lui $3, 0xFFFF
 	addiu $3, $3, 0xFFFF 
 
 	bgtz $3, Target
 
-	addiu $3, $3, 0x1000
+	addiu $2, $3, 0x0100
+	
+	jr $0
 
 Target: addiu $2, $3, 0x0010
 
