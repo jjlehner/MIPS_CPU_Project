@@ -1,5 +1,5 @@
 module RAM_32x2048_delay0(
-	input logic clk
+	input logic clk,
 	input logic[31:0] address,
 	input logic write,
 	input logic read,
