@@ -36,7 +36,7 @@ then
 		comment = "${line:1:${#line}-1}"
 
 		### assemble input file
-		bin/assembler <test/tests/${TESTCASE}.asm.txt > test/hex0/${TESTCASE}.hex.txt
+		test/assembler/bin/parser test/tests/${TESTCASE}.asm.txt test/hex0/${TESTCASE}.hex.txt
 
 		###compile testbench
 		iverilog -g 2012 \
@@ -95,7 +95,7 @@ else
 		if [[ "${testType}" -eq "${INSTRUCTION}"]]; then
 	
 			### assemble input file
-			bin/assembler <test/tests/${TESTCASE}.asm.txt > test/hex0/${TESTCASE}.hex.txt
+			test/assembler/bin/parser test/tests/${TESTCASE}.asm.txt test/hex0/${TESTCASE}.hex.txt
 
 			###compile testbench
 			iverilog -g 2012 \
