@@ -3,6 +3,6 @@
 #1
 #none
 
-addi $1, $0, 3
-xori $1, $1, 0x5F
+addi $2, $0, 3
+xori $2, $2, 0x5F
 jr $0
