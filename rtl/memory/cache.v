@@ -1,4 +1,8 @@
-`include "src/memory/util.v"
+//`include "rtl/memory/util.vh"
+//`include "rtl/memory/cpu_interface.v"
+
+`include "util.vh"
+`include "cpu_interface.v"
 /*
   I've done [weird amount] of cache presently however this is easy to change.
   I need to look more into what an optimal amount is.
@@ -22,7 +26,7 @@ module cache (
     input logic waitrequest,
     output logic[31:0] writedata,
     // As I've not got this from the CPU I'm assuming it's always all bytes?
-    output logic[3:0] byteenable = 4'b1111,
+    output logic[3:0] byteenable,
     input logic[31:0] readdata
   );
 
@@ -67,14 +71,14 @@ module cache (
   // Z (high impedance) is synthesisable but I don't think it's best practise?
 
   always @(posedge read) `do (
-    waitrequest <= 1;
+    cpu_wait <= 1;
     cpu_readdata <= cache[cache_address][0][49:32] == tag?
       cache[cache_address][0][31:0] : cache[cache_address][1][49:32] == tag?
       cache[cache_address][1][31:0] : cache[cache_address][2][49:32] == tag?
       cache[cache_address][2][31:0] : cache[cache_address][3][49:32] == tag?
       cache[cache_address][0][31:0] : 50'hz;
     miss <= cpu_readdata == 50'hz;
-    waitrequest <= miss;
+    cpu_wait <= miss;
   )
   
   always @(posedge miss) `do (
@@ -91,4 +95,17 @@ module cache (
     cache[cache_address][1] <= cache[cache_address][0];
     cache[cache_address][0] <= {tag, readdata};
   )
+
+  cpu_interface cpu (
+    .clk(clk),
+    .reset(reset),
+    .active(active),
+    .register_v0(register_v0),
+    .address(address),
+    .write(cpu_write),
+    .read(cpu_read),
+    .waitrequest(cpu_wait),
+    .writedata(writedata),
+    .readdata(cpu_readdata)
+  );
 endmodule
