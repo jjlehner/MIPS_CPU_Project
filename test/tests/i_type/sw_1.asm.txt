@@ -1,0 +1,15 @@
+#sw
+#5
+#1
+#additional comment : none
+
+addiu $3, $0, 5 
+addiu $4, $0, 32
+sw $3, 1($4)
+
+addiu $4, $4, 1
+
+lw $2, 0($4)
+
+jr $0
+nop
