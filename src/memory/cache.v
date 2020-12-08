@@ -42,8 +42,12 @@ module cache (
   assign offset = address[1:0];
   assign cache_address = address[13:2]; // address % 12 ignoring offset
   assign tag = address[31:14];
-
-  // Do I need to be more explicit with time here? (ie are we assuming cache is instant?)
+  
+  // Assign byteenable relative to offset
+  assign byteenable[0] = offset == 0;
+  assign byteenable[1] = offset[1] == 0;
+  assign byteenable[2] = offset != 3;
+  assign byteenable[3] = 1;
 
   always @(posedge cpu_write) `do (
     cpu_wait <= 1;
