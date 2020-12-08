@@ -14,8 +14,9 @@ module Hazard_Unit(
 	input	logic		register_write_memory,
 	input	logic [4:0]	write_register_writeback,
 	input	logic		register_write_writeback,
+	input	logic		program_counter_multiplexer_jump_writeback,
 
-`line 16 "../../src/Hazard_Unit.v" 0
+`line 17 "../../src/Hazard_Unit.v" 0
 	output	logic 		stall_fetch,
 	output	logic 		stall_decode,
 	output	logic 		forward_register_file_output_1_decode,
@@ -25,11 +26,11 @@ module Hazard_Unit(
 	output	logic [1:0] forward_register_file_output_2_execute
 );
 
-`line 25 "../../src/Hazard_Unit.v" 0
+`line 26 "../../src/Hazard_Unit.v" 0
 	logic lwstall;
 	logic branchstall;
 
-`line 28 "../../src/Hazard_Unit.v" 0
+`line 29 "../../src/Hazard_Unit.v" 0
 	always_comb begin
 		 
 		if ((Rs_execute !=0) && (Rs_execute == write_register_memory) && register_write_memory) begin		
@@ -40,7 +41,7 @@ module Hazard_Unit(
 			forward_register_file_output_1_execute = 2'b00;
 		end
 
-`line 38 "../../src/Hazard_Unit.v" 0
+`line 39 "../../src/Hazard_Unit.v" 0
 		if ((Rt_execute !=0) && (Rt_execute == write_register_memory) && register_write_memory) begin		
 			forward_register_file_output_2_execute = 2'b10;
 		end else if ((Rt_execute !=0) && (Rt_execute == write_register_writeback) && register_write_writeback) begin
@@ -50,28 +51,29 @@ module Hazard_Unit(
 		end
 		 
 
-`line 47 "../../src/Hazard_Unit.v" 0
+`line 48 "../../src/Hazard_Unit.v" 0
 		 
 		lwstall = ((Rs_decode == Rt_execute) || (Rt_decode == Rt_execute)) && memory_to_register_execute;
 
-`line 50 "../../src/Hazard_Unit.v" 0
+`line 51 "../../src/Hazard_Unit.v" 0
 		 
 
-`line 52 "../../src/Hazard_Unit.v" 0
+`line 53 "../../src/Hazard_Unit.v" 0
 		 
 		forward_register_file_output_1_decode = (Rs_decode != 0) && (Rs_decode == write_register_memory) && register_write_memory;
 		forward_register_file_output_2_decode = (Rt_decode != 0) && (Rt_decode == write_register_memory) && register_write_memory;
 
-`line 56 "../../src/Hazard_Unit.v" 0
+`line 57 "../../src/Hazard_Unit.v" 0
 		branchstall = branch_decode && register_write_execute && (write_register_execute == Rs_decode || write_register_execute == Rt_decode) || branch_decode && memory_to_register_memory && (write_register_memory == Rs_decode || write_register_memory == Rt_decode);
 		 
 
-`line 59 "../../src/Hazard_Unit.v" 0
+`line 60 "../../src/Hazard_Unit.v" 0
 		stall_fetch = branchstall || lwstall;
 		stall_decode = branchstall || lwstall;
-		flush_execute_register = branchstall || lwstall;
+		flush_execute_register = branchstall || lwstall || program_counter_multiplexer_jump_writeback;
+	
 
-`line 63 "../../src/Hazard_Unit.v" 0
+`line 65 "../../src/Hazard_Unit.v" 0
 	end
 endmodule
-`line 65 "../../src/Hazard_Unit.v" 2
+`line 67 "../../src/Hazard_Unit.v" 2

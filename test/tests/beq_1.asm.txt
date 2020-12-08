@@ -1,15 +1,16 @@
 #beq
 #65552
-#beq_1
-#testing dependencies: lui, addiu, jr
+#1
+#none
 
-main:
 	lui $3, 0x0001
 	lui $4, 0x0001
 
 	beq $3, $4, Target
 
-	addiu $3, $3, 0x1000
+	addiu $2, $3, 0x1000
+
+	jr $0
 
 Target: addiu $2, $3, 0x0010
 

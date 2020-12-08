@@ -3,6 +3,9 @@
 #include <iostream>
 #include <verilated_vcd_c.h>
 
+const int ISA = 0xBFC00000; //INSTRUCTION_START_ADDRESS
+const int RAM_SIZE = 1 << 31; 
+
 class TESTBENCH
 {
 public:
@@ -13,6 +16,8 @@ public:
 	bool trace = true;
 
 	std::string vcdname;
+	std::map<int, uint32_t> memory;
+
 	virtual void opentrace( const char *vcdname )
 	{
 		if ( !m_trace )
@@ -41,6 +46,11 @@ public:
 		this->vcdname = std::string( vcdname );
 		m_tickcount = 0l;
 		m_core->clk_enable = 1;
+
+		memory[ISA + 0] = uint32_t(0b00100100000000100000000100000000); //addiu v0 zero 0x100, 0x24020100
+		memory[ISA + 4] = uint32_t(0b10001100000000100000000001100100);
+		memory[ISA + 8] = uint32_t(0b00000000000000000000000000001000); //jr 0
+		memory[100] = 100;
 	}
 
 	virtual ~TESTBENCH( void )
@@ -70,6 +80,7 @@ public:
 		//
 		m_core->clk = 0;
 		m_core->eval();
+		update_instruction_output();
 
 		//
 		// Here's the new item:
@@ -82,11 +93,16 @@ public:
 		// Repeat for the positive edge of the clock
 		m_core->clk = 1;
 		m_core->eval();
+		update_RAM_output();
+		update_instruction_output();
+		m_core->eval();
 		if ( trace )
 			m_trace->dump( TIME_UNIT * m_tickcount );
 
 		// Now the negative edge
 		m_core->clk = 0;
+		m_core->eval();
+		update_instruction_output();
 		m_core->eval();
 		if ( m_trace )
 		{
@@ -102,6 +118,13 @@ public:
 		}
 	}
 
+	void update_RAM_output(){
+		m_core->data_readdata = memory[m_core->data_address];
+	}
+
+	void update_instruction_output(){
+		m_core->instr_readdata = memory[m_core->instr_address];
+	}
 	virtual bool done( void )
 	{
 		return ( Verilated::gotFinish() );

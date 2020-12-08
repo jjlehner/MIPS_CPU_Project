@@ -1,16 +1,17 @@
 #beq
-#69648
-#beq_2
-#testing dependencies: lui, addiu, jr
+#69632
+#2
+#not equal should not branch
 
-main:
 	lui $3, 0x0001
 	lui $4, 0x0010
 
 	beq $3, $4, Target
 
-	addiu $3, $3, 0x1000
+	addiu $2, $3, 0x1000
 
+	jr $0
+	
 Target: addiu $2, $3, 0x0010
 
 jr $0

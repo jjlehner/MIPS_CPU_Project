@@ -24,8 +24,8 @@ VL_MODULE(MIPS_Harvard_TB) {
     // PORTS
     // The application code writes and reads these signals to
     // propagate new values into/out from the Verilated model.
-    VL_IN8(clk,0,0);
     VL_IN8(reset,0,0);
+    VL_IN8(clk,0,0);
     VL_OUT8(active,0,0);
     VL_IN8(clk_enable,0,0);
     VL_OUT8(data_write,0,0);
@@ -51,7 +51,10 @@ VL_MODULE(MIPS_Harvard_TB) {
         CData/*0:0*/ mips_cpu__DOT__register_destination_decode;
         CData/*0:0*/ mips_cpu__DOT__branch_decode;
         CData/*0:0*/ mips_cpu__DOT__hi_lo_register_write_decode;
+        CData/*0:0*/ mips_cpu__DOT__equal_decode;
         CData/*5:0*/ mips_cpu__DOT__ALU_function_decode;
+        CData/*0:0*/ mips_cpu__DOT__program_counter_multiplexer_jump_decode;
+        CData/*0:0*/ mips_cpu__DOT__flush_decode_execute_register;
         CData/*0:0*/ mips_cpu__DOT__register_destination_execute;
         CData/*0:0*/ mips_cpu__DOT__memory_to_register_execute;
         CData/*0:0*/ mips_cpu__DOT__memory_write_execute;
@@ -60,6 +63,7 @@ VL_MODULE(MIPS_Harvard_TB) {
         CData/*5:0*/ mips_cpu__DOT__ALU_function_execute;
         CData/*0:0*/ mips_cpu__DOT__hi_lo_register_write_execute;
         CData/*0:0*/ mips_cpu__DOT__register_write_execute;
+        CData/*0:0*/ mips_cpu__DOT__program_counter_multiplexer_jump_execute;
         CData/*4:0*/ mips_cpu__DOT__Rs_execute;
         CData/*4:0*/ mips_cpu__DOT__Rt_execute;
         CData/*4:0*/ mips_cpu__DOT__Rd_execute;
@@ -68,25 +72,30 @@ VL_MODULE(MIPS_Harvard_TB) {
         CData/*0:0*/ mips_cpu__DOT__memory_to_register_memory;
         CData/*0:0*/ mips_cpu__DOT__memory_write_memory;
         CData/*0:0*/ mips_cpu__DOT__hi_lo_register_write_memory;
+        CData/*0:0*/ mips_cpu__DOT__program_counter_multiplexer_jump_memory;
         CData/*0:0*/ mips_cpu__DOT__register_write_writeback;
         CData/*0:0*/ mips_cpu__DOT__hi_lo_register_write_writeback;
         CData/*0:0*/ mips_cpu__DOT__memory_to_register_writeback;
+        CData/*0:0*/ mips_cpu__DOT__program_counter_multiplexer_jump_writeback;
         CData/*4:0*/ mips_cpu__DOT__write_register_writeback;
         CData/*0:0*/ mips_cpu__DOT__stall_fetch;
         CData/*0:0*/ mips_cpu__DOT__stall_decode;
         CData/*0:0*/ mips_cpu__DOT__flush_execute_register;
         CData/*1:0*/ mips_cpu__DOT__forward_A_execute;
         CData/*1:0*/ mips_cpu__DOT__forward_B_execute;
+        CData/*0:0*/ mips_cpu__DOT__flush_fetch_decode_register;
         CData/*5:0*/ mips_cpu__DOT__control_unit__DOT__op;
         CData/*5:0*/ mips_cpu__DOT__control_unit__DOT__funct;
         CData/*0:0*/ mips_cpu__DOT__hazard_unit__DOT__lwstall;
         CData/*0:0*/ mips_cpu__DOT__hazard_unit__DOT__branchstall;
-        IData/*31:0*/ mips_cpu__DOT__program_counter_prime;
         IData/*31:0*/ mips_cpu__DOT__program_counter_fetch;
+        IData/*31:0*/ mips_cpu__DOT__program_counter_mux_1_out;
         IData/*31:0*/ mips_cpu__DOT__instruction_decode;
         IData/*31:0*/ mips_cpu__DOT__program_counter_plus_four_decode;
         IData/*31:0*/ mips_cpu__DOT__register_file_output_A_decode;
         IData/*31:0*/ mips_cpu__DOT__register_file_output_B_decode;
+        IData/*31:0*/ mips_cpu__DOT__register_file_output_A_resolved_decode;
+        IData/*31:0*/ mips_cpu__DOT__register_file_output_B_resolved_decode;
         IData/*31:0*/ mips_cpu__DOT__sign_imm_decode;
         IData/*31:0*/ mips_cpu__DOT__register_file_output_A_execute;
         IData/*31:0*/ mips_cpu__DOT__register_file_output_B_execute;
@@ -96,6 +105,8 @@ VL_MODULE(MIPS_Harvard_TB) {
         IData/*31:0*/ mips_cpu__DOT__ALU_output_execute;
         IData/*31:0*/ mips_cpu__DOT__ALU_HI_output_execute;
         IData/*31:0*/ mips_cpu__DOT__ALU_LO_output_execute;
+    };
+    struct {
         IData/*31:0*/ mips_cpu__DOT__sign_imm_execute;
         IData/*31:0*/ mips_cpu__DOT__ALU_output_memory;
         IData/*31:0*/ mips_cpu__DOT__ALU_HI_output_memory;
@@ -105,8 +116,6 @@ VL_MODULE(MIPS_Harvard_TB) {
         IData/*31:0*/ mips_cpu__DOT__ALU_HI_output_writeback;
         IData/*31:0*/ mips_cpu__DOT__ALU_LO_output_writeback;
         IData/*31:0*/ mips_cpu__DOT__ALU_output_writeback;
-    };
-    struct {
         IData/*31:0*/ mips_cpu__DOT__read_data_writeback;
         IData/*31:0*/ mips_cpu__DOT__register_file__DOT__HI_reg;
         IData/*31:0*/ mips_cpu__DOT__register_file__DOT__LO_reg;
@@ -117,6 +126,7 @@ VL_MODULE(MIPS_Harvard_TB) {
     // LOCAL VARIABLES
     // Internals; generally not touched by application code
     CData/*0:0*/ __Vclklast__TOP__mips_cpu__DOT__internal_clk;
+    CData/*0:0*/ __Vclklast__TOP__reset;
     IData/*31:0*/ __Vm_traceActivity;
     
     // INTERNAL VARIABLES
@@ -150,7 +160,7 @@ VL_MODULE(MIPS_Harvard_TB) {
   private:
     static QData _change_request(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
   public:
-    static void _combo__TOP__2(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
+    static void _combo__TOP__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
   private:
     void _ctor_var_reset() VL_ATTR_COLD;
   public:
@@ -162,12 +172,16 @@ VL_MODULE(MIPS_Harvard_TB) {
   public:
     static void _eval_initial(MIPS_Harvard_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     static void _eval_settle(MIPS_Harvard_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;
-    static void _initial__TOP__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     static void _multiclk__TOP__6(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
+    static void _sequent__TOP__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
     static void _sequent__TOP__4(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
     static void _sequent__TOP__5(MIPS_Harvard_TB__Syms* __restrict vlSymsp);
-    static void _settle__TOP__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;
+    static void _settle__TOP__2(MIPS_Harvard_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     static void traceChgThis(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__10(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__11(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__12(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__13(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__2(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__3(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__4(MIPS_Harvard_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);

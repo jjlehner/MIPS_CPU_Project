@@ -4,8 +4,7 @@ module Decode_Execute_Register
 (
 	input	logic 	clk,
 	input 	logic	clear,
-
-`line 6 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
+	input	logic	reset,
 	 
 	input	logic 			register_write_decode,
 	input 	logic			memory_to_register_decode,
@@ -18,8 +17,9 @@ module Decode_Execute_Register
 	input 	logic [4:0]		Rt_decode,
 	input	logic [4:0]		Rd_decode,
 	input	logic [31:0]	sign_imm_decode,		
+	input	logic			program_counter_multiplexer_jump_decode,
 
-`line 19 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
+`line 20 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
 	output	logic 			register_write_execute,
 	output 	logic			memory_to_register_execute,
 	output	logic			memory_write_execute,
@@ -30,23 +30,24 @@ module Decode_Execute_Register
 	output 	logic [4:0]		Rs_execute,
 	output	logic [4:0]		Rt_execute,
 	output	logic [4:0]		Rd_execute,
-	output	logic [31:0]	sign_imm_execute,	
+	output	logic [31:0]	sign_imm_execute,
+	output	logic 			program_counter_multiplexer_jump_execute,
 
-`line 31 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
+`line 33 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
 	 
 	input	logic [31:0]	read_data_one_decode,
 	input	logic [31:0]	read_data_two_decode,
 
-`line 35 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
+`line 37 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
 	output	logic [31:0]	read_data_one_execute,
 	output	logic [31:0]	read_data_two_execute
 
-`line 38 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
+`line 40 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
 );
 
-`line 40 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
-	always_ff @(posedge clk) begin
-		if(clear) begin
+`line 42 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
+	always_ff @(posedge clk, posedge reset) begin
+		if(clear || reset) begin
 			register_write_execute <= 0;
 			memory_to_register_execute <= 0;
 			memory_write_execute <= 0;
@@ -58,8 +59,9 @@ module Decode_Execute_Register
 			Rd_execute <= {5{1'b0}};
 			Rs_execute <= {5{1'b0}};
 			sign_imm_execute <= {32{1'b0}};
+			program_counter_multiplexer_jump_execute <= 0;
 
-`line 54 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
+`line 57 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
 			read_data_one_execute <= {32{1'b0}};
 			read_data_two_execute <= {32{1'b0}};
 		end else begin
@@ -74,14 +76,14 @@ module Decode_Execute_Register
 			Rt_execute <= Rt_decode;
 			Rd_execute <= Rd_decode;
 			sign_imm_execute <= sign_imm_decode;
-
-`line 69 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
+			program_counter_multiplexer_jump_execute <= program_counter_multiplexer_jump_decode;
+			
 			read_data_one_execute <= read_data_one_decode;
 			read_data_two_execute <= read_data_two_decode;
 		end
 	end
 	
 
-`line 75 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
+`line 79 "../../src/pipeline_registers/Decode_Execute_Register.v" 0
 endmodule
-`line 76 "../../src/pipeline_registers/Decode_Execute_Register.v" 2
+`line 80 "../../src/pipeline_registers/Decode_Execute_Register.v" 2
