@@ -12,7 +12,7 @@ module Hazard_Unit(
 	input	logic		register_write_memory,
 	input	logic [4:0]	write_register_writeback,
 	input	logic		register_write_writeback,
-	input	logic		program_counter_multiplexer_jump_writeback,
+	input	logic		program_counter_multiplexer_jump_exeute,
 
 	output	logic 		stall_fetch,
 	output	logic 		stall_decode,
@@ -32,6 +32,8 @@ module Hazard_Unit(
 			forward_register_file_output_1_execute = 2'b10;
 		end else if ((Rs_execute !=0) && (Rs_execute == write_register_writeback) && register_write_writeback) begin
 			forward_register_file_output_1_execute = 2'b01;
+		end else if ((Rs_execute !=0) && (Rs_execute == write_register_writeback) && lo_register_write ) begin
+			forward_register_file_output_1_execute = 2'b11;
 		end else begin
 			forward_register_file_output_1_execute = 2'b00;
 		end
@@ -40,6 +42,8 @@ module Hazard_Unit(
 			forward_register_file_output_2_execute = 2'b10;
 		end else if ((Rt_execute !=0) && (Rt_execute == write_register_writeback) && register_write_writeback) begin
 			forward_register_file_output_2_execute = 2'b01;
+		end else if ((Rt_execute !=0) && (Rt_execute == write_register_writeback) && hi_register_write ) begin
+			forward_register_file_output_1_execute = 2'b11;
 		end else begin
 			forward_register_file_output_2_execute = 2'b00;
 		end
@@ -57,9 +61,9 @@ module Hazard_Unit(
 		branchstall = branch_decode && register_write_execute && (write_register_execute == Rs_decode || write_register_execute == Rt_decode) || branch_decode && memory_to_register_memory && (write_register_memory == Rs_decode || write_register_memory == Rt_decode);
 		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-		stall_fetch = branchstall || lwstall;
-		stall_decode = branchstall || lwstall;
-		flush_execute_register = branchstall || lwstall || program_counter_multiplexer_jump_writeback;
+		stall_fetch = branchstall || lwstall || program_counter_multiplexer_jump_execute;
+		stall_decode = branchstall || lwstall || program_counter_multiplexer_jump_execute;
+		flush_execute_register = branchstall || lwstall;
 	
 
 	end

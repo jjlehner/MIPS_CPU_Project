@@ -1,5 +1,5 @@
 `begin_keywords "1800-2017"
-`line 1 "../../src/Comparator.v" 1
+`line 1 "../../rtl/Comparator.v" 1
 module Comparator
 (
 	input logic		[5:0]  	op,
@@ -37,4 +37,4 @@ module Comparator
 	end
 	assign c = (a == b);
 endmodule
-`line 38 "../../src/Comparator.v" 2
+`line 38 "../../rtl/Comparator.v" 2

@@ -3,7 +3,7 @@ digraph v3graph {
 		 labelloc=t, labeljust=l,
 		 //size="7.5,10",
 		 rankdir=TB];
-	n0	[fontsize=8 label="mips_cpu", color=black];
+	n0	[fontsize=8 label="mips_cpu_harvard", color=black];
 	n1	[fontsize=8 label="Register_File", color=black];
 	n2	[fontsize=8 label="Program_Counter", color=black];
 	n3	[fontsize=8 label="Adder", color=black];

@@ -1,5 +1,5 @@
 `begin_keywords "1800-2017"
-`line 1 "../../src/Register_File.v" 1
+`line 1 "../../rtl/Register_File.v" 1
  
 module Register_File(	
 	input	logic 			clk,
@@ -38,4 +38,4 @@ module Register_File(
 		end
 	end
 endmodule
-`line 39 "../../src/Register_File.v" 2
+`line 39 "../../rtl/Register_File.v" 2

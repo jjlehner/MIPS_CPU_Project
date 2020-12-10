@@ -1,5 +1,5 @@
 `begin_keywords "1800-2017"
-`line 1 "../../src/pipeline_registers/Fetch_Decode_Register.v" 1
+`line 1 "../../rtl/pipeline_registers/Fetch_Decode_Register.v" 1
 module Fetch_Decode_Register
 (
 	input	logic 	clk,
@@ -7,17 +7,17 @@ module Fetch_Decode_Register
 	input 	logic	clear,
 	input	logic	reset,
 
-`line 8 "../../src/pipeline_registers/Fetch_Decode_Register.v" 0
+`line 8 "../../rtl/pipeline_registers/Fetch_Decode_Register.v" 0
 	input	logic [31:0]	instruction_fetch,
 	input	logic [31:0]	program_counter_plus_four_fetch,
 	
 	output	logic [31:0]	instruction_decode,
 	output	logic [31:0]	program_counter_plus_four_decode
 
-`line 14 "../../src/pipeline_registers/Fetch_Decode_Register.v" 0
+`line 14 "../../rtl/pipeline_registers/Fetch_Decode_Register.v" 0
 );
 
-`line 16 "../../src/pipeline_registers/Fetch_Decode_Register.v" 0
+`line 16 "../../rtl/pipeline_registers/Fetch_Decode_Register.v" 0
 	always_ff @(posedge clk, posedge reset) begin
 		if(reset) begin
 			instruction_decode <= 0;
@@ -37,4 +37,4 @@ module Fetch_Decode_Register
 	
 	
 endmodule
-`line 35 "../../src/pipeline_registers/Fetch_Decode_Register.v" 2
+`line 35 "../../rtl/pipeline_registers/Fetch_Decode_Register.v" 2

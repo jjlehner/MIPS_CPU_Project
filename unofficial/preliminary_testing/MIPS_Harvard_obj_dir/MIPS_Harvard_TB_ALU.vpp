@@ -1,5 +1,5 @@
 `begin_keywords "1800-2017"
-`line 1 "../../src/ALU.v" 1
+`line 1 "../../rtl/ALU.v" 1
  
 module ALU
 (
@@ -7,15 +7,15 @@ module ALU
 	input 	logic [31:0]	input_1,
 	input	logic [31:0]	input_2,
 
-`line 8 "../../src/ALU.v" 0
+`line 8 "../../rtl/ALU.v" 0
 	output	logic [31:0]	ALU_output,
 	output	logic [31:0]	ALU_HI_output,
 	output	logic [31:0]	ALU_LO_output
 
-`line 12 "../../src/ALU.v" 0
+`line 12 "../../rtl/ALU.v" 0
 );
 
-`line 14 "../../src/ALU.v" 0
+`line 14 "../../rtl/ALU.v" 0
 	logic [4:0] shift_amount;
 	logic [63:0] sign_extened_input_1;
 	logic [63:0] sign_extened_input_2;
@@ -31,7 +31,7 @@ module ALU
 
 
 
-`line 29 "../../src/ALU.v" 0
+`line 29 "../../rtl/ALU.v" 0
 	always_comb begin
 		ALU_output = {32{1'bx}};
 		ALU_HI_LO_output = {64{1'bx}};
@@ -75,4 +75,4 @@ module ALU
 		ALU_LO_output = ALU_HI_LO_output[31:0];
 	end
 endmodule
-`line 72 "../../src/ALU.v" 2
+`line 72 "../../rtl/ALU.v" 2

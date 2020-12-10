@@ -1,5 +1,5 @@
 `begin_keywords "1800-2017"
-`line 1 "../../src/Sign_Extension.v" 1
+`line 1 "../../rtl/Sign_Extension.v" 1
 module Sign_Extension
 (
 	input	logic	[15:0] short_input,
@@ -7,4 +7,4 @@ module Sign_Extension
 );
 	assign extended_output = {{16{short_input[15]}},short_input};
 endmodule
-`line 8 "../../src/Sign_Extension.v" 2
+`line 8 "../../rtl/Sign_Extension.v" 2

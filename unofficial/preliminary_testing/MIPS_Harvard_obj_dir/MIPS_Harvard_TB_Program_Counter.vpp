@@ -1,5 +1,5 @@
 `begin_keywords "1800-2017"
-`line 1 "../../src/Program_Counter.v" 1
+`line 1 "../../rtl/Program_Counter.v" 1
 module Program_Counter(
 	input	logic clk,
 	input 	logic [31:0] address_input,
@@ -8,7 +8,7 @@ module Program_Counter(
 	output	logic halt,
 	output	logic [31:0] address_output
 
-`line 9 "../../src/Program_Counter.v" 0
+`line 9 "../../rtl/Program_Counter.v" 0
 );
 	always_comb begin
 		halt = (address_output == 0);
@@ -22,6 +22,6 @@ module Program_Counter(
 		end
 	end
 
-`line 22 "../../src/Program_Counter.v" 0
+`line 22 "../../rtl/Program_Counter.v" 0
 endmodule
-`line 23 "../../src/Program_Counter.v" 2
+`line 23 "../../rtl/Program_Counter.v" 2

@@ -1,5 +1,5 @@
 `begin_keywords "1800-2017"
-`line 1 "../../src/MUX_4INPUT.v" 1
+`line 1 "../../rtl/MUX_4INPUT.v" 1
 module MUX_4INPUT
 #(
 	parameter BUS_WIDTH = 1	 
@@ -11,11 +11,11 @@ module MUX_4INPUT
 	input logic [BUS_WIDTH-1:0] 	input_2,
 	input logic [BUS_WIDTH-1:0]		input_3,
 
-`line 12 "../../src/MUX_4INPUT.v" 0
+`line 12 "../../rtl/MUX_4INPUT.v" 0
 	output logic [BUS_WIDTH-1:0]	resolved
 );
 
-`line 15 "../../src/MUX_4INPUT.v" 0
+`line 15 "../../rtl/MUX_4INPUT.v" 0
 	always_comb begin
 		case(control)
 			2'b00 	:	resolved = input_0;
@@ -25,6 +25,6 @@ module MUX_4INPUT
 		endcase
 	end
 
-`line 24 "../../src/MUX_4INPUT.v" 0
+`line 24 "../../rtl/MUX_4INPUT.v" 0
 endmodule
-`line 25 "../../src/MUX_4INPUT.v" 2
+`line 25 "../../rtl/MUX_4INPUT.v" 2

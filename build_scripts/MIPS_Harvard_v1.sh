@@ -1,27 +1,27 @@
 #!/bin/bash
 set -e
 cd "$(dirname "$0")"
-cd ../src
+cd ../rtl
 
-top_level=("../../src/mips_cpu.v")
+top_level=("../../rtl/mips_cpu_harvard.v")
 lower_level=(
-    "../../src/Adder.v"
-    "../../src/ALU.v"
-    "../../src/And_Gate.v"
-    "../../src/Control_Unit.v"
-    "../../src/Comparator.v"
-    "../../src/Hazard_Unit.v"
-    "../../src/Left_Shift.v"
-    "../../src/MUX_2INPUT.v"
-    "../../src/MUX_4INPUT.v"
-    "../../src/Program_Counter.v"
-    "../../src/Register_File.v"
-    "../../src/Sign_Extension.v"
-    "../../src/Or_Gate.v"
-    "../../src/pipeline_registers/Decode_Execute_Register.v"
-    "../../src/pipeline_registers/Execute_Memory_Register.v"
-    "../../src/pipeline_registers/Fetch_Decode_Register.v"
-    "../../src/pipeline_registers/Memory_Writeback_Register.v"
+    "../../rtl/Adder.v"
+    "../../rtl/ALU.v"
+    "../../rtl/And_Gate.v"
+    "../../rtl/Control_Unit.v"
+    "../../rtl/Comparator.v"
+    "../../rtl/Hazard_Unit.v"
+    "../../rtl/Left_Shift.v"
+    "../../rtl/MUX_2INPUT.v"
+    "../../rtl/MUX_4INPUT.v"
+    "../../rtl/Program_Counter.v"
+    "../../rtl/Register_File.v"
+    "../../rtl/Sign_Extension.v"
+    "../../rtl/Or_Gate.v"
+    "../../rtl/pipeline_registers/Decode_Execute_Register.v"
+    "../../rtl/pipeline_registers/Execute_Memory_Register.v"
+    "../../rtl/pipeline_registers/Fetch_Decode_Register.v"
+    "../../rtl/pipeline_registers/Memory_Writeback_Register.v"
 )
 while getopts gcl flag
 do

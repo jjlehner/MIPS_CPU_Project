@@ -38,7 +38,7 @@ module ALU
 			6'b000111: 	ALU_output = input_2 >>> input_1[4:0];					//SRAV
 			6'b001000:	ALU_output = input_2; 									//JR
 			6'b001001:	ALU_output = input_2;									//JALR
-			6'b010000:	ALU_output = input_2;									//MFHI
+			6'b010000:	ALU_output = input_2;									//MFHI TODO Some thing wrong here
 			6'b010001:	ALU_output = input_2;									//MTHI
 			6'b010010:	ALU_output = input_2;									//MFLO
 			6'b010011:	ALU_output = input_2;									//MTLO

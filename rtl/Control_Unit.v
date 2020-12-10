@@ -1,17 +1,18 @@
 module Control_Unit(
 	/* verilator lint_off UNUSED */
-	input logic[31:0] instruction,
+	input logic[31:0] 	instruction,
 
 	output logic 		register_write,
 	output logic 		memory_to_register,
 	output logic 		memory_write,
-	output logic 		ALU_src_B,
-	output logic 		register_destination,
+	output logic [1:0]	ALU_src_B,
+	output logic [1:0]	register_destination,
 	output logic 		branch,
 	output logic 		hi_lo_register_write,
 	output logic [5:0] 	ALU_function,
-	output logic 		program_counter_multiplexer_jump
-
+	output logic 		program_counter_multiplexer_jump,
+	output logic		j_instruction,
+	output logic		ALU_output_memory
 );
 
 	logic [5:0] op;
@@ -36,11 +37,11 @@ module Control_Unit(
 			end
 			
 			6'b000001:	begin		//BLTZ,BLTZAL, BGEZ,BGEZAL instruction
-				register_write			= 0;
+				register_write			= (rt == 5'b10001 || rt == 5'b10000);
 				memory_to_register		= 0;
 				memory_write			= 0;
-				ALU_src_B				= 0;
-				register_destination 	= 0;
+				ALU_src_B				= 2'b10;
+				register_destination 	= 2'b10;
 				branch					= 1;
 				hi_lo_register_write	= 0;
 				ALU_function			= 6'b111111;
@@ -171,8 +172,8 @@ module Control_Unit(
 				register_write			= 1'bx;
 				memory_to_register		= 1'bx;
 				memory_write			= 1'bx;
-				ALU_src_B				= 1'bx;
-				register_destination 	= 1'bx;
+				ALU_src_B				= 2'bxx;
+				register_destination 	= 2'bxx;
 				branch					= 1'bx;
 				hi_lo_register_write	= 1'bx; //checks if instruction is mult/multu/div/divu
 				ALU_function			= 6'bxxxxxx;

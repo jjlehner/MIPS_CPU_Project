@@ -1,10 +1,10 @@
 `begin_keywords "1800-2017"
-`line 1 "../../src/Control_Unit.v" 1
+`line 1 "../../rtl/Control_Unit.v" 1
 module Control_Unit(
 	/*verilator lint_off UNUSED*/ 
 	input logic[31:0] instruction,
 
-`line 5 "../../src/Control_Unit.v" 0
+`line 5 "../../rtl/Control_Unit.v" 0
 	output logic 		register_write,
 	output logic 		memory_to_register,
 	output logic 		memory_write,
@@ -15,10 +15,10 @@ module Control_Unit(
 	output logic [5:0] 	ALU_function,
 	output logic 		program_counter_multiplexer_jump
 
-`line 15 "../../src/Control_Unit.v" 0
+`line 15 "../../rtl/Control_Unit.v" 0
 );
 
-`line 17 "../../src/Control_Unit.v" 0
+`line 17 "../../rtl/Control_Unit.v" 0
 	logic [5:0] op;
 	logic [4:0] rt;
 	logic [5:0] funct;	
@@ -53,13 +53,13 @@ module Control_Unit(
 			end
 			
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 54 "../../rtl/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 54 "../../rtl/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 54 "../../rtl/Control_Unit.v" 0
 
-`line 54 "../../src/Control_Unit.v" 0
+`line 54 "../../rtl/Control_Unit.v" 0
  
 			6'b000100: 	begin 		 
 				register_write			= 0;
@@ -110,7 +110,7 @@ module Control_Unit(
 			end
 			
 
-`line 104 "../../src/Control_Unit.v" 0
+`line 104 "../../rtl/Control_Unit.v" 0
  
 			6'b001001: begin					 
 				register_write			= 1;
@@ -125,15 +125,15 @@ module Control_Unit(
 			end
 			
 
-`line 122 "../../src/Control_Unit.v" 0
+`line 122 "../../rtl/Control_Unit.v" 0
 
-`line 122 "../../src/Control_Unit.v" 0
+`line 122 "../../rtl/Control_Unit.v" 0
 
-`line 122 "../../src/Control_Unit.v" 0
+`line 122 "../../rtl/Control_Unit.v" 0
 
-`line 122 "../../src/Control_Unit.v" 0
+`line 122 "../../rtl/Control_Unit.v" 0
 
-`line 122 "../../src/Control_Unit.v" 0
+`line 122 "../../rtl/Control_Unit.v" 0
  
 			6'b001111: 	begin					 
 				register_write			= 1;
@@ -149,9 +149,9 @@ module Control_Unit(
 			
 			
 
-`line 138 "../../src/Control_Unit.v" 0
+`line 138 "../../rtl/Control_Unit.v" 0
 
-`line 138 "../../src/Control_Unit.v" 0
+`line 138 "../../rtl/Control_Unit.v" 0
  
 			6'b100011:	begin				 
 				register_write			= 1;
@@ -166,13 +166,13 @@ module Control_Unit(
 			end
 			
 
-`line 155 "../../src/Control_Unit.v" 0
+`line 155 "../../rtl/Control_Unit.v" 0
 
-`line 155 "../../src/Control_Unit.v" 0
+`line 155 "../../rtl/Control_Unit.v" 0
 
-`line 155 "../../src/Control_Unit.v" 0
+`line 155 "../../rtl/Control_Unit.v" 0
 
-`line 155 "../../src/Control_Unit.v" 0
+`line 155 "../../rtl/Control_Unit.v" 0
  
 			6'b101011: 	begin	 
 				register_write			= 0;
@@ -187,7 +187,7 @@ module Control_Unit(
 			end
 			
 
-`line 169 "../../src/Control_Unit.v" 0
+`line 169 "../../rtl/Control_Unit.v" 0
  
 			default : begin						 
 				register_write			= 1'bx;
@@ -203,4 +203,4 @@ module Control_Unit(
 		endcase
 	end
 endmodule
-`line 184 "../../src/Control_Unit.v" 2
+`line 184 "../../rtl/Control_Unit.v" 2
