@@ -4,25 +4,25 @@
 module Register_File(	
 	input	logic 			clk,
 	input 	logic 			pipelined,
-	input	logic			HI_LO_output,
-	input 	logic			write_enable,	hi_lo_register_write_enable,
+	input 	logic			write_enable,	HI_write_enable, LO_write_enable,
 	input	logic [4:0]		read_address_1, read_address_2, write_address,
 	input	logic [31:0]	write_data,		HI_write_data,	LO_write_data,
 	output	logic [31:0]	read_data_1,	read_data_2,
+	output	logic [31:0]	read_data_LO,	read_data_HI,
 	output	logic [31:0]	read_register_2
 );
 	
 	logic [31:0] registers[31:0];
 	logic [31:0] HI_reg, LO_reg;
-	logic [31:0] read_data_1_pre_mux;
-	logic [31:0] read_data_2_pre_mux;
+
+`line 16 "../../rtl/Register_File.v" 0
 	 
 	 
 	 
-	assign read_data_1_pre_mux = (read_address_1 != 0) ? registers[read_address_1] : 0;
-	assign read_data_2_pre_mux = (read_address_2 != 0) ? registers[read_address_2] : 0;
-	assign read_data_1 = HI_LO_output ? LO_reg : read_data_1_pre_mux;
-	assign read_data_2 = HI_LO_output ? HI_reg : read_data_2_pre_mux;
+	assign read_data_1 = registers[read_address_1];
+	assign read_data_2 = registers[read_address_2];
+	assign read_data_LO = LO_reg;
+	assign read_data_HI = HI_reg;
 	assign read_register_2 = registers[2];
 	 
 	 
@@ -32,10 +32,12 @@ module Register_File(
 	assign modified_write_clk = clk ^ pipelined;
 	always_ff @(posedge modified_write_clk) begin
 		if(write_enable) registers[write_address]<= write_data;
-		if(hi_lo_register_write_enable) begin
+		if(HI_write_enable) begin
 			HI_reg <= HI_write_data;
+		end
+		if(LO_write_enable) begin
 			LO_reg <= LO_write_data;
 		end
 	end
 endmodule
-`line 39 "../../rtl/Register_File.v" 2
+`line 40 "../../rtl/Register_File.v" 2

@@ -7,21 +7,18 @@ top_level=("../../rtl/mips_cpu_harvard.v")
 lower_level=(
     "../../rtl/Adder.v"
     "../../rtl/ALU.v"
-    "../../rtl/And_Gate.v"
     "../../rtl/Control_Unit.v"
     "../../rtl/Comparator.v"
     "../../rtl/Hazard_Unit.v"
-    "../../rtl/Left_Shift.v"
     "../../rtl/MUX_2INPUT.v"
     "../../rtl/MUX_4INPUT.v"
     "../../rtl/Program_Counter.v"
     "../../rtl/Register_File.v"
-    "../../rtl/Sign_Extension.v"
-    "../../rtl/Or_Gate.v"
     "../../rtl/pipeline_registers/Decode_Execute_Register.v"
     "../../rtl/pipeline_registers/Execute_Memory_Register.v"
     "../../rtl/pipeline_registers/Fetch_Decode_Register.v"
     "../../rtl/pipeline_registers/Memory_Writeback_Register.v"
+    "../../rtl/ALU_Input_Mux.v"
 )
 while getopts gcl flag
 do

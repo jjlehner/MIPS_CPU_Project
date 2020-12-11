@@ -33,5 +33,4 @@ module Comparator
 			end
 		endcase
 	end
-	assign c = (a == b);
 endmodule

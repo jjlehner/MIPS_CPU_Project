@@ -35,6 +35,5 @@ module Comparator
 			end
 		endcase
 	end
-	assign c = (a == b);
 endmodule
-`line 38 "../../rtl/Comparator.v" 2
+`line 37 "../../rtl/Comparator.v" 2
