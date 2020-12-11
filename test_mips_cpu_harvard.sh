@@ -9,6 +9,25 @@ mkdir -p test/simulator0
 
 SOURCEDIR="$1"
 INSTRUCTION="$2"
+lower_level=(
+	"${SOURCEDIR}/Adder.v"
+	"${SOURCEDIR}/ALU.v"
+	"${SOURCEDIR}/And_Gate.v"
+	"${SOURCEDIR}/Control_Unit.v"
+	"${SOURCEDIR}/Comparator.v"
+	"${SOURCEDIR}/Hazard_Unit.v"
+	"${SOURCEDIR}/Left_Shift.v"
+	"${SOURCEDIR}/MUX_2INPUT.v"
+	"${SOURCEDIR}/MUX_4INPUT.v"
+	"${SOURCEDIR}/Program_Counter.v"
+	"${SOURCEDIR}/Register_File.v"
+	"${SOURCEDIR}/Sign_Extension.v"
+	"${SOURCEDIR}/Or_Gate.v"
+	"${SOURCEDIR}/pipeline_registers/Decode_Execute_Register.v"
+	"${SOURCEDIR}/pipeline_registers/Execute_Memory_Register.v"
+	"${SOURCEDIR}/pipeline_registers/Fetch_Decode_Register.v"
+	"${SOURCEDIR}/pipeline_registers/Memory_Writeback_Register.v"
+)
 
 if [ -z "$INSTRUCTION" ]; then
 	touch test/results0/result0.csv
@@ -44,7 +63,7 @@ if [ -z "$INSTRUCTION" ]; then
 
 		###compile testbench
 		iverilog -g 2012 \
-			${SOURCEDIR}/mips_cpu.v test/mips_cpu_bus_tb_delay0.v test/RAM_32x2048_delay0.v \ -s mips_cpu_bus_tb_delay0 \ -Pmips_cpu_bus_tb_delay0.RAM_INIT_FILE=\"test/hex0/$hexed.hex.txt\" \ -o test/simulator0/mips_cpu_bus_tb_delay0_$hexed
+			${SOURCEDIR}/mips_cpu_harvard.v test/mips_cpu_bus_tb_delay0.v test/RAM_32x2048_delay0.v ${lower_level[@]} \ -s test/mips_cpu_bus_tb_delay0 \ -Pmips_cpu_bus_tb_delay0.RAM_INIT_FILE=\"test/hex0/$hexed.hex.txt\" \ -o test/simulator0/mips_cpu_bus_tb_delay0_$hexed
 
 		###run testbench
 		set +e
@@ -105,7 +124,7 @@ else
 
 			###compile testbench
 			iverilog -g 2012 \
-			${SOURCEDIR}/mips_cpu.v test/mips_cpu_bus_tb_delay0.v test/RAM_32x2048_delay0.v \ -s mips_cpu_bus_tb_delay0 \ -Pmips_cpu_bus_tb_delay0.RAM_INIT_FILE=\"test/hex0/$hexed.hex.txt\" \ -o test/simulator0/mips_cpu_bus_tb_delay0_$hexed
+			${SOURCEDIR}/mips_cpu_harvard.v test/mips_cpu_bus_tb_delay0.v test/RAM_32x2048_delay0.v ${lower_level[@]} \ -s test/mips_cpu_bus_tb_delay0 \ -Pmips_cpu_bus_tb_delay0.RAM_INIT_FILE=\"test/hex0/$hexed.hex.txt\" \ -o test/simulator0/mips_cpu_bus_tb_delay0_$hexed
 
 			###run testbench
 			set +e

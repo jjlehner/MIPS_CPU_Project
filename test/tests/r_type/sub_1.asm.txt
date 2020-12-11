@@ -1,7 +1,7 @@
 #sub
 #65536
 #1
-#additional comment: subtraction between two unsigned values
+#subtraction between two unsigned values, check lui works
 
 lui $3, 0x0010
 lui $4, 0x000F
