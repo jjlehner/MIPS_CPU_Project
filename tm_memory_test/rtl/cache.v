@@ -1,8 +1,5 @@
-//`include "rtl/memory/util.vh"
-//`include "rtl/memory/cpu_interface.v"
-
-`include "util.vh"
-`include "cpu_interface.v"
+`include "rtl/util.v"
+`include "rtl/cpu_interface.v"
 /*
   I've done [weird amount] of cache presently however this is easy to change.
   I need to look more into what an optimal amount is.
@@ -38,7 +35,8 @@ module cache (
   logic[17:0] tag;
 
   // Signals from CPU interface //
-  logic cpu_write, cpu_read, cpu_wait;
+  logic cpu_write, cpu_read;
+  logic cpu_wait = 0;
   // Signals to CPU //
   logic[31:0] cpu_readdata;
   // Any more to add?
@@ -46,7 +44,6 @@ module cache (
   assign offset = address[1:0];
   assign cache_address = address[13:2]; // address % 12 ignoring offset
   assign tag = address[31:14];
-  
   // Assign byteenable relative to offset
   assign byteenable[0] = offset == 0;
   assign byteenable[1] = offset[1] == 0;
@@ -70,30 +67,30 @@ module cache (
   // It's probably wise to change this from a ternary to a MUX
   // Z (high impedance) is synthesisable but I don't think it's best practise?
 
-  always @(posedge read) `do (
+  always @(posedge cpu_read) `do (
     cpu_wait <= 1;
-    cpu_readdata <= cache[cache_address][0][49:32] == tag?
-      cache[cache_address][0][31:0] : cache[cache_address][1][49:32] == tag?
-      cache[cache_address][1][31:0] : cache[cache_address][2][49:32] == tag?
-      cache[cache_address][2][31:0] : cache[cache_address][3][49:32] == tag?
-      cache[cache_address][0][31:0] : 50'hz;
-    miss <= cpu_readdata == 50'hz;
-    cpu_wait <= miss;
+    cpu_readdata = cache[cache_address][0][49:32] === tag?
+      cache[cache_address][0][31:0] : cache[cache_address][1][49:32] === tag?
+      cache[cache_address][1][31:0] : cache[cache_address][2][49:32] === tag?
+      cache[cache_address][2][31:0] : cache[cache_address][3][49:32] === tag?
+      cache[cache_address][3][31:0] : 32'hz;
+    miss <= (cpu_readdata === 32'hz);
+    cpu_wait <= (cpu_readdata === 32'hz);
   )
   
   always @(posedge miss) `do (
     read <= 1;
     // Is this preferable to @(readdata)?(
     @(negedge waitrequest);
-    cpu_readdata <= readdata;
+    cpu_readdata = readdata;
     read <= 0;
-    // Is it ok to disable waitrequest before we write the cache as it's speedy?
     cpu_wait <= 0;
-    // Will this just clog the cache up with instructions?
+    // Will this just clog tf (instr_address == 32'he cache up with instructions?
     cache[cache_address][3] <= cache[cache_address][2];
     cache[cache_address][2] <= cache[cache_address][1];
     cache[cache_address][1] <= cache[cache_address][0];
     cache[cache_address][0] <= {tag, readdata};
+    miss <= 0;
   )
 
   cpu_interface cpu (
