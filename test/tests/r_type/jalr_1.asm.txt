@@ -1,18 +1,13 @@
 #jalr
-#3
+#1
 #1
 
-lui $31, 0x1000
-ori $31, $31, 0x0018
-jalr $3, $31
+lui $15, 0x1000
+ori $15, $15, 0x0018
+jalr $15
 nop
 ori $2, $2, 0x0001
 jr $0
 nop
 
-jr $4
-ori $2, $2, 0x0002
-nop
 
-jr $0
-nop
