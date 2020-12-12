@@ -9,3 +9,4 @@ addiu $3, $0, 0xFFFE
 sra $2, $3, 1
 
 jr $0
+nop

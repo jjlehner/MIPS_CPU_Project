@@ -9,3 +9,4 @@ addiu $4, $0, 0x0FFF
 or $2, $3, $4
 
 jr $0
+nop

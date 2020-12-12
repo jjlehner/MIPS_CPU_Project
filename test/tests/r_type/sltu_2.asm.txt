@@ -9,3 +9,4 @@ lui $4, 0xFFFF
 sltu $2, $3, $4
 
 jr $0
+nop

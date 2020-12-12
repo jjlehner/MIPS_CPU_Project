@@ -8,3 +8,4 @@ addiu $4, $0, 0x0004
 div $3, $4
 mflo $2
 jr $0
+nop
