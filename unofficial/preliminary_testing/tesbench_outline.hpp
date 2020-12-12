@@ -59,11 +59,18 @@ public:
 		assert(file.is_open());
 		std::string line;
 		for(int i = 0;std::getline(file, line);i+=4){
+			if(line[0]=='.'){
+				std::string pos = line.substr(1, pos.size() -1 );
+				if(pos == "main") i = ISA; 
+				else{
+					i = std::stol(pos,nullptr,16);
+				}
+				continue;
+			}
 			std::stringstream ss(line);
 			uint32_t hex;
 			ss>>std::hex>>hex;
-			std::cout<<hex<<std::endl;
-			memory[ISA + i] = hex;
+			memory[i] = hex;
 		}
 	}
 	bool run_program(int limit=100){
@@ -78,6 +85,11 @@ public:
 		}
 		std::cout<<"Passed Program - "<<curr_program_name<<std::endl;
 		return true;
+	}
+	void dump_memory(){
+		for(auto x : memory){
+			std::cout<<std::hex<<x.first<<" "<<x.second<<std::endl;
+		}
 	}
 	virtual ~TESTBENCH( void )
 	{

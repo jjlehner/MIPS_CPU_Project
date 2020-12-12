@@ -70,8 +70,8 @@ module Control_Unit(
 				register_write			= 0;
 				memory_to_register		= 0;
 				memory_write			= 0;
-				ALU_src_B				= 2'b00;
-				register_destination 	= 2'b00;
+				ALU_src_B				= 2'b10;
+				register_destination 	= 2'b10;
 				branch					= 1;
 				HI_register_write		= 0;
 				LO_register_write		= HI_register_write;
@@ -81,7 +81,18 @@ module Control_Unit(
 				using_HI_LO				= 0;
 			end
 			6'b000011: 	begin		//JAL instruction
-
+				register_write			= 1;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 2'b10;
+				register_destination 	= 2'b10;
+				branch					= 1;
+				HI_register_write		= 0;
+				LO_register_write		= HI_register_write;
+				ALU_function			= 6'b111111;
+				program_counter_multiplexer_jump = 1;
+				j_instruction 			= 1;
+				using_HI_LO				= 0;
 			end
 			6'b000100: 	begin 		//BEQ instruction
 				register_write			= 0;

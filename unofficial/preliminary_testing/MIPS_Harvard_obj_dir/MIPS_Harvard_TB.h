@@ -67,7 +67,6 @@ VL_MODULE(MIPS_Harvard_TB) {
         CData/*0:0*/ mips_cpu_harvard__DOT__LO_register_write_execute;
         CData/*0:0*/ mips_cpu_harvard__DOT__register_write_execute;
         CData/*0:0*/ mips_cpu_harvard__DOT__program_counter_multiplexer_jump_execute;
-        CData/*0:0*/ mips_cpu_harvard__DOT__register_file_memory_mux_control_execute;
         CData/*0:0*/ mips_cpu_harvard__DOT__j_instruction_execute;
         CData/*0:0*/ mips_cpu_harvard__DOT__using_HI_LO_execute;
         CData/*4:0*/ mips_cpu_harvard__DOT__Rs_execute;
@@ -105,9 +104,9 @@ VL_MODULE(MIPS_Harvard_TB) {
         IData/*31:0*/ mips_cpu_harvard__DOT__register_file_output_A_decode;
         IData/*31:0*/ mips_cpu_harvard__DOT__register_file_output_B_decode;
         IData/*31:0*/ mips_cpu_harvard__DOT__sign_imm_decode;
+        IData/*31:0*/ mips_cpu_harvard__DOT__comparator_1;
     };
     struct {
-        IData/*31:0*/ mips_cpu_harvard__DOT__comparator_1;
         IData/*31:0*/ mips_cpu_harvard__DOT__comparator_2;
         IData/*31:0*/ mips_cpu_harvard__DOT__src_A_execute;
         IData/*31:0*/ mips_cpu_harvard__DOT__src_B_execute;

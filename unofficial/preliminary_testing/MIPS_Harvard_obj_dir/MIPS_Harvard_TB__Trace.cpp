@@ -110,7 +110,7 @@ void MIPS_Harvard_TB::traceChgThis__4(MIPS_Harvard_TB__Syms* __restrict vlSymsp,
     // Body
     {
         vcdp->chgBus(c+41,(((IData)(vlTOPp->mips_cpu_harvard__DOT__program_counter_multiplexer_jump_memory)
-                             ? ((IData)(vlTOPp->mips_cpu_harvard__DOT__register_file_memory_mux_control_execute)
+                             ? ((IData)(vlTOPp->mips_cpu_harvard__DOT__j_instruction_memory)
                                  ? vlTOPp->mips_cpu_harvard__DOT__j_program_counter_execute
                                  : vlTOPp->mips_cpu_harvard__DOT__ALU_output_memory)
                              : ((IData)(vlTOPp->mips_cpu_harvard__DOT__program_counter_src_decode)
@@ -255,7 +255,7 @@ void MIPS_Harvard_TB::traceChgThis__8(MIPS_Harvard_TB__Syms* __restrict vlSymsp,
         vcdp->chgBit(c+705,(vlTOPp->mips_cpu_harvard__DOT__j_instruction_memory));
         vcdp->chgBus(c+713,(vlTOPp->mips_cpu_harvard__DOT__ALU_output_memory),32);
         vcdp->chgBus(c+721,(vlTOPp->mips_cpu_harvard__DOT__write_data_memory),32);
-        vcdp->chgBus(c+729,(((IData)(vlTOPp->mips_cpu_harvard__DOT__register_file_memory_mux_control_execute)
+        vcdp->chgBus(c+729,(((IData)(vlTOPp->mips_cpu_harvard__DOT__j_instruction_memory)
                               ? vlTOPp->mips_cpu_harvard__DOT__j_program_counter_execute
                               : vlTOPp->mips_cpu_harvard__DOT__ALU_output_memory)),32);
         vcdp->chgBus(c+737,(vlTOPp->mips_cpu_harvard__DOT__j_program_counter_memory),32);

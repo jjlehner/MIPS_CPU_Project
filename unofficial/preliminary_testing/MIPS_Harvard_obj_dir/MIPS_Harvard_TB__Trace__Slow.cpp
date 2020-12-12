@@ -138,14 +138,13 @@ void MIPS_Harvard_TB::traceInitThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
         vcdp->declBit(c+1065,"mips_cpu_harvard LO_register_write_execute", false,-1);
         vcdp->declBit(c+1073,"mips_cpu_harvard register_write_execute", false,-1);
         vcdp->declBit(c+585,"mips_cpu_harvard program_counter_multiplexer_jump_execute", false,-1);
-        vcdp->declBit(c+1281,"mips_cpu_harvard register_file_memory_mux_control_execute", false,-1);
         vcdp->declBit(c+593,"mips_cpu_harvard j_instruction_execute", false,-1);
         vcdp->declBit(c+601,"mips_cpu_harvard using_HI_LO_execute", false,-1);
         vcdp->declBus(c+609,"mips_cpu_harvard src_A_execute", false,-1, 31,0);
         vcdp->declBus(c+617,"mips_cpu_harvard src_B_execute", false,-1, 31,0);
         vcdp->declBus(c+177,"mips_cpu_harvard src_A_ALU_execute", false,-1, 31,0);
         vcdp->declBus(c+185,"mips_cpu_harvard src_B_ALU_execute", false,-1, 31,0);
-        vcdp->declBus(c+1289,"mips_cpu_harvard write_data_execute", false,-1, 31,0);
+        vcdp->declBus(c+1281,"mips_cpu_harvard write_data_execute", false,-1, 31,0);
         vcdp->declBus(c+193,"mips_cpu_harvard ALU_output_execute", false,-1, 31,0);
         vcdp->declBus(c+201,"mips_cpu_harvard ALU_HI_output_execute", false,-1, 31,0);
         vcdp->declBus(c+209,"mips_cpu_harvard ALU_LO_output_execute", false,-1, 31,0);
@@ -163,7 +162,7 @@ void MIPS_Harvard_TB::traceInitThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
         vcdp->declBit(c+1097,"mips_cpu_harvard HI_register_write_memory", false,-1);
         vcdp->declBit(c+1105,"mips_cpu_harvard LO_register_write_memory", false,-1);
         vcdp->declBit(c+697,"mips_cpu_harvard program_counter_multiplexer_jump_memory", false,-1);
-        vcdp->declBit(c+1297,"mips_cpu_harvard register_file_memory_mux_memory", false,-1);
+        vcdp->declBit(c+1289,"mips_cpu_harvard register_file_memory_mux_memory", false,-1);
         vcdp->declBit(c+705,"mips_cpu_harvard j_instruction_memory", false,-1);
         vcdp->declBus(c+713,"mips_cpu_harvard ALU_output_memory", false,-1, 31,0);
         vcdp->declBus(c+1113,"mips_cpu_harvard ALU_HI_output_memory", false,-1, 31,0);
@@ -189,9 +188,9 @@ void MIPS_Harvard_TB::traceInitThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
         vcdp->declBit(c+241,"mips_cpu_harvard flush_execute_register", false,-1);
         vcdp->declBus(c+249,"mips_cpu_harvard forward_A_execute", false,-1, 2,0);
         vcdp->declBus(c+257,"mips_cpu_harvard forward_B_execute", false,-1, 2,0);
-        vcdp->declBit(c+1305,"mips_cpu_harvard flush_fetch_decode_register", false,-1);
+        vcdp->declBit(c+1297,"mips_cpu_harvard flush_fetch_decode_register", false,-1);
         vcdp->declBit(c+1,"mips_cpu_harvard register_file clk", false,-1);
-        vcdp->declBit(c+1313,"mips_cpu_harvard register_file pipelined", false,-1);
+        vcdp->declBit(c+1305,"mips_cpu_harvard register_file pipelined", false,-1);
         vcdp->declBit(c+1129,"mips_cpu_harvard register_file write_enable", false,-1);
         vcdp->declBit(c+1137,"mips_cpu_harvard register_file HI_write_enable", false,-1);
         vcdp->declBit(c+1145,"mips_cpu_harvard register_file LO_write_enable", false,-1);
@@ -218,14 +217,14 @@ void MIPS_Harvard_TB::traceInitThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
         vcdp->declBit(c+465,"mips_cpu_harvard pc halt", false,-1);
         vcdp->declBus(c+449,"mips_cpu_harvard pc address_output", false,-1, 31,0);
         vcdp->declBus(c+449,"mips_cpu_harvard plus_four_adder a", false,-1, 31,0);
-        vcdp->declBus(c+1321,"mips_cpu_harvard plus_four_adder b", false,-1, 31,0);
+        vcdp->declBus(c+1313,"mips_cpu_harvard plus_four_adder b", false,-1, 31,0);
         vcdp->declBus(c+457,"mips_cpu_harvard plus_four_adder z", false,-1, 31,0);
-        vcdp->declBus(c+1329,"mips_cpu_harvard program_counter_multiplexer BUS_WIDTH", false,-1, 31,0);
+        vcdp->declBus(c+1321,"mips_cpu_harvard program_counter_multiplexer BUS_WIDTH", false,-1, 31,0);
         vcdp->declBit(c+401,"mips_cpu_harvard program_counter_multiplexer control", false,-1);
         vcdp->declBus(c+457,"mips_cpu_harvard program_counter_multiplexer input_0", false,-1, 31,0);
         vcdp->declBus(c+17,"mips_cpu_harvard program_counter_multiplexer input_1", false,-1, 31,0);
         vcdp->declBus(c+49,"mips_cpu_harvard program_counter_multiplexer resolved", false,-1, 31,0);
-        vcdp->declBus(c+1329,"mips_cpu_harvard program_counter_multiplexer_two BUS_WIDTH", false,-1, 31,0);
+        vcdp->declBus(c+1321,"mips_cpu_harvard program_counter_multiplexer_two BUS_WIDTH", false,-1, 31,0);
         vcdp->declBit(c+697,"mips_cpu_harvard program_counter_multiplexer_two control", false,-1);
         vcdp->declBus(c+49,"mips_cpu_harvard program_counter_multiplexer_two input_0", false,-1, 31,0);
         vcdp->declBus(c+729,"mips_cpu_harvard program_counter_multiplexer_two input_1", false,-1, 31,0);
@@ -303,15 +302,15 @@ void MIPS_Harvard_TB::traceInitThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
         vcdp->declBus(c+617,"mips_cpu_harvard decode_execute_register src_B_execute", false,-1, 31,0);
         vcdp->declBus(c+665,"mips_cpu_harvard decode_execute_register program_counter_plus_four_execute", false,-1, 31,0);
         vcdp->declBus(c+673,"mips_cpu_harvard decode_execute_register j_program_counter_execute", false,-1, 31,0);
-        vcdp->declBus(c+1321,"mips_cpu_harvard plus_four_adder_execute a", false,-1, 31,0);
+        vcdp->declBus(c+1313,"mips_cpu_harvard plus_four_adder_execute a", false,-1, 31,0);
         vcdp->declBus(c+665,"mips_cpu_harvard plus_four_adder_execute b", false,-1, 31,0);
         vcdp->declBus(c+657,"mips_cpu_harvard plus_four_adder_execute z", false,-1, 31,0);
-        vcdp->declBus(c+1337,"mips_cpu_harvard write_register_execute_mux BUS_WIDTH", false,-1, 31,0);
+        vcdp->declBus(c+1329,"mips_cpu_harvard write_register_execute_mux BUS_WIDTH", false,-1, 31,0);
         vcdp->declBus(c+545,"mips_cpu_harvard write_register_execute_mux control", false,-1, 1,0);
         vcdp->declBus(c+633,"mips_cpu_harvard write_register_execute_mux input_0", false,-1, 4,0);
         vcdp->declBus(c+641,"mips_cpu_harvard write_register_execute_mux input_1", false,-1, 4,0);
-        vcdp->declBus(c+1345,"mips_cpu_harvard write_register_execute_mux input_2", false,-1, 4,0);
-        vcdp->declBus(c+1353,"mips_cpu_harvard write_register_execute_mux input_3", false,-1, 4,0);
+        vcdp->declBus(c+1337,"mips_cpu_harvard write_register_execute_mux input_2", false,-1, 4,0);
+        vcdp->declBus(c+1345,"mips_cpu_harvard write_register_execute_mux input_3", false,-1, 4,0);
         vcdp->declBus(c+169,"mips_cpu_harvard write_register_execute_mux resolved", false,-1, 4,0);
         vcdp->declBus(c+569,"mips_cpu_harvard alu_input_mux ALU_src_B_execute", false,-1, 1,0);
         vcdp->declBus(c+249,"mips_cpu_harvard alu_input_mux forward_one_execute", false,-1, 2,0);
@@ -360,7 +359,7 @@ void MIPS_Harvard_TB::traceInitThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
         vcdp->declBus(c+193,"mips_cpu_harvard execute_memory_register ALU_output_execute", false,-1, 31,0);
         vcdp->declBus(c+201,"mips_cpu_harvard execute_memory_register ALU_HI_output_execute", false,-1, 31,0);
         vcdp->declBus(c+209,"mips_cpu_harvard execute_memory_register ALU_LO_output_execute", false,-1, 31,0);
-        vcdp->declBus(c+1289,"mips_cpu_harvard execute_memory_register write_data_execute", false,-1, 31,0);
+        vcdp->declBus(c+1281,"mips_cpu_harvard execute_memory_register write_data_execute", false,-1, 31,0);
         vcdp->declBus(c+169,"mips_cpu_harvard execute_memory_register write_register_execute", false,-1, 4,0);
         vcdp->declBus(c+673,"mips_cpu_harvard execute_memory_register j_program_counter_execute", false,-1, 31,0);
         vcdp->declBus(c+713,"mips_cpu_harvard execute_memory_register ALU_output_memory", false,-1, 31,0);
@@ -369,11 +368,6 @@ void MIPS_Harvard_TB::traceInitThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
         vcdp->declBus(c+721,"mips_cpu_harvard execute_memory_register write_data_memory", false,-1, 31,0);
         vcdp->declBus(c+1089,"mips_cpu_harvard execute_memory_register write_register_memory", false,-1, 4,0);
         vcdp->declBus(c+737,"mips_cpu_harvard execute_memory_register j_program_counter_memory", false,-1, 31,0);
-        vcdp->declBus(c+1329,"mips_cpu_harvard register_file_memory_mux BUS_WIDTH", false,-1, 31,0);
-        vcdp->declBit(c+1281,"mips_cpu_harvard register_file_memory_mux control", false,-1);
-        vcdp->declBus(c+713,"mips_cpu_harvard register_file_memory_mux input_0", false,-1, 31,0);
-        vcdp->declBus(c+673,"mips_cpu_harvard register_file_memory_mux input_1", false,-1, 31,0);
-        vcdp->declBus(c+729,"mips_cpu_harvard register_file_memory_mux resolved", false,-1, 31,0);
         vcdp->declBit(c+1,"mips_cpu_harvard memory_writeback_register clk", false,-1);
         vcdp->declBit(c+1185,"mips_cpu_harvard memory_writeback_register reset", false,-1);
         vcdp->declBit(c+1081,"mips_cpu_harvard memory_writeback_register register_write_memory", false,-1);
@@ -394,7 +388,7 @@ void MIPS_Harvard_TB::traceInitThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
         vcdp->declBus(c+1161,"mips_cpu_harvard memory_writeback_register ALU_HI_output_writeback", false,-1, 31,0);
         vcdp->declBus(c+1169,"mips_cpu_harvard memory_writeback_register ALU_LO_output_writeback", false,-1, 31,0);
         vcdp->declBus(c+761,"mips_cpu_harvard memory_writeback_register read_data_writeback", false,-1, 31,0);
-        vcdp->declBus(c+1329,"mips_cpu_harvard writeback_mux BUS_WIDTH", false,-1, 31,0);
+        vcdp->declBus(c+1321,"mips_cpu_harvard writeback_mux BUS_WIDTH", false,-1, 31,0);
         vcdp->declBit(c+745,"mips_cpu_harvard writeback_mux control", false,-1);
         vcdp->declBus(c+753,"mips_cpu_harvard writeback_mux input_0", false,-1, 31,0);
         vcdp->declBus(c+761,"mips_cpu_harvard writeback_mux input_1", false,-1, 31,0);
@@ -444,7 +438,7 @@ void MIPS_Harvard_TB::traceFullThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
                              << 2U)),32);
         vcdp->fullBus(c+33,(vlTOPp->mips_cpu_harvard__DOT__sign_imm_decode),32);
         vcdp->fullBus(c+41,(((IData)(vlTOPp->mips_cpu_harvard__DOT__program_counter_multiplexer_jump_memory)
-                              ? ((IData)(vlTOPp->mips_cpu_harvard__DOT__register_file_memory_mux_control_execute)
+                              ? ((IData)(vlTOPp->mips_cpu_harvard__DOT__j_instruction_memory)
                                   ? vlTOPp->mips_cpu_harvard__DOT__j_program_counter_execute
                                   : vlTOPp->mips_cpu_harvard__DOT__ALU_output_memory)
                               : ((IData)(vlTOPp->mips_cpu_harvard__DOT__program_counter_src_decode)
@@ -553,7 +547,7 @@ void MIPS_Harvard_TB::traceFullThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
         vcdp->fullBit(c+705,(vlTOPp->mips_cpu_harvard__DOT__j_instruction_memory));
         vcdp->fullBus(c+713,(vlTOPp->mips_cpu_harvard__DOT__ALU_output_memory),32);
         vcdp->fullBus(c+721,(vlTOPp->mips_cpu_harvard__DOT__write_data_memory),32);
-        vcdp->fullBus(c+729,(((IData)(vlTOPp->mips_cpu_harvard__DOT__register_file_memory_mux_control_execute)
+        vcdp->fullBus(c+729,(((IData)(vlTOPp->mips_cpu_harvard__DOT__j_instruction_memory)
                                ? vlTOPp->mips_cpu_harvard__DOT__j_program_counter_execute
                                : vlTOPp->mips_cpu_harvard__DOT__ALU_output_memory)),32);
         vcdp->fullBus(c+737,(vlTOPp->mips_cpu_harvard__DOT__j_program_counter_memory),32);
@@ -634,15 +628,14 @@ void MIPS_Harvard_TB::traceFullThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
         vcdp->fullBus(c+1257,(vlTOPp->data_writedata),32);
         vcdp->fullBus(c+1265,(vlTOPp->data_readdata),32);
         vcdp->fullBit(c+1273,(vlTOPp->mips_cpu_harvard__DOT__flush_decode_execute_register));
-        vcdp->fullBit(c+1281,(vlTOPp->mips_cpu_harvard__DOT__register_file_memory_mux_control_execute));
-        vcdp->fullBus(c+1289,(vlTOPp->mips_cpu_harvard__DOT__write_data_execute),32);
-        vcdp->fullBit(c+1297,(vlTOPp->mips_cpu_harvard__DOT__register_file_memory_mux_memory));
-        vcdp->fullBit(c+1305,(vlTOPp->mips_cpu_harvard__DOT__flush_fetch_decode_register));
-        vcdp->fullBit(c+1313,(1U));
-        vcdp->fullBus(c+1321,(4U),32);
-        vcdp->fullBus(c+1329,(0x20U),32);
-        vcdp->fullBus(c+1337,(5U),32);
-        vcdp->fullBus(c+1345,(0x1fU),5);
-        vcdp->fullBus(c+1353,(0U),5);
+        vcdp->fullBus(c+1281,(vlTOPp->mips_cpu_harvard__DOT__write_data_execute),32);
+        vcdp->fullBit(c+1289,(vlTOPp->mips_cpu_harvard__DOT__register_file_memory_mux_memory));
+        vcdp->fullBit(c+1297,(vlTOPp->mips_cpu_harvard__DOT__flush_fetch_decode_register));
+        vcdp->fullBit(c+1305,(1U));
+        vcdp->fullBus(c+1313,(4U),32);
+        vcdp->fullBus(c+1321,(0x20U),32);
+        vcdp->fullBus(c+1329,(5U),32);
+        vcdp->fullBus(c+1337,(0x1fU),5);
+        vcdp->fullBus(c+1345,(0U),5);
     }
 }

@@ -97,7 +97,6 @@ module mips_cpu_harvard (
 	logic           LO_register_write_execute;
 	logic           register_write_execute;
 	logic 			program_counter_multiplexer_jump_execute;
-	logic			register_file_memory_mux_control_execute;
 	logic			j_instruction_execute;
 	logic			using_HI_LO_execute;
 
@@ -399,12 +398,7 @@ module mips_cpu_harvard (
 		.j_program_counter_memory(j_program_counter_memory)
 	);
 
-	MUX_2INPUT #(.BUS_WIDTH(32)) register_file_memory_mux(
-		.control(register_file_memory_mux_control_execute),
-		.input_0(ALU_output_memory),
-		.input_1(j_program_counter_execute),
-		.resolved(ALU_output_memory_resolved)
-	);
+	assign ALU_output_memory_resolved = j_instruction_memory ? j_program_counter_execute : ALU_output_memory;
 
 	Memory_Writeback_Register memory_writeback_register(
 		.clk(internal_clk),

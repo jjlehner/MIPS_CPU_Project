@@ -490,12 +490,25 @@ void MIPS_Harvard_TB::_settle__TOP__2(MIPS_Harvard_TB__Syms* __restrict vlSymsp)
                     }
                 } else {
                     if ((2U & (IData)(vlTOPp->mips_cpu_harvard__DOT__control_unit__DOT__op))) {
-                        if ((1U & (~ (IData)(vlTOPp->mips_cpu_harvard__DOT__control_unit__DOT__op)))) {
+                        if ((1U & (IData)(vlTOPp->mips_cpu_harvard__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu_harvard__DOT__register_write_decode = 1U;
+                            vlTOPp->mips_cpu_harvard__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu_harvard__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu_harvard__DOT__ALU_src_B_decode = 2U;
+                            vlTOPp->mips_cpu_harvard__DOT__register_destination_decode = 2U;
+                            vlTOPp->mips_cpu_harvard__DOT__branch_decode = 1U;
+                            vlTOPp->mips_cpu_harvard__DOT__HI_register_write_decode = 0U;
+                            vlTOPp->mips_cpu_harvard__DOT__LO_register_write_decode = 0U;
+                            vlTOPp->mips_cpu_harvard__DOT__ALU_function_decode = 0x3fU;
+                            vlTOPp->mips_cpu_harvard__DOT__program_counter_multiplexer_jump_decode = 1U;
+                            vlTOPp->mips_cpu_harvard__DOT__j_instruction_decode = 1U;
+                            vlTOPp->mips_cpu_harvard__DOT__using_HI_LO_decode = 0U;
+                        } else {
                             vlTOPp->mips_cpu_harvard__DOT__register_write_decode = 0U;
                             vlTOPp->mips_cpu_harvard__DOT__memory_to_register_decode = 0U;
                             vlTOPp->mips_cpu_harvard__DOT__memory_write_decode = 0U;
-                            vlTOPp->mips_cpu_harvard__DOT__ALU_src_B_decode = 0U;
-                            vlTOPp->mips_cpu_harvard__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu_harvard__DOT__ALU_src_B_decode = 2U;
+                            vlTOPp->mips_cpu_harvard__DOT__register_destination_decode = 2U;
                             vlTOPp->mips_cpu_harvard__DOT__branch_decode = 1U;
                             vlTOPp->mips_cpu_harvard__DOT__HI_register_write_decode = 0U;
                             vlTOPp->mips_cpu_harvard__DOT__LO_register_write_decode = 0U;
@@ -899,8 +912,6 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__3(MIPS_Harvard_TB__Syms* __re
     vlTOPp->mips_cpu_harvard__DOT__ALU_function_execute 
         = (((IData)(vlTOPp->mips_cpu_harvard__DOT__flush_execute_register) 
             | (IData)(vlTOPp->reset)) ? 0U : (IData)(vlTOPp->mips_cpu_harvard__DOT__ALU_function_decode));
-    vlTOPp->mips_cpu_harvard__DOT__j_instruction_memory 
-        = ((~ (IData)(vlTOPp->reset)) & (IData)(vlTOPp->mips_cpu_harvard__DOT__j_instruction_execute));
     vlTOPp->mips_cpu_harvard__DOT__memory_write_memory 
         = ((~ (IData)(vlTOPp->reset)) & (IData)(vlTOPp->mips_cpu_harvard__DOT__memory_write_execute));
     vlTOPp->mips_cpu_harvard__DOT__ALU_src_B_execute 
@@ -961,21 +972,20 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__3(MIPS_Harvard_TB__Syms* __re
                & (~ (IData)(vlTOPp->reset))))) {
         __Vdly__mips_cpu_harvard__DOT__program_counter_fetch 
             = ((IData)(vlTOPp->mips_cpu_harvard__DOT__program_counter_multiplexer_jump_memory)
-                ? ((IData)(vlTOPp->mips_cpu_harvard__DOT__register_file_memory_mux_control_execute)
+                ? ((IData)(vlTOPp->mips_cpu_harvard__DOT__j_instruction_memory)
                     ? vlTOPp->mips_cpu_harvard__DOT__j_program_counter_execute
                     : vlTOPp->mips_cpu_harvard__DOT__ALU_output_memory)
                 : vlTOPp->mips_cpu_harvard__DOT__program_counter_mux_1_out);
     }
     vlTOPp->data_writedata = vlTOPp->mips_cpu_harvard__DOT__write_data_memory;
-    vlTOPp->mips_cpu_harvard__DOT__j_instruction_execute 
-        = ((~ ((IData)(vlTOPp->mips_cpu_harvard__DOT__flush_execute_register) 
-               | (IData)(vlTOPp->reset))) & (IData)(vlTOPp->mips_cpu_harvard__DOT__j_instruction_decode));
     vlTOPp->data_write = vlTOPp->mips_cpu_harvard__DOT__memory_write_memory;
     vlTOPp->mips_cpu_harvard__DOT__memory_write_execute 
         = ((~ ((IData)(vlTOPp->mips_cpu_harvard__DOT__flush_execute_register) 
                | (IData)(vlTOPp->reset))) & (IData)(vlTOPp->mips_cpu_harvard__DOT__memory_write_decode));
     vlTOPp->mips_cpu_harvard__DOT__memory_to_register_memory 
         = ((~ (IData)(vlTOPp->reset)) & (IData)(vlTOPp->mips_cpu_harvard__DOT__memory_to_register_execute));
+    vlTOPp->mips_cpu_harvard__DOT__j_instruction_memory 
+        = ((~ (IData)(vlTOPp->reset)) & (IData)(vlTOPp->mips_cpu_harvard__DOT__j_instruction_execute));
     vlTOPp->mips_cpu_harvard__DOT__program_counter_multiplexer_jump_memory 
         = ((~ (IData)(vlTOPp->reset)) & (IData)(vlTOPp->mips_cpu_harvard__DOT__program_counter_multiplexer_jump_execute));
     vlTOPp->mips_cpu_harvard__DOT__ALU_output_memory 
@@ -991,6 +1001,9 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__3(MIPS_Harvard_TB__Syms* __re
     vlTOPp->mips_cpu_harvard__DOT__memory_to_register_execute 
         = ((~ ((IData)(vlTOPp->mips_cpu_harvard__DOT__flush_execute_register) 
                | (IData)(vlTOPp->reset))) & (IData)(vlTOPp->mips_cpu_harvard__DOT__memory_to_register_decode));
+    vlTOPp->mips_cpu_harvard__DOT__j_instruction_execute 
+        = ((~ ((IData)(vlTOPp->mips_cpu_harvard__DOT__flush_execute_register) 
+               | (IData)(vlTOPp->reset))) & (IData)(vlTOPp->mips_cpu_harvard__DOT__j_instruction_decode));
     vlTOPp->mips_cpu_harvard__DOT__program_counter_multiplexer_jump_execute 
         = ((~ ((IData)(vlTOPp->mips_cpu_harvard__DOT__flush_execute_register) 
                | (IData)(vlTOPp->reset))) & (IData)(vlTOPp->mips_cpu_harvard__DOT__program_counter_multiplexer_jump_decode));
@@ -1464,12 +1477,25 @@ VL_INLINE_OPT void MIPS_Harvard_TB::_sequent__TOP__5(MIPS_Harvard_TB__Syms* __re
                     }
                 } else {
                     if ((2U & (IData)(vlTOPp->mips_cpu_harvard__DOT__control_unit__DOT__op))) {
-                        if ((1U & (~ (IData)(vlTOPp->mips_cpu_harvard__DOT__control_unit__DOT__op)))) {
+                        if ((1U & (IData)(vlTOPp->mips_cpu_harvard__DOT__control_unit__DOT__op))) {
+                            vlTOPp->mips_cpu_harvard__DOT__register_write_decode = 1U;
+                            vlTOPp->mips_cpu_harvard__DOT__memory_to_register_decode = 0U;
+                            vlTOPp->mips_cpu_harvard__DOT__memory_write_decode = 0U;
+                            vlTOPp->mips_cpu_harvard__DOT__ALU_src_B_decode = 2U;
+                            vlTOPp->mips_cpu_harvard__DOT__register_destination_decode = 2U;
+                            vlTOPp->mips_cpu_harvard__DOT__branch_decode = 1U;
+                            vlTOPp->mips_cpu_harvard__DOT__HI_register_write_decode = 0U;
+                            vlTOPp->mips_cpu_harvard__DOT__LO_register_write_decode = 0U;
+                            vlTOPp->mips_cpu_harvard__DOT__ALU_function_decode = 0x3fU;
+                            vlTOPp->mips_cpu_harvard__DOT__program_counter_multiplexer_jump_decode = 1U;
+                            vlTOPp->mips_cpu_harvard__DOT__j_instruction_decode = 1U;
+                            vlTOPp->mips_cpu_harvard__DOT__using_HI_LO_decode = 0U;
+                        } else {
                             vlTOPp->mips_cpu_harvard__DOT__register_write_decode = 0U;
                             vlTOPp->mips_cpu_harvard__DOT__memory_to_register_decode = 0U;
                             vlTOPp->mips_cpu_harvard__DOT__memory_write_decode = 0U;
-                            vlTOPp->mips_cpu_harvard__DOT__ALU_src_B_decode = 0U;
-                            vlTOPp->mips_cpu_harvard__DOT__register_destination_decode = 0U;
+                            vlTOPp->mips_cpu_harvard__DOT__ALU_src_B_decode = 2U;
+                            vlTOPp->mips_cpu_harvard__DOT__register_destination_decode = 2U;
                             vlTOPp->mips_cpu_harvard__DOT__branch_decode = 1U;
                             vlTOPp->mips_cpu_harvard__DOT__HI_register_write_decode = 0U;
                             vlTOPp->mips_cpu_harvard__DOT__LO_register_write_decode = 0U;
@@ -2002,7 +2028,6 @@ void MIPS_Harvard_TB::_ctor_var_reset() {
     mips_cpu_harvard__DOT__LO_register_write_execute = VL_RAND_RESET_I(1);
     mips_cpu_harvard__DOT__register_write_execute = VL_RAND_RESET_I(1);
     mips_cpu_harvard__DOT__program_counter_multiplexer_jump_execute = VL_RAND_RESET_I(1);
-    mips_cpu_harvard__DOT__register_file_memory_mux_control_execute = VL_RAND_RESET_I(1);
     mips_cpu_harvard__DOT__j_instruction_execute = VL_RAND_RESET_I(1);
     mips_cpu_harvard__DOT__using_HI_LO_execute = VL_RAND_RESET_I(1);
     mips_cpu_harvard__DOT__src_A_execute = VL_RAND_RESET_I(32);

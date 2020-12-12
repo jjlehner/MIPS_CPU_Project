@@ -108,11 +108,10 @@ module mips_cpu_harvard (
 	logic           LO_register_write_execute;
 	logic           register_write_execute;
 	logic 			program_counter_multiplexer_jump_execute;
-	logic			register_file_memory_mux_control_execute;
 	logic			j_instruction_execute;
 	logic			using_HI_LO_execute;
 
-`line 104 "../../rtl/mips_cpu_harvard.v" 0
+`line 103 "../../rtl/mips_cpu_harvard.v" 0
 	 
 	logic [31:0]	src_A_execute;
 	logic [31:0]	src_B_execute;
@@ -130,7 +129,7 @@ module mips_cpu_harvard (
 	logic [31:0]	program_counter_plus_four_execute;
 	logic [31:0]	j_program_counter_execute;
 
-`line 121 "../../rtl/mips_cpu_harvard.v" 0
+`line 120 "../../rtl/mips_cpu_harvard.v" 0
 	 
 	logic       register_write_memory;
 	logic [4:0] write_register_memory;
@@ -142,7 +141,7 @@ module mips_cpu_harvard (
 	logic		register_file_memory_mux_memory;
 	logic		j_instruction_memory;
 
-`line 132 "../../rtl/mips_cpu_harvard.v" 0
+`line 131 "../../rtl/mips_cpu_harvard.v" 0
 	 
 	logic [31:0] ALU_output_memory;
 	logic [31:0] ALU_HI_output_memory;
@@ -153,14 +152,14 @@ module mips_cpu_harvard (
 	logic [31:0] j_program_counter_memory;
 
 
-`line 142 "../../rtl/mips_cpu_harvard.v" 0
+`line 141 "../../rtl/mips_cpu_harvard.v" 0
 	 
 	logic register_write_writeback;
 	logic HI_register_write_writeback;
 	logic LO_register_write_writeback;
 	logic memory_to_register_writeback;
 
-`line 148 "../../rtl/mips_cpu_harvard.v" 0
+`line 147 "../../rtl/mips_cpu_harvard.v" 0
 	 
 	logic [4:0] write_register_writeback;
 	logic [31:0] result_writeback;
@@ -169,7 +168,7 @@ module mips_cpu_harvard (
 	logic [31:0] ALU_output_writeback;
 	logic [31:0] read_data_writeback;
 
-`line 156 "../../rtl/mips_cpu_harvard.v" 0
+`line 155 "../../rtl/mips_cpu_harvard.v" 0
 	 
 	logic       stall_fetch;
 	logic       stall_decode;
@@ -180,7 +179,7 @@ module mips_cpu_harvard (
 	logic [2:0] forward_B_execute;
 	logic 		flush_fetch_decode_register;
 
-`line 166 "../../rtl/mips_cpu_harvard.v" 0
+`line 165 "../../rtl/mips_cpu_harvard.v" 0
 	 
 	assign read_data_memory = data_readdata;
 	assign data_address = ALU_output_memory;
@@ -188,12 +187,12 @@ module mips_cpu_harvard (
 	assign data_write = memory_write_memory;
 	assign data_read = memory_to_register_memory;
 
-`line 173 "../../rtl/mips_cpu_harvard.v" 0
+`line 172 "../../rtl/mips_cpu_harvard.v" 0
 	 
 	assign instr_address = program_counter_fetch;
 	assign instruction_fetch = instr_readdata;
 
-`line 177 "../../rtl/mips_cpu_harvard.v" 0
+`line 176 "../../rtl/mips_cpu_harvard.v" 0
 	Register_File register_file(
 		.clk(internal_clk),.pipelined(1), 
 		.write_enable(register_write_writeback), 
@@ -212,7 +211,7 @@ module mips_cpu_harvard (
 		.read_data_LO(register_file_output_LO_decode)
 	);
 
-`line 195 "../../rtl/mips_cpu_harvard.v" 0
+`line 194 "../../rtl/mips_cpu_harvard.v" 0
 	Program_Counter pc (
 		.clk(internal_clk),
 		.address_input(program_counter_prime),
@@ -222,14 +221,14 @@ module mips_cpu_harvard (
 		.halt(halt)
 	);
 
-`line 204 "../../rtl/mips_cpu_harvard.v" 0
+`line 203 "../../rtl/mips_cpu_harvard.v" 0
 	Adder plus_four_adder(
 		.a(program_counter_fetch),
 		.b({{28{1'b0}},4'b0100}),
 		.z(program_counter_plus_four_fetch)
 	);
 
-`line 210 "../../rtl/mips_cpu_harvard.v" 0
+`line 209 "../../rtl/mips_cpu_harvard.v" 0
 	MUX_2INPUT #(.BUS_WIDTH(32)) program_counter_multiplexer (
 		.control(program_counter_src_decode),
 		.input_0(program_counter_plus_four_fetch),
@@ -237,7 +236,7 @@ module mips_cpu_harvard (
 		.resolved(program_counter_mux_1_out)
 	);
 
-`line 217 "../../rtl/mips_cpu_harvard.v" 0
+`line 216 "../../rtl/mips_cpu_harvard.v" 0
 	MUX_2INPUT #(.BUS_WIDTH(32)) program_counter_multiplexer_two (
 		.control(program_counter_multiplexer_jump_memory),
 		.input_0(program_counter_mux_1_out),
@@ -245,7 +244,7 @@ module mips_cpu_harvard (
 		.resolved(program_counter_prime)
 	);
 
-`line 224 "../../rtl/mips_cpu_harvard.v" 0
+`line 223 "../../rtl/mips_cpu_harvard.v" 0
 	Fetch_Decode_Register fetch_decode_register(
 		.clk(internal_clk),
 		.reset(reset),
@@ -257,7 +256,7 @@ module mips_cpu_harvard (
 		.program_counter_plus_four_decode(program_counter_plus_four_decode)
 	);
 
-`line 235 "../../rtl/mips_cpu_harvard.v" 0
+`line 234 "../../rtl/mips_cpu_harvard.v" 0
 	Control_Unit control_unit(
 		.instruction(instruction_decode),
 		.register_write(register_write_decode),
@@ -274,7 +273,7 @@ module mips_cpu_harvard (
 		.using_HI_LO(using_HI_LO_decode)
 	);
 
-`line 251 "../../rtl/mips_cpu_harvard.v" 0
+`line 250 "../../rtl/mips_cpu_harvard.v" 0
 	 
 	assign comparator_1 = (forward_A_decode) ? ALU_output_memory : register_file_output_A_decode;
 	assign comparator_2 = (forward_B_decode) ? ALU_output_memory : register_file_output_B_decode;
@@ -282,7 +281,7 @@ module mips_cpu_harvard (
 	assign src_B_decode = using_HI_LO_decode ? register_file_output_HI_decode : register_file_output_B_decode;
 
 
-`line 258 "../../rtl/mips_cpu_harvard.v" 0
+`line 257 "../../rtl/mips_cpu_harvard.v" 0
 	Comparator reg_output_comparator(
 		.op(op),
 		.rt(Rt_decode),
@@ -291,19 +290,19 @@ module mips_cpu_harvard (
 		.c(equal_decode)
 	);
 
-`line 266 "../../rtl/mips_cpu_harvard.v" 0
+`line 265 "../../rtl/mips_cpu_harvard.v" 0
 	assign program_counter_src_decode = branch_decode & equal_decode;
 	assign sign_imm_decode = {{16{immediate[15]}},immediate};
 	assign shifter_output_decode = sign_imm_decode << 2;
 
-`line 270 "../../rtl/mips_cpu_harvard.v" 0
+`line 269 "../../rtl/mips_cpu_harvard.v" 0
 	Adder adder_decode(
 		.a(shifter_output_decode),
 		.b(program_counter_plus_four_decode),
 		.z(program_counter_branch_decode)
 	);
 
-`line 276 "../../rtl/mips_cpu_harvard.v" 0
+`line 275 "../../rtl/mips_cpu_harvard.v" 0
 	Decode_Execute_Register decode_execute_register(
 		.clk(internal_clk),
 		.clear(flush_execute_register),
@@ -324,7 +323,7 @@ module mips_cpu_harvard (
 		.j_instruction_decode(j_instruction_decode),
 		.using_HI_LO_decode(using_HI_LO_decode),
 
-`line 296 "../../rtl/mips_cpu_harvard.v" 0
+`line 295 "../../rtl/mips_cpu_harvard.v" 0
 		.register_write_execute(register_write_execute),
 		.memory_to_register_execute(memory_to_register_execute),
 		.memory_write_execute(memory_write_execute),
@@ -350,14 +349,14 @@ module mips_cpu_harvard (
 		.j_program_counter_execute(j_program_counter_execute)
 	);
 
-`line 321 "../../rtl/mips_cpu_harvard.v" 0
+`line 320 "../../rtl/mips_cpu_harvard.v" 0
 	Adder plus_four_adder_execute(
 		.a(32'd4),
 		.b(program_counter_plus_four_execute),
 		.z(program_counter_plus_eight_execute)
 	);
 
-`line 327 "../../rtl/mips_cpu_harvard.v" 0
+`line 326 "../../rtl/mips_cpu_harvard.v" 0
 	MUX_4INPUT #(.BUS_WIDTH(5)) write_register_execute_mux(
 		.control(register_destination_execute),
 		.input_0(Rt_execute),
@@ -367,7 +366,7 @@ module mips_cpu_harvard (
 		.resolved(write_register_execute)
 	);
 
-`line 336 "../../rtl/mips_cpu_harvard.v" 0
+`line 335 "../../rtl/mips_cpu_harvard.v" 0
 	ALU_Input_Mux alu_input_mux(
 		.ALU_src_B_execute(ALU_src_B_execute),
 		.forward_one_execute(forward_A_execute),
@@ -384,27 +383,27 @@ module mips_cpu_harvard (
 		.sign_imm_execute(sign_imm_execute),
 		.program_counter_plus_eight_execute(program_counter_plus_eight_execute),
 
-`line 352 "../../rtl/mips_cpu_harvard.v" 0
+`line 351 "../../rtl/mips_cpu_harvard.v" 0
 		.src_A_ALU_execute(src_A_ALU_execute),
 		.src_B_ALU_execute(src_B_ALU_execute)
 	);
 
-`line 356 "../../rtl/mips_cpu_harvard.v" 0
+`line 355 "../../rtl/mips_cpu_harvard.v" 0
 	ALU alu(
 		.ALU_operation(ALU_function_execute),
 		.input_1(src_A_ALU_execute),
 		.input_2(src_B_ALU_execute),
 
-`line 361 "../../rtl/mips_cpu_harvard.v" 0
+`line 360 "../../rtl/mips_cpu_harvard.v" 0
 		.ALU_output(ALU_output_execute),
 		.ALU_HI_output(ALU_HI_output_execute),
 		.ALU_LO_output(ALU_LO_output_execute)
 	);
 
-`line 366 "../../rtl/mips_cpu_harvard.v" 0
+`line 365 "../../rtl/mips_cpu_harvard.v" 0
 	assign j_program_counter_decode = {program_counter_plus_four_decode[31:28], j_offset, 2'b00};
 
-`line 368 "../../rtl/mips_cpu_harvard.v" 0
+`line 367 "../../rtl/mips_cpu_harvard.v" 0
 	Execute_Memory_Register execute_memory_register(
 		.clk(internal_clk),
 		.reset(reset),
@@ -416,7 +415,7 @@ module mips_cpu_harvard (
 		.program_counter_multiplexer_jump_execute(program_counter_multiplexer_jump_execute),
 		.j_instruction_execute(j_instruction_execute),
 
-`line 379 "../../rtl/mips_cpu_harvard.v" 0
+`line 378 "../../rtl/mips_cpu_harvard.v" 0
 		.register_write_memory(register_write_memory),
 		.memory_to_register_memory(memory_to_register_memory),
 		.memory_write_memory(memory_write_memory),
@@ -425,7 +424,7 @@ module mips_cpu_harvard (
 		.program_counter_multiplexer_jump_memory(program_counter_multiplexer_jump_memory),
 		.j_instruction_memory(j_instruction_memory),
 
-`line 387 "../../rtl/mips_cpu_harvard.v" 0
+`line 386 "../../rtl/mips_cpu_harvard.v" 0
 		.ALU_output_execute(ALU_output_execute),
 		.ALU_HI_output_execute(ALU_HI_output_execute),
 		.ALU_LO_output_execute(ALU_LO_output_execute),
@@ -433,7 +432,7 @@ module mips_cpu_harvard (
 		.write_register_execute(write_register_execute),
 		.j_program_counter_execute(j_program_counter_execute),
 
-`line 394 "../../rtl/mips_cpu_harvard.v" 0
+`line 393 "../../rtl/mips_cpu_harvard.v" 0
 		.ALU_output_memory(ALU_output_memory),
 		.ALU_HI_output_memory(ALU_HI_output_memory),
 		.ALU_LO_output_memory(ALU_LO_output_memory),
@@ -442,15 +441,10 @@ module mips_cpu_harvard (
 		.j_program_counter_memory(j_program_counter_memory)
 	);
 
-`line 402 "../../rtl/mips_cpu_harvard.v" 0
-	MUX_2INPUT #(.BUS_WIDTH(32)) register_file_memory_mux(
-		.control(register_file_memory_mux_control_execute),
-		.input_0(ALU_output_memory),
-		.input_1(j_program_counter_execute),
-		.resolved(ALU_output_memory_resolved)
-	);
+`line 401 "../../rtl/mips_cpu_harvard.v" 0
+	assign ALU_output_memory_resolved = j_instruction_memory ? j_program_counter_execute : ALU_output_memory;
 
-`line 409 "../../rtl/mips_cpu_harvard.v" 0
+`line 403 "../../rtl/mips_cpu_harvard.v" 0
 	Memory_Writeback_Register memory_writeback_register(
 		.clk(internal_clk),
 		.reset(reset),
@@ -463,7 +457,7 @@ module mips_cpu_harvard (
 		.HI_register_write_writeback(HI_register_write_writeback),
 		.LO_register_write_writeback(LO_register_write_writeback),
 
-`line 421 "../../rtl/mips_cpu_harvard.v" 0
+`line 415 "../../rtl/mips_cpu_harvard.v" 0
 		.ALU_output_memory(ALU_output_memory),
 		.write_register_memory(write_register_memory),
 		.ALU_HI_output_memory(ALU_HI_output_memory),
@@ -475,10 +469,10 @@ module mips_cpu_harvard (
 		.ALU_LO_output_writeback(ALU_LO_output_writeback),
 		.read_data_writeback(read_data_writeback)
 
-`line 432 "../../rtl/mips_cpu_harvard.v" 0
+`line 426 "../../rtl/mips_cpu_harvard.v" 0
 	);
 
-`line 434 "../../rtl/mips_cpu_harvard.v" 0
+`line 428 "../../rtl/mips_cpu_harvard.v" 0
 	MUX_2INPUT #(.BUS_WIDTH(32)) writeback_mux(
 		.control(memory_to_register_writeback),
 		.input_0(ALU_output_writeback),
@@ -519,6 +513,6 @@ module mips_cpu_harvard (
 
 
 
-`line 474 "../../rtl/mips_cpu_harvard.v" 0
+`line 468 "../../rtl/mips_cpu_harvard.v" 0
 endmodule
-`line 475 "../../rtl/mips_cpu_harvard.v" 2
+`line 469 "../../rtl/mips_cpu_harvard.v" 2
