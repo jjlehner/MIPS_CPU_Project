@@ -1,20 +1,13 @@
 #lb 
-#0
+#-2
 #1
 #additional comment : both sb and lb must be working
 
-lui $4, 0x1000
-
-lui $3, 0x0000
-
-sb $3, 1($4)
-
-addiu $4, $4, 1
-
-lb $5, 0($4)
-
-subu $2, $5, $3
-
+lui $16, 0x2000
+lui $18, 0x1000
+ori $18, $18, 0x00FE
+sw $18, 0($16)
+lb $2, 0($16)
 jr $0
 nop
 
