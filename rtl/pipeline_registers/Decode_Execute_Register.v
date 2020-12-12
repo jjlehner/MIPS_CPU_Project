@@ -16,6 +16,7 @@ module Decode_Execute_Register
 	input	logic			program_counter_multiplexer_jump_decode,
 	input	logic			j_instruction_decode,
 	input	logic			using_HI_LO_decode,
+	input	logic			HALT_decode,
 
 	output	logic 			register_write_execute,
 	output 	logic			memory_to_register_execute,
@@ -28,6 +29,7 @@ module Decode_Execute_Register
 	output	logic 			program_counter_multiplexer_jump_execute,
 	output	logic			j_instruction_execute,
 	output	logic			using_HI_LO_execute,
+	output	logic			HALT_execute,
 	
 	input 	logic [4:0]		Rs_decode,
 	input 	logic [4:0]		Rt_decode,
@@ -75,6 +77,8 @@ module Decode_Execute_Register
 			j_program_counter_execute <= {32{1'b0}};
 			src_A_execute <= {32{1'b0}};
 			src_B_execute <= {32{1'b0}};
+
+			HALT_execute <= 0;
 		end else begin
 			register_write_execute <= register_write_decode;
 			memory_to_register_execute <= memory_to_register_decode;
@@ -96,6 +100,8 @@ module Decode_Execute_Register
 			j_program_counter_execute <= j_program_counter_decode;
 			src_A_execute <= src_A_decode;
 			src_B_execute <= src_B_decode;
+
+			HALT_execute <= HALT_decode;
 		end
 	end
 	

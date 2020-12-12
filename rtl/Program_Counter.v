@@ -7,15 +7,17 @@ module Program_Counter(
 	output	logic [31:0] address_output
 
 );
-	always_comb begin
-		halt = (address_output == 0);
-	end
+
 	always_ff @(posedge clk, posedge reset) begin
 		if(reset) begin
 			address_output <= 32'hBFC00000;
+			halt <= 0;
 		end
-		if (!enable && !reset) begin
+		if (!enable && !reset && !halt) begin
 			address_output <= address_input;
+			if(address_input == 0) begin
+				halt <= 1;
+			end
 		end
 	end
 

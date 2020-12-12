@@ -33,7 +33,7 @@ module mips_cpu_harvard (
 	logic [31:0] program_counter_plus_four_fetch;
 	logic [31:0] instruction_fetch;
 	logic [31:0] program_counter_mux_1_out;
-	logic 		 halt;
+	logic 		 HALT_fetch;
 
 	//decode Controls
 	logic       program_counter_src_decode;
@@ -51,6 +51,7 @@ module mips_cpu_harvard (
 	logic		j_instruction_decode;
 	logic		HI_register_write_decode;
 	logic		LO_register_write_decode;
+	logic		HALT_decode;
 
 	//decode datapath
 	//TODO move instruction logic to control
@@ -99,6 +100,7 @@ module mips_cpu_harvard (
 	logic 			program_counter_multiplexer_jump_execute;
 	logic			j_instruction_execute;
 	logic			using_HI_LO_execute;
+	logic			HALT_execute;
 
 	//Execute Datapath
 	logic [31:0]	src_A_execute;
@@ -127,6 +129,7 @@ module mips_cpu_harvard (
 	logic 		program_counter_multiplexer_jump_memory;
 	logic		register_file_memory_mux_memory;
 	logic		j_instruction_memory;
+	logic		HALT_memory;
 
 	//Memory datapath
 	logic [31:0] ALU_output_memory;
@@ -143,6 +146,7 @@ module mips_cpu_harvard (
 	logic HI_register_write_writeback;
 	logic LO_register_write_writeback;
 	logic memory_to_register_writeback;
+	logic HALT_writeback;
 
 	//Writeback datapath
 	logic [4:0] write_register_writeback;
@@ -197,7 +201,7 @@ module mips_cpu_harvard (
 		.reset(reset),
 		.enable(stall_fetch),
 		.address_output(program_counter_fetch),
-		.halt(halt)
+		.halt(HALT_fetch)
 	);
 
 	Adder plus_four_adder(
@@ -228,7 +232,9 @@ module mips_cpu_harvard (
 		.instruction_fetch(instruction_fetch),
 		.program_counter_plus_four_fetch(program_counter_plus_four_fetch),
 		.instruction_decode(instruction_decode),
-		.program_counter_plus_four_decode(program_counter_plus_four_decode)
+		.program_counter_plus_four_decode(program_counter_plus_four_decode),
+		.HALT_fetch(HALT_fetch),
+		.HALT_decode(HALT_decode)
 	);
 
 	Control_Unit control_unit(
@@ -291,6 +297,8 @@ module mips_cpu_harvard (
 		.program_counter_multiplexer_jump_decode(program_counter_multiplexer_jump_decode),
 		.j_instruction_decode(j_instruction_decode),
 		.using_HI_LO_decode(using_HI_LO_decode),
+		.HALT_decode(HALT_decode),
+		.HALT_execute(HALT_execute),
 
 		.register_write_execute(register_write_execute),
 		.memory_to_register_execute(memory_to_register_execute),
@@ -374,6 +382,7 @@ module mips_cpu_harvard (
 		.LO_register_write_execute(LO_register_write_execute),
 		.program_counter_multiplexer_jump_execute(program_counter_multiplexer_jump_execute),
 		.j_instruction_execute(j_instruction_execute),
+		.HALT_execute(HALT_execute),
 
 		.register_write_memory(register_write_memory),
 		.memory_to_register_memory(memory_to_register_memory),
@@ -382,6 +391,7 @@ module mips_cpu_harvard (
 		.LO_register_write_memory(LO_register_write_memory),
 		.program_counter_multiplexer_jump_memory(program_counter_multiplexer_jump_memory),
 		.j_instruction_memory(j_instruction_memory),
+		.HALT_memory(HALT_memory),
 
 		.ALU_output_execute(ALU_output_execute),
 		.ALU_HI_output_execute(ALU_HI_output_execute),
@@ -411,6 +421,8 @@ module mips_cpu_harvard (
 		.memory_to_register_writeback(memory_to_register_writeback),
 		.HI_register_write_writeback(HI_register_write_writeback),
 		.LO_register_write_writeback(LO_register_write_writeback),
+		.HALT_memory(HALT_memory),
+		.HALT_writeback(HALT_writeback),
 
 		.ALU_output_memory(ALU_output_memory),
 		.write_register_memory(write_register_memory),
@@ -459,10 +471,13 @@ module mips_cpu_harvard (
 		.forward_register_file_output_A_execute(forward_A_execute),
 		.forward_register_file_output_B_execute(forward_B_execute)
 	);
-	assign internal_clk = clk && clk_enable;
-	assign active = !halt;
+	assign active = !HALT_writeback;
 
-
+	always_ff @(posedge clk, negedge clk) begin
+		if(clk_enable) begin
+			internal_clk <= clk;
+		end
+	end
 
 
 endmodule

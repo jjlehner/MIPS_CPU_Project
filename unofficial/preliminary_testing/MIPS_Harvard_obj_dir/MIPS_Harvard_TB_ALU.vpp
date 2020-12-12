@@ -68,6 +68,8 @@ module ALU
 			6'b100111:	ALU_output = ~(input_1|input_2);						 
 			6'b101010:	ALU_output = ($signed(input_1) < $signed(input_2)) ? {{31{1'b0}},1'b1} : {32{1'b0}};	 
 			6'b101011:	ALU_output = (input_1 < input_2) ? {{31{1'b0}},1'b1} : {32{1'b0}};						 
+			6'b111100:	ALU_HI_LO_output = {{32{1'b0}}, input_1};
+			6'b111101:	ALU_HI_LO_output = {input_1, {32{1'b0}}};
 			6'b111110:  ALU_output = input_1;									 
 			6'b111111:	ALU_output = input_2;									 
 			default:	ALU_output = {32{1'bx}}; 								 
@@ -76,4 +78,4 @@ module ALU
 		ALU_LO_output = ALU_HI_LO_output[31:0];
 	end
 endmodule
-`line 73 "../../rtl/ALU.v" 2
+`line 75 "../../rtl/ALU.v" 2
