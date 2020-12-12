@@ -1,13 +1,13 @@
-#lb 
-#254
+#lb
+#5
 #2
-#additional comment : both sb and lb must be working
+#none
 
-lui $16, 0x2000
-lui $18, 0x1000
-ori $18, $18, 0x00FE
-sw $18, 0($16)
-lb $2, 0($16)
+lui $3, 0x0001
+addiu $3, $0, 0x0005
+addiu $4, $0, 32
+sw $3, 1($4)
+addiu $4, $4, 1
+lb $2, 0($4)
 jr $0
 nop
-
