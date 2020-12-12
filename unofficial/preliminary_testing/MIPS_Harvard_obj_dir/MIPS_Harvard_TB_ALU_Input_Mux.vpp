@@ -29,16 +29,16 @@ module ALU_Input_Mux(
 			3'b000: src_A_ALU_execute = read_data_1_reg;
 			3'b001: src_A_ALU_execute = result_writeback;
 			3'b010: src_A_ALU_execute = ALU_output_memory;
-			3'b011: src_A_ALU_execute = ALU_LO_output_memory;
-			3'b100: src_A_ALU_execute = LO_result_writeback;
+			3'b011: src_A_ALU_execute = LO_result_writeback;
+			3'b100: src_A_ALU_execute = ALU_LO_output_memory;
 			default:src_A_ALU_execute = 0;
 		endcase
 		case(forward_two_execute)
 			3'b000: src_mux_input_0 = read_data_2_reg;
 			3'b001: src_mux_input_0 = result_writeback;
 			3'b010: src_mux_input_0 = ALU_output_memory;
-			3'b011: src_mux_input_0 = ALU_HI_output_memory;
-			3'b100: src_mux_input_0 = HI_result_writeback;
+			3'b011: src_mux_input_0 = HI_result_writeback;
+			3'b100: src_mux_input_0 = ALU_HI_output_memory;
 			default:src_mux_input_0 = 0;
 		endcase
 		case(ALU_src_B_execute)

@@ -295,8 +295,8 @@ void MIPS_Harvard_TB::traceInitThis__1(MIPS_Harvard_TB__Syms* __restrict vlSymsp
         vcdp->declBus(c+633,"mips_cpu_harvard decode_execute_register Rt_execute", false,-1, 4,0);
         vcdp->declBus(c+641,"mips_cpu_harvard decode_execute_register Rd_execute", false,-1, 4,0);
         vcdp->declBus(c+649,"mips_cpu_harvard decode_execute_register sign_imm_execute", false,-1, 31,0);
-        vcdp->declBus(c+417,"mips_cpu_harvard decode_execute_register src_A_decode", false,-1, 31,0);
-        vcdp->declBus(c+425,"mips_cpu_harvard decode_execute_register src_B_decode", false,-1, 31,0);
+        vcdp->declBus(c+57,"mips_cpu_harvard decode_execute_register src_A_decode", false,-1, 31,0);
+        vcdp->declBus(c+65,"mips_cpu_harvard decode_execute_register src_B_decode", false,-1, 31,0);
         vcdp->declBus(c+481,"mips_cpu_harvard decode_execute_register program_counter_plus_four_decode", false,-1, 31,0);
         vcdp->declBus(c+537,"mips_cpu_harvard decode_execute_register j_program_counter_decode", false,-1, 31,0);
         vcdp->declBus(c+609,"mips_cpu_harvard decode_execute_register src_A_execute", false,-1, 31,0);

@@ -11,15 +11,8 @@ int main( int argc, char **argv, char **env )
 	Verilated::commandArgs( argc, argv );
 
 	TESTBENCH tb("trace.vcd");
-	tb.tick();
-	tb.m_core->reset = 1;
-	tb.tick();
-	tb.m_core->reset = 0;
-	
-	for(int i = 0; tb.m_core->active && i < 20; i++){
-		tb.tick();
-	}
-	
+	tb.load_program("../programs/test_ALU.txt");
+	tb.run_program();
 	std::cout<<"Final Register V0 Value - "<<tb.m_core->register_v0<<std::endl;
 	
 }
