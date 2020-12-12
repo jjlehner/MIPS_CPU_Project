@@ -21,18 +21,19 @@ module test_cpu_interface (
 
     i = i + 1;
 
-    if (i == 100) begin
+    if (i === 100) begin
      $finish;
     end
-    if (i % 2 == 0) begin
+    if (i % 2 === 0) begin
+      $display("read (inst) %h, write (data) %h", instr_address, data_address);
       data_read = 0;
       data_write = 1;
       data_writedata = data_readdata;
     end else begin
+      $display("read (inst) %h, read (data) %h", instr_address, data_address);
       data_write = 0;
       data_read = 1;
     end
-    $display("read (inst) %h, r/w (data) %h", instr_address, data_address);
 
     @(posedge cpu_enable);
 
@@ -42,11 +43,14 @@ module test_cpu_interface (
       instr_address = instr_address + 4;
     end
 
-    if (data_address == 32'hffff001C) begin
-      data_address = 32'hffff0004;
-    end else if (i % 2 == 1) begin
-      data_address = data_address + 4;
+    if (i % 2 == 1) 
+      if (data_address == 32'hffff001C) begin
+        data_address = 32'hffff0004;
+      end else begin
+        data_address = data_address + 4;
+      end
     end
+
 
     $display("instruction: %h", instr_readdata);
     $display("data: %h", data_readdata);

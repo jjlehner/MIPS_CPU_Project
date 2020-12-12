@@ -68,7 +68,10 @@ module cache (
   // Z (high impedance) is synthesisable but I don't think it's best practise?
 
   always @(posedge cpu_read) `do (
-    cpu_wait <= 1;
+    cpu_wait = 1;
+    $display("Reading: %h", address);
+    $display("Looking for %h in %h, %h, %h, %h", tag, cache[cache_address][0][49:32],cache[cache_address][1][49:32],cache[cache_address][2][49:32],cache[cache_address][3][49:32]);
+    $display("Cache Address is %h", cache_address);
     cpu_readdata = cache[cache_address][0][49:32] === tag?
       cache[cache_address][0][31:0] : cache[cache_address][1][49:32] === tag?
       cache[cache_address][1][31:0] : cache[cache_address][2][49:32] === tag?
