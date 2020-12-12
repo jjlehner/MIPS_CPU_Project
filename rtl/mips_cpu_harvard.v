@@ -26,8 +26,6 @@ module mips_cpu_harvard (
 
 	logic internal_clk;
 	
-	logic HI_LO_output;
-
 
 	//Fetch control
 	logic [31:0] program_counter_prime;
@@ -38,19 +36,21 @@ module mips_cpu_harvard (
 	logic 		 halt;
 
 	//decode Controls
-	logic       program_counter_source_decode;
+	logic       program_counter_src_decode;
 	logic       register_write_decode;
 	logic       memory_to_register_decode;
 	logic       memory_write_decode;
 	logic [1:0] ALU_src_B_decode;
-	logic       register_destination_decode;
+	logic [1:0] register_destination_decode;
 	logic       branch_decode;
-	logic       hi_lo_register_write_decode;
 	logic       equal_decode;
 	logic [5:0] ALU_function_decode;
 	logic 		program_counter_multiplexer_jump_decode;
 	logic		flush_decode_execute_register;
-	logic		register_file_memory_mux_control_decode;
+	logic		using_HI_LO_decode;
+	logic		j_instruction_decode;
+	logic		HI_register_write_decode;
+	logic		LO_register_write_decode;
 
 	//decode datapath
 	//TODO move instruction logic to control
@@ -71,31 +71,40 @@ module mips_cpu_harvard (
 		assign Rd_decode = instruction_decode[15:11];
 	logic [15:0]    immediate;
 		assign immediate = instruction_decode[15:0];
+	logic [25:0]	j_offset;
+		assign j_offset = instruction_decode[25:0];
 	
+	logic [31:0]	register_file_output_LO_decode;
+	logic [31:0]	register_file_output_HI_decode;
 	logic [31:0]    shifter_output_decode;
 	logic [31:0]    register_file_output_A_decode;
 	logic [31:0]    register_file_output_B_decode;
-	logic [31:0]    register_file_output_A_resolved_decode;
-	logic [31:0]    register_file_output_B_resolved_decode;
+	logic [31:0]    src_A_decode;
+	logic [31:0]    src_B_decode;
 	logic [31:0]    sign_imm_decode;
+	logic [31:0] 	comparator_1;
+	logic [31:0] 	comparator_2;
+	logic [31:0]	j_program_counter_decode;
 
 	//Execute Controls
-	logic           register_destination_execute;
+	logic [1:0]     register_destination_execute;
 	logic           memory_to_register_execute;
 	logic           memory_write_execute;
 	logic [4:0]     write_register_execute;
 	logic [1:0]     ALU_src_B_execute;
 	logic [5:0]     ALU_function_execute;
-	logic           hi_lo_register_write_execute;
+	logic           HI_register_write_execute;
+	logic           LO_register_write_execute;
 	logic           register_write_execute;
 	logic 			program_counter_multiplexer_jump_execute;
-	logic			register_file_memory_mux_control_execute;
+	logic			j_instruction_execute;
+	logic			using_HI_LO_execute;
 
 	//Execute Datapath
-	logic [31:0]    register_file_output_A_execute;
-	logic [31:0]    register_file_output_B_execute;
-	logic [31:0]    source_A_ALU_execute;
-	logic [31:0]    source_B_ALU_execute;
+	logic [31:0]	src_A_execute;
+	logic [31:0]	src_B_execute;
+	logic [31:0]    src_A_ALU_execute;
+	logic [31:0]    src_B_ALU_execute;
 	logic [31:0]    write_data_execute;
 	logic [31:0]    ALU_output_execute;
 	logic [31:0]    ALU_HI_output_execute;
@@ -113,9 +122,11 @@ module mips_cpu_harvard (
 	logic [4:0] write_register_memory;
 	logic       memory_to_register_memory;
 	logic       memory_write_memory;
-	logic       hi_lo_register_write_memory;
+	logic       HI_register_write_memory;
+	logic		LO_register_write_memory;
 	logic 		program_counter_multiplexer_jump_memory;
 	logic		register_file_memory_mux_memory;
+	logic		j_instruction_memory;
 
 	//Memory datapath
 	logic [31:0] ALU_output_memory;
@@ -123,10 +134,14 @@ module mips_cpu_harvard (
 	logic [31:0] ALU_LO_output_memory;
 	logic [31:0] read_data_memory;
 	logic [31:0] write_data_memory;
+	logic [31:0] ALU_output_memory_resolved;
+	logic [31:0] j_program_counter_memory;
+
 
 	//Writeback controls
 	logic register_write_writeback;
-	logic hi_lo_register_write_writeback;
+	logic HI_register_write_writeback;
+	logic LO_register_write_writeback;
 	logic memory_to_register_writeback;
 
 	//Writeback datapath
@@ -143,8 +158,8 @@ module mips_cpu_harvard (
 	logic       forward_A_decode;
 	logic       forward_B_decode;
 	logic       flush_execute_register;
-	logic [1:0] forward_A_execute;
-	logic [1:0] forward_B_execute;
+	logic [2:0] forward_A_execute;
+	logic [2:0] forward_B_execute;
 	logic 		flush_fetch_decode_register;
 
 	//Data Memory
@@ -160,9 +175,9 @@ module mips_cpu_harvard (
 
 	Register_File register_file(
 		.clk(internal_clk),.pipelined(1), 
-		.HI_LO_output(HI_LO_output), 
 		.write_enable(register_write_writeback), 
-		.hi_lo_register_write_enable(hi_lo_register_write_writeback),
+		.HI_write_enable(HI_register_write_writeback),
+		.LO_write_enable(LO_register_write_writeback),
 		.read_address_1(read_address_1), 
 		.read_address_2(read_address_2), 
 		.write_address(write_register_writeback), 
@@ -171,8 +186,9 @@ module mips_cpu_harvard (
 		.LO_write_data(ALU_LO_output_writeback), 
 		.read_data_1(register_file_output_A_decode),
 		.read_data_2(register_file_output_B_decode),
-		.read_register_2(register_v0)
-
+		.read_register_2(register_v0),
+		.read_data_HI(register_file_output_HI_decode),
+		.read_data_LO(register_file_output_LO_decode)
 	);
 
 	Program_Counter pc (
@@ -191,7 +207,7 @@ module mips_cpu_harvard (
 	);
 
 	MUX_2INPUT #(.BUS_WIDTH(32)) program_counter_multiplexer (
-		.control(program_counter_source_decode),
+		.control(program_counter_src_decode),
 		.input_0(program_counter_plus_four_fetch),
 		.input_1(program_counter_branch_decode),
 		.resolved(program_counter_mux_1_out)
@@ -208,7 +224,7 @@ module mips_cpu_harvard (
 		.clk(internal_clk),
 		.reset(reset),
 		.enable(stall_decode),
-		.clear(program_counter_source_decode),
+		.clear(program_counter_src_decode),
 		.instruction_fetch(instruction_fetch),
 		.program_counter_plus_four_fetch(program_counter_plus_four_fetch),
 		.instruction_decode(instruction_decode),
@@ -223,59 +239,38 @@ module mips_cpu_harvard (
 		.ALU_src_B(ALU_src_B_decode),
 		.register_destination(register_destination_decode),
 		.branch(branch_decode),
-		.hi_lo_register_write(hi_lo_register_write_decode),
+		.HI_register_write(HI_register_write_decode),
+		.LO_register_write(LO_register_write_decode),
 		.ALU_function(ALU_function_decode),
 		.program_counter_multiplexer_jump(program_counter_multiplexer_jump_decode),
-		.j_instruction()
+		.j_instruction(j_instruction_decode),
+		.using_HI_LO(using_HI_LO_decode)
 	);
 
-	MUX_2INPUT #(.BUS_WIDTH(32)) register_file_output_A_mux 
-	(
-		.control(forward_A_decode),
-		.input_0(register_file_output_A_decode),
-		.input_1(ALU_output_memory_resolved),
-		.resolved(register_file_output_A_resolved_decode)
-	);
+	//Post-Register File multiplexers
+	assign comparator_1 = (forward_A_decode) ? ALU_output_memory : register_file_output_A_decode;
+	assign comparator_2 = (forward_B_decode) ? ALU_output_memory : register_file_output_B_decode;
+	assign src_A_decode = using_HI_LO_decode ? register_file_output_LO_decode : register_file_output_A_decode;
+	assign src_B_decode = using_HI_LO_decode ? register_file_output_HI_decode : register_file_output_B_decode;
 
-	MUX_2INPUT #(.BUS_WIDTH(32))register_file_output_B_mux
-	(
-		.control(forward_B_decode),
-		.input_0(register_file_output_B_decode),
-		.input_1(ALU_output_memory_resolved),
-		.resolved(register_file_output_B_resolved_decode)
-	);
 
 	Comparator reg_output_comparator(
 		.op(op),
 		.rt(Rt_decode),
-		.a(register_file_output_A_resolved_decode),
-		.b(register_file_output_B_resolved_decode),
+		.a(comparator_1),
+		.b(comparator_2),
 		.c(equal_decode)
 	);
 
-	And_Gate program_counter_source_and_gate_decode(
-		.input_A(branch_decode),
-		.input_B(equal_decode),
-		.output_C(program_counter_source_decode)
-	);
-
-	Sign_Extension sign_extender_decode(
-		.short_input(immediate),
-		.extended_output(sign_imm_decode)
-	);
-
-	Left_Shift shifter_decode(
-		.shift_input(sign_imm_decode),
-		.shift_output(shifter_output_decode)
-	);
+	assign program_counter_src_decode = branch_decode & equal_decode;
+	assign sign_imm_decode = {{16{immediate[15]}},immediate};
+	assign shifter_output_decode = sign_imm_decode << 2;
 
 	Adder adder_decode(
 		.a(shifter_output_decode),
 		.b(program_counter_plus_four_decode),
 		.z(program_counter_branch_decode)
 	);
-
-
 
 	Decode_Execute_Register decode_execute_register(
 		.clk(internal_clk),
@@ -286,33 +281,40 @@ module mips_cpu_harvard (
 		.memory_write_decode(memory_write_decode),
 		.ALU_src_B_decode(ALU_src_B_decode),
 		.register_destination_decode(register_destination_decode),
-		.hi_lo_register_write_decode(hi_lo_register_write_decode),
+		.HI_register_write_decode(HI_register_write_decode),
+		.LO_register_write_decode(LO_register_write_decode),
 		.ALU_function_decode(ALU_function_decode),
 		.Rs_decode(Rs_decode),
 		.Rt_decode(Rt_decode),
 		.Rd_decode(Rd_decode),
 		.sign_imm_decode(sign_imm_decode),
 		.program_counter_multiplexer_jump_decode(program_counter_multiplexer_jump_decode),
+		.j_instruction_decode(j_instruction_decode),
+		.using_HI_LO_decode(using_HI_LO_decode),
 
 		.register_write_execute(register_write_execute),
 		.memory_to_register_execute(memory_to_register_execute),
 		.memory_write_execute(memory_write_execute),
 		.ALU_src_B_execute(ALU_src_B_execute),
 		.register_destination_execute(register_destination_execute),
-		.hi_lo_register_write_execute(hi_lo_register_write_execute),
+		.HI_register_write_execute(HI_register_write_execute),
+		.LO_register_write_execute(LO_register_write_execute),
 		.ALU_function_execute(ALU_function_execute),
 		.Rs_execute(Rs_execute),
 		.Rt_execute(Rt_execute),
 		.Rd_execute(Rd_execute),
 		.sign_imm_execute(sign_imm_execute),
 		.program_counter_multiplexer_jump_execute(program_counter_multiplexer_jump_execute),
-
-		.read_data_one_decode(register_file_output_A_decode),
-		.read_data_two_decode(register_file_output_B_decode),
+		.j_instruction_execute(j_instruction_execute),
+		.using_HI_LO_execute(using_HI_LO_execute),
+		.src_A_decode(src_A_decode),
+		.src_B_decode(src_B_decode),
 		.program_counter_plus_four_decode(program_counter_plus_four_decode),
-		.read_data_one_execute(register_file_output_A_execute),
-		.read_data_two_execute(register_file_output_B_execute),
-		.program_counter_plus_four_execute(program_counter_plus_four_execute)
+		.j_program_counter_decode(j_program_counter_decode),
+		.src_A_execute(src_A_execute),
+		.src_B_execute(src_B_execute),
+		.program_counter_plus_four_execute(program_counter_plus_four_execute),
+		.j_program_counter_execute(j_program_counter_execute)
 	);
 
 	Adder plus_four_adder_execute(
@@ -330,50 +332,37 @@ module mips_cpu_harvard (
 		.resolved(write_register_execute)
 	);
 
-	MUX_4INPUT #(.BUS_WIDTH(32)) register_file_output_A_execute_mux(
-		.control(forward_A_execute),
-		.input_0(register_file_output_A_execute),
-		.input_1(result_writeback),
-		.input_2(ALU_output_memory),
-		.input_3(ALU_LO_output_writeback),
+	ALU_Input_Mux alu_input_mux(
+		.ALU_src_B_execute(ALU_src_B_execute),
+		.forward_one_execute(forward_A_execute),
+		.forward_two_execute(forward_B_execute),
+		
+		.read_data_1_reg(src_A_execute),
+		.result_writeback(result_writeback),
+		.ALU_output_memory(ALU_output_memory),
+		.LO_result_writeback(ALU_LO_output_writeback),
+		.ALU_LO_output_memory(ALU_LO_output_memory),
+		.read_data_2_reg(src_B_execute),
+		.ALU_HI_output_memory(ALU_HI_output_memory),
+		.HI_result_writeback(ALU_HI_output_writeback),
+		.sign_imm_execute(sign_imm_execute),
+		.program_counter_plus_eight_execute(program_counter_plus_eight_execute),
 
-		.resolved(source_A_ALU_execute)
-	);
-
-	MUX_4INPUT #(.BUS_WIDTH(32)) register_file_output_B_execute_mux(
-		.control(forward_B_execute),
-		.input_0(register_file_output_B_execute),
-		.input_1(result_writeback),
-		.input_2(ALU_output_memory),
-		.input_3(ALU_HI_output_writeback),
-
-		.resolved(write_data_execute)
-	);
-
-	MUX_4INPUT #(.BUS_WIDTH(32)) source_B_ALU_mux(
-		.control(ALU_src_B_execute),
-		.input_0(write_data_execute),
-		.input_1(sign_imm_execute),
-		.input_2(program_counter_plus_eight_execute),
-		.input_3(0), //Intentionally left unconnected
-
-		.resolved(source_B_ALU_execute)
+		.src_A_ALU_execute(src_A_ALU_execute),
+		.src_B_ALU_execute(src_B_ALU_execute)
 	);
 
 	ALU alu(
 		.ALU_operation(ALU_function_execute),
-		.input_1(source_A_ALU_execute),
-		.input_2(source_B_ALU_execute),
+		.input_1(src_A_ALU_execute),
+		.input_2(src_B_ALU_execute),
 
 		.ALU_output(ALU_output_execute),
 		.ALU_HI_output(ALU_HI_output_execute),
 		.ALU_LO_output(ALU_LO_output_execute)
 	);
-	Region_Branch region_branch(
-		.pc_prefix(program_counter_plus_four_execute),
-		.offset(jmp_immediate),
-		.j_program_counter_execute(j_program_counter_execute)
-	);
+
+	assign j_program_counter_decode = {program_counter_plus_four_decode[31:28], j_offset, 2'b00};
 
 	Execute_Memory_Register execute_memory_register(
 		.clk(internal_clk),
@@ -381,15 +370,18 @@ module mips_cpu_harvard (
 		.register_write_execute(register_write_execute),
 		.memory_to_register_execute(memory_to_register_execute),
 		.memory_write_execute(memory_write_execute),
-		.hi_lo_register_write_execute(hi_lo_register_write_execute),
+		.HI_register_write_execute(HI_register_write_execute),
+		.LO_register_write_execute(LO_register_write_execute),
 		.program_counter_multiplexer_jump_execute(program_counter_multiplexer_jump_execute),
+		.j_instruction_execute(j_instruction_execute),
 
 		.register_write_memory(register_write_memory),
 		.memory_to_register_memory(memory_to_register_memory),
 		.memory_write_memory(memory_write_memory),
-		.hi_lo_register_write_memory(hi_lo_register_write_memory),
+		.HI_register_write_memory(HI_register_write_memory),
+		.LO_register_write_memory(LO_register_write_memory),
 		.program_counter_multiplexer_jump_memory(program_counter_multiplexer_jump_memory),
-
+		.j_instruction_memory(j_instruction_memory),
 
 		.ALU_output_execute(ALU_output_execute),
 		.ALU_HI_output_execute(ALU_HI_output_execute),
@@ -406,23 +398,19 @@ module mips_cpu_harvard (
 		.j_program_counter_memory(j_program_counter_memory)
 	);
 
-	MUX_2INPUT #(.BUS_WIDTH(32)) register_file_memory_mux(
-		.control(register_file_memory_mux_control_execute),
-		.input_0(ALU_output_memory),
-		.input_1(j_program_counter_execute),
-		.resolved(ALU_output_memory_resolved)
-	);
+	assign ALU_output_memory_resolved = j_instruction_memory ? j_program_counter_execute : ALU_output_memory;
 
 	Memory_Writeback_Register memory_writeback_register(
 		.clk(internal_clk),
 		.reset(reset),
 		.register_write_memory(register_write_memory),
 		.memory_to_register_memory(memory_to_register_memory),
-		.hi_lo_register_write_memory(hi_lo_register_write_memory),
+		.HI_register_write_memory(HI_register_write_memory),
+		.LO_register_write_memory(LO_register_write_memory),
 		.register_write_writeback(register_write_writeback),
 		.memory_to_register_writeback(memory_to_register_writeback),
-		.hi_lo_register_write_writeback(hi_lo_register_write_writeback),
-
+		.HI_register_write_writeback(HI_register_write_writeback),
+		.LO_register_write_writeback(LO_register_write_writeback),
 
 		.ALU_output_memory(ALU_output_memory),
 		.write_register_memory(write_register_memory),
@@ -453,18 +441,23 @@ module mips_cpu_harvard (
 		.memory_to_register_execute(memory_to_register_execute),
 		.register_write_execute(register_write_execute),
 		.write_register_memory(write_register_memory),
+		.HI_register_write_memory(HI_register_write_memory),
+		.LO_register_write_memory(LO_register_write_memory),
 		.memory_to_register_memory(memory_to_register_memory),
 		.register_write_memory(register_write_memory),
 		.write_register_writeback(write_register_writeback),
+		.HI_register_write_writeback(HI_register_write_writeback),
+		.LO_register_write_writeback(LO_register_write_writeback),
 		.register_write_writeback(register_write_writeback),
 		.program_counter_multiplexer_jump_execute(program_counter_multiplexer_jump_execute),
+		.using_HI_LO_execute(using_HI_LO_execute),
 		.stall_fetch(stall_fetch),
 		.stall_decode(stall_decode),
-		.forward_register_file_output_1_decode(forward_A_decode),
-		.forward_register_file_output_2_decode(forward_B_decode),
+		.forward_register_file_output_A_decode(forward_A_decode),
+		.forward_register_file_output_B_decode(forward_B_decode),
 		.flush_execute_register(flush_execute_register),
-		.forward_register_file_output_1_execute(forward_A_execute),
-		.forward_register_file_output_2_execute(forward_B_execute)
+		.forward_register_file_output_A_execute(forward_A_execute),
+		.forward_register_file_output_B_execute(forward_B_execute)
 	);
 	assign internal_clk = clk && clk_enable;
 	assign active = !halt;

@@ -1,6 +1,9 @@
 // Taken from http://zipcpu.com/blog/2017/06/21/looking-at-verilator.html
 #include <filesystem>
+#include <fstream>
 #include <iostream>
+#include <cassert>
+#include <sstream>
 #include <verilated_vcd_c.h>
 
 const int ISA = 0xBFC00000; //INSTRUCTION_START_ADDRESS
@@ -17,7 +20,7 @@ public:
 
 	std::string vcdname;
 	std::map<int, uint32_t> memory;
-
+	std::string curr_program_name = "NULL";
 	virtual void opentrace( const char *vcdname )
 	{
 		if ( !m_trace )
@@ -46,13 +49,48 @@ public:
 		this->vcdname = std::string( vcdname );
 		m_tickcount = 0l;
 		m_core->clk_enable = 1;
-
-		memory[ISA + 0] = uint32_t(0b00100100000000100000000100000000); //addiu v0 zero 0x100, 0x24020100
-		memory[ISA + 4] = uint32_t(0b10001100000000100000000001100100);
-		memory[ISA + 8] = uint32_t(0b00000000000000000000000000001000); //jr 0
-		memory[100] = 100;
 	}
 
+	void load_program(std::string program){
+		memory.clear();
+		curr_program_name = program;
+		std::fstream file;
+		file.open(program);
+		assert(file.is_open());
+		std::string line;
+		for(int i = 0;std::getline(file, line);i+=4){
+			if(line[0]=='.'){
+				std::string pos = line.substr(1, pos.size() -1 );
+				if(pos == "main") i = ISA; 
+				else{
+					i = std::stol(pos,nullptr,16);
+				}
+				continue;
+			}
+			std::stringstream ss(line);
+			uint32_t hex;
+			ss>>std::hex>>hex;
+			memory[i] = hex;
+		}
+	}
+	bool run_program(int limit=100){
+		reset();
+		for(int i = 0; m_core->active;){
+			tick();
+			i++;
+			if(i==limit){
+				std::cout<<"\n\tFailed Program - "<<curr_program_name<<"\n\tClock limit surpassed"<<std::endl;
+				return false;
+			}
+		}
+		std::cout<<"\tPassed Program - "<<curr_program_name<<std::endl;
+		return true;
+	}
+	void dump_memory(){
+		for(auto x : memory){
+			std::cout<<std::hex<<x.first<<" "<<x.second<<std::endl;
+		}
+	}
 	virtual ~TESTBENCH( void )
 	{
 		close();
