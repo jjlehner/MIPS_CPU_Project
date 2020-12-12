@@ -12,8 +12,8 @@ int main( int argc, char **argv, char **env )
 
 	TESTBENCH tb("trace.vcd");
 	tb.load_program("../programs/test_ALU.txt");
-	tb.dump_memory();
 	tb.run_program();
-	std::cout<<"Final Register V0 Value - "<<tb.m_core->register_v0<<std::endl;
+	tb.load_program("../programs/branch_test_ALU.txt");
+	tb.run_program();
 	
 }

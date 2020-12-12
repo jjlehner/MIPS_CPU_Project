@@ -79,11 +79,11 @@ public:
 			tick();
 			i++;
 			if(i==limit){
-				std::cout<<"Failed Program - "<<curr_program_name<<"\nClock limit surpassed"<<std::endl;
+				std::cout<<"\n\tFailed Program - "<<curr_program_name<<"\n\tClock limit surpassed"<<std::endl;
 				return false;
 			}
 		}
-		std::cout<<"Passed Program - "<<curr_program_name<<std::endl;
+		std::cout<<"\tPassed Program - "<<curr_program_name<<std::endl;
 		return true;
 	}
 	void dump_memory(){

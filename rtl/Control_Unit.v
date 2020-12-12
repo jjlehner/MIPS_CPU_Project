@@ -32,13 +32,19 @@ module Control_Unit(
 				ALU_src_B				= 0;
 				register_destination 	= 1;
 				branch					= 0;
-				HI_register_write 		= ( funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 ); //checks if instruction is mult/multu/div/divu
-				LO_register_write		= HI_register_write;
+				HI_register_write 		= ( funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 || funct == 6'b010001); //checks if instruction is mult/multu/div/divu
+				LO_register_write		= ( funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 || funct == 6'b010011);
 				case(funct)
-					6'b010000: begin
+					6'b010001: begin	//MTHI
+						ALU_function = 6'b111111;
+					end
+					6'b010011: begin	//MTLO
 						ALU_function = 6'b111110;
 					end
-					6'b010010: begin
+					6'b010000: begin	//MFLO
+						ALU_function = 6'b111110;
+					end
+					6'b010010: begin	//MFHI
 						ALU_function = 6'b111111;
 					end
 					default: begin
