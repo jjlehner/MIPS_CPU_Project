@@ -2049,7 +2049,7 @@ VL_INLINE_OPT QData MIPS_Harvard_TB::_change_request(MIPS_Harvard_TB__Syms* __re
     // Change detection
     QData __req = false;  // Logically a bool
     __req |= ((vlTOPp->mips_cpu_harvard__DOT__internal_clk ^ vlTOPp->__Vchglast__TOP__mips_cpu_harvard__DOT__internal_clk));
-    VL_DEBUG_IF( if(__req && ((vlTOPp->mips_cpu_harvard__DOT__internal_clk ^ vlTOPp->__Vchglast__TOP__mips_cpu_harvard__DOT__internal_clk))) VL_DBG_MSGF("        CHANGE: ../../rtl/mips_cpu_harvard.v:27: mips_cpu_harvard.internal_clk\n"); );
+    VL_DEBUG_IF( if(__req && ((vlTOPp->mips_cpu_harvard__DOT__internal_clk ^ vlTOPp->__Vchglast__TOP__mips_cpu_harvard__DOT__internal_clk))) VL_DBG_MSGF("        CHANGE: ../../rtl/mips_cpu_harvard.v:28: mips_cpu_harvard.internal_clk\n"); );
     // Final
     vlTOPp->__Vchglast__TOP__mips_cpu_harvard__DOT__internal_clk 
         = vlTOPp->mips_cpu_harvard__DOT__internal_clk;

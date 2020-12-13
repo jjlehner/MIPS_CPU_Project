@@ -1,0 +1,30 @@
+`begin_keywords "1800-2017"
+`line 1 "../../rtl/Program_Counter.v" 1
+module Program_Counter(
+	input	logic clk,
+	input 	logic [31:0] address_input,
+	input	logic enable,  
+	input	logic reset,
+	output	logic halt,
+	output	logic [31:0] address_output
+
+`line 9 "../../rtl/Program_Counter.v" 0
+);
+
+`line 11 "../../rtl/Program_Counter.v" 0
+	always_ff @(posedge clk, posedge reset) begin
+		if(reset) begin
+			address_output <= 32'hBFC00000;
+			halt <= 0;
+		end
+		if (!enable && !reset && !halt) begin
+			address_output <= address_input;
+			if(address_input == 0) begin
+				halt <= 1;
+			end
+		end
+	end
+
+`line 24 "../../rtl/Program_Counter.v" 0
+endmodule
+`line 25 "../../rtl/Program_Counter.v" 2

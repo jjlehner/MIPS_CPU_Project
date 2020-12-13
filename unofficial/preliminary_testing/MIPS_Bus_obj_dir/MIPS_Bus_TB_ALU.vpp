@@ -1,0 +1,81 @@
+`begin_keywords "1800-2017"
+`line 1 "../../rtl/ALU.v" 1
+ 
+module ALU
+(
+	input 	logic [5:0]		ALU_operation,
+	input 	logic [31:0]	input_1,
+	input	logic [31:0]	input_2,
+
+`line 8 "../../rtl/ALU.v" 0
+	output	logic [31:0]	ALU_output,
+	output	logic [31:0]	ALU_HI_output,
+	output	logic [31:0]	ALU_LO_output
+
+`line 12 "../../rtl/ALU.v" 0
+);
+
+`line 14 "../../rtl/ALU.v" 0
+	logic [4:0] shift_amount;
+	logic [63:0] sign_extened_input_1;
+	logic [63:0] sign_extened_input_2;
+	logic [63:0] extended_input_1;
+	logic [63:0] extended_input_2;
+	logic [63:0] ALU_HI_LO_output;
+		
+	assign shift_amount = input_1[10:6];
+	assign sign_extened_input_1 = { { 32{ input_1[31] } }, input_1[31:0] };			
+	assign sign_extened_input_2 = { { 32{ input_2[31] } }, input_2[31:0] };			
+	assign extended_input_1 =  { { 32{ 1'b0 } }, input_1 };
+	assign extended_input_2 = { { 32{ 1'b0 } }, input_2 };
+
+
+
+`line 29 "../../rtl/ALU.v" 0
+	always_comb begin
+		ALU_output = {32{1'bx}};
+		ALU_HI_LO_output = {64{1'bx}};
+		case(ALU_operation)
+			6'b000000: 	ALU_output = input_2 << shift_amount; 					 
+			6'b000001:	ALU_output = input_2 >> shift_amount; 					 
+			6'b000011: 	ALU_output = input_2 >>> shift_amount;					 
+			6'b000100:	ALU_output = input_2 << input_1[4:0];					 
+			6'b000110: 	ALU_output = input_2 >> input_1[4:0];					 
+			6'b000111: 	ALU_output = input_2 >>> input_1[4:0];					 
+			6'b001000:	ALU_output = input_2; 									 
+			6'b001001:	ALU_output = input_2;									 
+			6'b010000:	ALU_output = input_2;									 
+			6'b010001:	ALU_output = input_2;									 
+			6'b010010:	ALU_output = input_2;									 
+			6'b010011:	ALU_output = input_2;									 
+			6'b011000:	ALU_HI_LO_output = $signed(sign_extened_input_1) * $signed(sign_extened_input_2);	 
+			6'b011001:	ALU_HI_LO_output = extended_input_1 * extended_input_2;	 
+			6'b011010:	begin													 
+				ALU_HI_LO_output = {$signed(input_1) / $signed(input_2) ,{32{1'b0}}};		
+				ALU_HI_LO_output = ALU_HI_LO_output + {{32{1'b0}},$signed(input_1) % $signed(input_2)};
+			end
+			6'b011011: 	begin													 
+				ALU_HI_LO_output = {input_1 / input_2, {32{1'b0}}};		
+				ALU_HI_LO_output = ALU_HI_LO_output + {{32{1'b0}},input_1 % input_2};
+			end
+			6'b100000: 	ALU_output = $signed(input_1) + $signed(input_2);		 
+			6'b100001:	ALU_output = input_1 + input_2;							 
+			6'b100010:	ALU_output = $signed(input_1) - $signed(input_2);		 
+			6'b100011:	ALU_output = input_1 - input_2;							 
+			6'b100100:	ALU_output = input_1 & input_2;							 
+			6'b100101:	ALU_output = input_1 | input_2;							 
+			6'b100110:	ALU_output = input_1 ^~ input_2;						 
+			6'b100111:	ALU_output = ~(input_1|input_2);						 
+			6'b101010:	ALU_output = ($signed(input_1) < $signed(input_2)) ? {{31{1'b0}},1'b1} : {32{1'b0}};	 
+			6'b101011:	ALU_output = (input_1 < input_2) ? {{31{1'b0}},1'b1} : {32{1'b0}};						 
+			6'b111100:	ALU_HI_LO_output = {{32{1'b0}}, input_1};
+			6'b111101:	ALU_HI_LO_output = {input_1, {32{1'b0}}};
+			6'b111110:  ALU_output = input_1;									 
+			6'b111111:	ALU_output = input_2;									 
+			default:	ALU_output = {32{1'bx}}; 								 
+		endcase
+		ALU_HI_output = ALU_HI_LO_output[63:32];
+		ALU_LO_output = ALU_HI_LO_output[31:0];
+	end
+endmodule
+`line 75 "../../rtl/ALU.v" 2

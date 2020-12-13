@@ -3,6 +3,8 @@
 //TODO  fix naming of hi, lo modules to HI, LO
 //TODO  add support for HI LO moving commands(multiplexers)
 module mips_cpu_harvard (
+	
+
 	input logic clk,
 	/* verilator lint_off UNUSED */
 	input logic reset,
@@ -408,7 +410,7 @@ module mips_cpu_harvard (
 		.j_program_counter_memory(j_program_counter_memory)
 	);
 
-	assign ALU_output_memory_resolved = j_instruction_memory ? j_program_counter_execute : ALU_output_memory;
+	assign ALU_output_memory_resolved = j_instruction_memory ? j_program_counter_memory : ALU_output_memory;
 
 	Memory_Writeback_Register memory_writeback_register(
 		.clk(internal_clk),

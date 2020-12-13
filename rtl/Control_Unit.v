@@ -13,7 +13,8 @@ module Control_Unit(
 	output logic		j_instruction,
 	output logic		LO_register_write,
 	output logic		HI_register_write,
-	output logic		using_HI_LO
+	output logic		using_HI_LO,
+	output logic [3:0]	byteenable,
 );
 
 	logic [5:0] op;
@@ -276,10 +277,32 @@ module Control_Unit(
 				using_HI_LO				= 0;
 			end
 			
-			/*
-			6'b100000: 	controls <= {12{1'bx}};	//LB
-			6'b100001: 	controls <= {12{1'bx}};	//LH
-			*/
+			
+			6'b100000: 	begin	//LB
+				register_write			= 1;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 1;
+				register_destination 	= 0;
+				branch					= 0;
+				HI_register_write		= 0;
+				LO_register_write		= HI_register_write;
+				ALU_function			= 6'b100000;//add signed function
+				program_counter_multiplexer_jump = 0;
+			end
+			6'b100001:	begin	//LH
+				register_write			= 1;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 1;
+				register_destination 	= 0;
+				branch					= 0;
+				HI_register_write		= 0;
+				LO_register_write		= HI_register_write;
+				ALU_function			= 6'b100001;//add unsigned function
+				program_counter_multiplexer_jump = 0;
+			end
+			
 			6'b100011:	begin				//LW
 				register_write			= 1;
 				memory_to_register		= 1;
@@ -292,12 +315,23 @@ module Control_Unit(
 				ALU_function			= 6'b100001;//add unsigned function
 				program_counter_multiplexer_jump = 0;
 			end
-			/*
-			6'b100100: 	controls <= {12{1'bx}};	//LBU
+			
+			6'b100100: begin	//LBU
+				register_write			= 1;
+				memory_to_register		= 0;
+				memory_write			= 0;
+				ALU_src_B				= 1;
+				register_destination 	= 0;
+				branch					= 0;
+				HI_register_write		= 0;
+				LO_register_write		= HI_register_write;
+				ALU_function			= 6'b100001;//add unsigned function
+				program_counter_multiplexer_jump = 0;
+			end
 			6'b100101: 	controls <= {12{1'bx}};	//LHU
 			6'b101000: 	controls <= {12{1'bx}};	//SB
 			6'b101001: 	controls <= {12{1'bx}};	//SH
-			*/
+			
 			6'b101011: 	begin	//SW
 				register_write			= 0;
 				memory_to_register		= 1;

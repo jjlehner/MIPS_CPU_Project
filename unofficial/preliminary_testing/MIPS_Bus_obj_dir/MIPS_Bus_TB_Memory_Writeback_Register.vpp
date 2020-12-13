@@ -1,0 +1,73 @@
+`begin_keywords "1800-2017"
+`line 1 "../../rtl/pipeline_registers/Memory_Writeback_Register.v" 1
+module Memory_Writeback_Register
+(
+	input	logic 	clk,
+	input	logic	reset,
+
+`line 6 "../../rtl/pipeline_registers/Memory_Writeback_Register.v" 0
+	 
+	input	logic 			register_write_memory,
+	input 	logic			memory_to_register_memory,
+	input	logic 			HI_register_write_memory,
+	input	logic			LO_register_write_memory,
+	input	logic			HALT_memory,
+
+`line 13 "../../rtl/pipeline_registers/Memory_Writeback_Register.v" 0
+	output	logic 			register_write_writeback,
+	output 	logic			memory_to_register_writeback,
+	output	logic			HI_register_write_writeback,
+	output	logic			LO_register_write_writeback,
+	output	logic			HALT_writeback,
+	
+	 
+	input	logic [31:0]	ALU_output_memory,
+	input	logic [4:0]		write_register_memory,
+	input 	logic [31:0]	ALU_HI_output_memory,
+	input	logic [31:0]	ALU_LO_output_memory,
+	input 	logic [31:0]	read_data_memory,
+	
+	output	logic [31:0]	ALU_output_writeback,
+	output	logic [4:0]		write_register_writeback,
+	output	logic [31:0]	ALU_HI_output_writeback,
+	output	logic [31:0]	ALU_LO_output_writeback,
+	output	logic [31:0]	read_data_writeback
+);
+
+`line 33 "../../rtl/pipeline_registers/Memory_Writeback_Register.v" 0
+	always_ff @(posedge clk, posedge reset) begin
+		if(reset) begin
+			register_write_writeback <= 0;
+			memory_to_register_writeback <= 0;
+			HI_register_write_writeback <= 0;
+			LO_register_write_writeback <= 0;
+			ALU_output_writeback <= 0;
+			write_register_writeback <= 0;
+			ALU_HI_output_writeback <= 0;
+			ALU_LO_output_writeback <= 0;
+			read_data_writeback <= 0;
+			HALT_writeback <= 0;
+		end
+		else begin
+			register_write_writeback <= register_write_memory;
+			memory_to_register_writeback <=memory_to_register_memory;
+
+`line 50 "../../rtl/pipeline_registers/Memory_Writeback_Register.v" 0
+			HI_register_write_writeback <= HI_register_write_memory;
+			LO_register_write_writeback <= LO_register_write_memory;
+
+`line 53 "../../rtl/pipeline_registers/Memory_Writeback_Register.v" 0
+			ALU_output_writeback <= ALU_output_memory;
+			write_register_writeback <= write_register_memory;
+			ALU_HI_output_writeback <= ALU_HI_output_memory;
+			ALU_LO_output_writeback <= ALU_LO_output_memory;
+			read_data_writeback <= read_data_memory;
+			HALT_writeback <= HALT_memory;
+		end
+
+`line 61 "../../rtl/pipeline_registers/Memory_Writeback_Register.v" 0
+	end
+
+`line 63 "../../rtl/pipeline_registers/Memory_Writeback_Register.v" 0
+endmodule
+`line 64 "../../rtl/pipeline_registers/Memory_Writeback_Register.v" 2

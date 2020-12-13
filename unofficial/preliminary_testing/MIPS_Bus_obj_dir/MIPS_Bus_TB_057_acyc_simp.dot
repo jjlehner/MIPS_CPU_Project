@@ -1,0 +1,27 @@
+digraph v3graph {
+	graph	[label="MIPS_Bus_obj_dir/MIPS_Bus_TB_057_acyc_simp.dot",
+		 labelloc=t, labeljust=l,
+		 //size="7.5,10",
+		 rankdir=TB];
+	n0	[fontsize=8 label="0x56499ff17040\n ALWAYS", color=yellow];
+	n1	[fontsize=8 label="0x56499fa97120 PRE\n TOP->mips_cpu_bus__DOT__instruction_decode", color=lightblue];
+	n2	[fontsize=8 label="0x56499fa95700\n TOP->mips_cpu_bus__DOT__internal_clk", color=skyblue];
+	n3	[fontsize=8 label="0x56499feb18a0\n ACTIVE", color=yellow];
+	n4	[fontsize=8 label="0x56499fa95e00 PRE\n TOP->mips_cpu_bus__DOT__HALT_fetch", color=lightblue];
+	n5	[fontsize=8 label="0x56499fd1e2b0 PRE\n TOP->mips_cpu_bus__DOT__j_program_counter_execute", color=lightblue];
+	n6	[fontsize=8 label="0x56499ff482d0\n ALWAYS", color=yellow];
+	n0 -> n0 [fontsize=8 label="" weight=6 color=yellow style=dashed];
+	n0 -> n2 [fontsize=8 label="" weight=1 color=yellow style=dashed];
+	n1 -> n0 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+	n2 -> n3 [fontsize=8 label="" weight=8 color=red];
+	n2 -> n6 [fontsize=8 label="" weight=32 color=red];
+	n2 -> n5 [fontsize=8 label="" weight=32 color=red];
+	n2 -> n1 [fontsize=8 label="" weight=32 color=red];
+	n3 -> n6 [fontsize=8 label="" weight=32 color=red];
+	n3 -> n4 [fontsize=8 label="" weight=32 color=red];
+	n3 -> n1 [fontsize=8 label="" weight=32 color=red];
+	n3 -> n5 [fontsize=8 label="" weight=32 color=red];
+	n4 -> n4 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+	n5 -> n1 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+	n6 -> n0 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+}

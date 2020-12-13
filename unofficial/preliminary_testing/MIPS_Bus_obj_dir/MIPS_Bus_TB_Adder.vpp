@@ -1,0 +1,14 @@
+`begin_keywords "1800-2017"
+`line 1 "../../rtl/Adder.v" 1
+module Adder
+(
+	input 	logic [31:0] a,b,
+	output 	logic [31:0] z
+);
+
+`line 7 "../../rtl/Adder.v" 0
+assign z = a + b;
+
+`line 9 "../../rtl/Adder.v" 0
+endmodule
+`line 10 "../../rtl/Adder.v" 2
