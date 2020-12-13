@@ -25,13 +25,16 @@ module mips_cpu_bus_tb_delay0;
 	wire[31:0] data_writedata;
 	reg[31:0] data_readdata;
 
-    RAM_32x2048_delay0 #(RAM_INIT_FILE) raminst(clk, data_address, write, read, data_writedata, data_readdata);
-    //not sure what is the ram size or should the ram size be flexible
+    RAM_32x2048_delay0 #(RAM_INIT_FILE) raminst(clk, instr_address, instr_readdata, data_address, data_write, data_read, data_writedata, data_readdata);
+
     
-    mips_cpu cpuInst(clk, reset, active, register_v0, clk_enable, instr_address, instr_readdata, data_address, data_write, data_read, data_writedata, data_readdata);
+    mips_cpu_harvard cpuInst(clk, reset, active, register_v0, clk_enable, instr_address, instr_readdata, data_address, data_write, data_read, data_writedata, data_readdata);
 
     // Generate clock
     initial begin
+	$dumpfile("mips_cpu_bus_tb_delay0_waves.vcd");
+	$dumpvars(0, mips_cpu_bus_tb_delay0);
+
         clk = 0;
 
         repeat (TIMEOUT_CYCLES) begin
@@ -61,7 +64,7 @@ module mips_cpu_bus_tb_delay0;
             @(posedge clk);
         end
 
-        $display("TB : finished; running=0");
+        $display("TB : finished; active=0");
 
         $finish;
         
