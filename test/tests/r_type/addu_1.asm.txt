@@ -3,11 +3,11 @@
 #1
 #ensure addiu works
 
-addiu $4, $0, 16
-addiu $3, $0, 9
+addiu $t1, $zero, 16
+addiu $t2, $zero, 9
 
-addu $2, $3, $4
+addu $v0, $t1, $t2
 
-jr $0
+jr $zero
 
 nop

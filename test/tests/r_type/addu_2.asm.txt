@@ -3,11 +3,11 @@
 #2
 #trying with lui dependency
 
-lui $3, 0x0001
-lui $4, 0x0000
+lui $t1, 0x0001
+lui $t2, 0x0000
 
-addu $2, $3, $4
+addu $v0, $t1, $t2
 
-jr $0
+jr $zero
 
 nop
