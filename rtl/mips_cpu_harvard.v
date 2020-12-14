@@ -174,7 +174,7 @@ module mips_cpu_harvard (
 	assign instruction_fetch = instr_readdata;
 
 	Register_File register_file(
-		.clk(internal_clk),.pipelined(1), 
+		.clk(internal_clk),.pipelined(1'b1), 
 		.write_enable(register_write_writeback), 
 		.HI_write_enable(HI_register_write_writeback),
 		.LO_write_enable(LO_register_write_writeback),
@@ -328,7 +328,7 @@ module mips_cpu_harvard (
 		.input_0(Rt_execute),
 		.input_1(Rd_execute),
 		.input_2(5'b11111),
-		.input_3(0), //Intentionally left  unconnected.
+		.input_3(5'b00000), //Intentionally left  unconnected.
 		.resolved(write_register_execute)
 	);
 
