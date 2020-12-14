@@ -18,7 +18,6 @@ module mips_cpu_bus_tb;
     reg[31:0] readdata;
 
     RAM_32x2048_delay1 #(RAM_INIT_FILE) raminst(clk, address, write, read, writedata, readdata);
-    //not sure what is the ram size or should the ram size be flexible
     
     mips_cpu_bus cpuInst(clk, rst, active, register_v0, address, write, read, waitrequest, writedata, byteenable, readdata);
 

@@ -146,7 +146,7 @@ else
 				
 				mipsel-linux-gnu-objcopy -O binary --only-section=.text test/tmp0/${type}_type/$hexed.o test/bin0/${type}_type/$hexed.bin
 				
-				### hexdump test/bin0/${type}_type/$hexed.bin > test/hex0/${type}_type/$hexed.hex.txt
+				hexdump test/bin0/${type}_type/$hexed.bin > test/hex0/${type}_type/$hexed.hex.txt
 				
 
 				###compile testbench
