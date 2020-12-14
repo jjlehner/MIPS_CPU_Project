@@ -44,3 +44,7 @@ addu_1 fail ensure addiu works
 addu_1 fail ensure addiu works
 addu_1 fail ensure addiu works
 addu_1 fail ensure addiu works
+addu_1 fail ensure addiu works
+addu_2 fail trying with lui dependency
+addu_1 fail ensure addiu works
+addu_2 fail trying with lui dependency
