@@ -12,8 +12,8 @@ module Execute_Memory_Register
 	input	logic 			program_counter_multiplexer_jump_execute,
 	input	logic			j_instruction_execute,
 	input	logic			HALT_execute,
-	input	logic			op_execute,
-	input	logic			src_A_ALU_execute,
+	input	logic [5:0]		op_execute,
+	input	logic [31:0]	src_A_ALU_execute,
 
 	output	logic 			register_write_memory,
 	output 	logic			memory_to_register_memory,
@@ -23,8 +23,8 @@ module Execute_Memory_Register
 	output	logic 			program_counter_multiplexer_jump_memory,
 	output	logic			j_instruction_memory,
 	output	logic			HALT_memory,
-	output	logic			op_memory,
-	output	logic			src_A_ALU_memory,
+	output	logic [5:0]		op_memory,
+	output	logic [31:0]	src_A_ALU_memory,
 
 	//datapath
 	input	logic [31:0]	ALU_output_execute,

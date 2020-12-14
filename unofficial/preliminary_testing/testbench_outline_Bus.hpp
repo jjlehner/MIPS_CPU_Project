@@ -5,10 +5,51 @@
 #include <cassert>
 #include <sstream>
 #include <verilated_vcd_c.h>
+#include <bitset>
 
 const int ISA = 0xBFC00000; //INSTRUCTION_START_ADDRESS
 const int RAM_SIZE = 1 << 31; 
 
+class RAM{
+private:
+	std::map<uint32_t, uint8_t> memory;
+public:
+	uint32_t operator[](uint32_t pos){
+		uint32_t temp = 0;
+		for(int i = 0; i <4; i++){
+			temp += ((uint32_t)memory[pos + i]) << (8 * i);
+		}
+		return temp;
+	}
+	void set(const uint32_t& pos, const uint32_t value, const uint8_t byteenable){
+		std::bitset<8> encoded_byteenable(byteenable);
+		if(memory.find(pos) == memory.end()){memory[pos] = 0;}
+		if(memory.find(pos+1) == memory.end()){memory[pos+1] = 0;}
+		if(memory.find(pos+2) == memory.end()){memory[pos+2] = 0;}
+		if(memory.find(pos+3) == memory.end()){memory[pos+3] = 0;}
+
+		if(encoded_byteenable[3]) memory[pos + 3] = (value>>24);
+		if(encoded_byteenable[2]) memory[pos + 2] = (value<<8)>>24;
+		if(encoded_byteenable[1]) memory[pos + 1] = (value<<16)>>24;
+		if(encoded_byteenable[0]) memory[pos] = (value<<24)>>24;
+	}
+	void clear(){
+		memory.clear();
+	}
+	void dump_memory() const{
+		int i = 0;
+		uint32_t temp;
+		for(auto x : memory){
+			temp += ((uint32_t)x.second) << (8*i);
+			i++;
+			if(i == 4){
+				std::cout<<std::hex<<x.first - 3<<" "<<temp<<std::endl;
+				temp = 0;
+				i= 0;
+			}
+		}
+	}
+};
 class TESTBENCH
 {
 public:
@@ -19,8 +60,8 @@ public:
 	bool trace = true;
 
 	std::string vcdname;
-	std::map<int, uint32_t> memory;
 	std::string curr_program_name = "NULL";
+	RAM memory;
 	virtual void opentrace( const char *vcdname )
 	{
 		if ( !m_trace )
@@ -60,7 +101,7 @@ public:
 		for(int i = 0;std::getline(file, line);i+=4){
 			if(line[0]=='.'){
 				std::string pos = line.substr(1, pos.size() -1 );
-				if(pos == "main") i = ISA; 
+				if(pos == "main") i = ISA - 4; 
 				else{
 					i = std::stol(pos,nullptr,16);
 					i -= 4;
@@ -70,7 +111,7 @@ public:
 			std::stringstream ss(line);
 			uint32_t hex;
 			ss>>std::hex>>hex;
-			memory[i] = hex;
+			memory.set(i,hex, 31);
 		}
 	}
 	bool run_program(int limit=100){
@@ -87,9 +128,7 @@ public:
 		return true;
 	}
 	void dump_memory(){
-		for(auto x : memory){
-			std::cout<<std::hex<<x.first<<" "<<x.second<<std::endl;
-		}
+		memory.dump_memory();
 	}
 	virtual ~TESTBENCH( void )
 	{
@@ -156,11 +195,10 @@ public:
 	}
 
 	void update_data_output(){
-		std::cout<<std::hex<<m_core->address<<" "<<memory[m_core->address]<<std::endl;
 		m_core->readdata = memory[m_core->address];
 	}
 	void update_memory_file(){
-		memory[m_core->address] = m_core->writedata;
+		memory.set(m_core->address,m_core->writedata, m_core->byteenable);
 	}
 
 

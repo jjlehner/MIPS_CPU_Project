@@ -71,6 +71,7 @@ VL_MODULE(MIPS_Bus_TB) {
         CData/*0:0*/ mips_cpu_bus__DOT__j_instruction_execute;
         CData/*0:0*/ mips_cpu_bus__DOT__using_HI_LO_execute;
         CData/*0:0*/ mips_cpu_bus__DOT__HALT_execute;
+        CData/*5:0*/ mips_cpu_bus__DOT__op_execute;
         CData/*4:0*/ mips_cpu_bus__DOT__Rs_execute;
         CData/*4:0*/ mips_cpu_bus__DOT__Rt_execute;
         CData/*4:0*/ mips_cpu_bus__DOT__Rd_execute;
@@ -83,11 +84,15 @@ VL_MODULE(MIPS_Bus_TB) {
         CData/*0:0*/ mips_cpu_bus__DOT__program_counter_multiplexer_jump_memory;
         CData/*0:0*/ mips_cpu_bus__DOT__j_instruction_memory;
         CData/*0:0*/ mips_cpu_bus__DOT__HALT_memory;
+        CData/*5:0*/ mips_cpu_bus__DOT__op_memory;
+        CData/*3:0*/ mips_cpu_bus__DOT__byteenable_memory;
         CData/*0:0*/ mips_cpu_bus__DOT__register_write_writeback;
         CData/*0:0*/ mips_cpu_bus__DOT__HI_register_write_writeback;
         CData/*0:0*/ mips_cpu_bus__DOT__LO_register_write_writeback;
         CData/*0:0*/ mips_cpu_bus__DOT__memory_to_register_writeback;
         CData/*0:0*/ mips_cpu_bus__DOT__HALT_writeback;
+        CData/*5:0*/ mips_cpu_bus__DOT__op_writeback;
+        CData/*3:0*/ mips_cpu_bus__DOT__byteenable_writeback;
         CData/*4:0*/ mips_cpu_bus__DOT__write_register_writeback;
         CData/*0:0*/ mips_cpu_bus__DOT__stall_fetch;
         CData/*0:0*/ mips_cpu_bus__DOT__stall_decode;
@@ -99,13 +104,13 @@ VL_MODULE(MIPS_Bus_TB) {
         CData/*4:0*/ mips_cpu_bus__DOT__control_unit__DOT__rt;
         CData/*5:0*/ mips_cpu_bus__DOT__control_unit__DOT__funct;
         CData/*0:0*/ mips_cpu_bus__DOT__hazard_unit__DOT__lwstall;
+    };
+    struct {
         CData/*0:0*/ mips_cpu_bus__DOT__hazard_unit__DOT__branchstall;
         IData/*31:0*/ mips_cpu_bus__DOT__program_counter_prime;
         IData/*31:0*/ mips_cpu_bus__DOT__program_counter_fetch;
         IData/*31:0*/ mips_cpu_bus__DOT__instruction_decode;
         IData/*31:0*/ mips_cpu_bus__DOT__program_counter_plus_four_decode;
-    };
-    struct {
         IData/*31:0*/ mips_cpu_bus__DOT__register_file_output_A_decode;
         IData/*31:0*/ mips_cpu_bus__DOT__register_file_output_B_decode;
         IData/*31:0*/ mips_cpu_bus__DOT__sign_imm_decode;
@@ -125,18 +130,20 @@ VL_MODULE(MIPS_Bus_TB) {
         IData/*31:0*/ mips_cpu_bus__DOT__ALU_output_memory;
         IData/*31:0*/ mips_cpu_bus__DOT__ALU_HI_output_memory;
         IData/*31:0*/ mips_cpu_bus__DOT__ALU_LO_output_memory;
-        IData/*31:0*/ mips_cpu_bus__DOT__read_data_memory;
         IData/*31:0*/ mips_cpu_bus__DOT__write_data_memory;
         IData/*31:0*/ mips_cpu_bus__DOT__j_program_counter_memory;
+        IData/*31:0*/ mips_cpu_bus__DOT__src_A_ALU_memory;
+        IData/*31:0*/ mips_cpu_bus__DOT__src_A_ALU_writeback;
         IData/*31:0*/ mips_cpu_bus__DOT__result_writeback;
         IData/*31:0*/ mips_cpu_bus__DOT__ALU_HI_output_writeback;
         IData/*31:0*/ mips_cpu_bus__DOT__ALU_LO_output_writeback;
         IData/*31:0*/ mips_cpu_bus__DOT__ALU_output_writeback;
         IData/*31:0*/ mips_cpu_bus__DOT__read_data_writeback;
+        IData/*31:0*/ mips_cpu_bus__DOT__read_data_writeback_filtered;
         IData/*31:0*/ mips_cpu_bus__DOT__register_file__DOT__HI_reg;
         IData/*31:0*/ mips_cpu_bus__DOT__register_file__DOT__LO_reg;
-        IData/*31:0*/ mips_cpu_bus__DOT__fetch_decode_register__DOT__instruction_decode;
         IData/*31:0*/ mips_cpu_bus__DOT__alu_input_mux__DOT__src_mux_input_0;
+        IData/*31:0*/ mips_cpu_bus__DOT__memory_filter__DOT__temp_filtered;
         QData/*63:0*/ mips_cpu_bus__DOT__alu__DOT__ALU_HI_LO_output;
         IData/*31:0*/ mips_cpu_bus__DOT__register_file__DOT__registers[32];
     };
@@ -180,6 +187,9 @@ VL_MODULE(MIPS_Bus_TB) {
     void __Vconfigure(MIPS_Bus_TB__Syms* symsp, bool first);
   private:
     static QData _change_request(MIPS_Bus_TB__Syms* __restrict vlSymsp);
+  public:
+    static void _combo__TOP__8(MIPS_Bus_TB__Syms* __restrict vlSymsp);
+  private:
     void _ctor_var_reset() VL_ATTR_COLD;
   public:
     static void _eval(MIPS_Bus_TB__Syms* __restrict vlSymsp);
@@ -190,16 +200,16 @@ VL_MODULE(MIPS_Bus_TB) {
   public:
     static void _eval_initial(MIPS_Bus_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     static void _eval_settle(MIPS_Bus_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;
-    static void _multiclk__TOP__10(MIPS_Bus_TB__Syms* __restrict vlSymsp);
     static void _multiclk__TOP__11(MIPS_Bus_TB__Syms* __restrict vlSymsp);
+    static void _multiclk__TOP__12(MIPS_Bus_TB__Syms* __restrict vlSymsp);
     static void _multiclk__TOP__7(MIPS_Bus_TB__Syms* __restrict vlSymsp);
-    static void _multiclk__TOP__8(MIPS_Bus_TB__Syms* __restrict vlSymsp);
+    static void _multiclk__TOP__9(MIPS_Bus_TB__Syms* __restrict vlSymsp);
     static void _sequent__TOP__1(MIPS_Bus_TB__Syms* __restrict vlSymsp);
+    static void _sequent__TOP__10(MIPS_Bus_TB__Syms* __restrict vlSymsp);
     static void _sequent__TOP__2(MIPS_Bus_TB__Syms* __restrict vlSymsp);
     static void _sequent__TOP__3(MIPS_Bus_TB__Syms* __restrict vlSymsp);
     static void _sequent__TOP__5(MIPS_Bus_TB__Syms* __restrict vlSymsp);
     static void _sequent__TOP__6(MIPS_Bus_TB__Syms* __restrict vlSymsp);
-    static void _sequent__TOP__9(MIPS_Bus_TB__Syms* __restrict vlSymsp);
     static void _settle__TOP__4(MIPS_Bus_TB__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     static void traceChgThis(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__10(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
@@ -211,6 +221,7 @@ VL_MODULE(MIPS_Bus_TB) {
     static void traceChgThis__16(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__17(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__18(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__19(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__2(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__3(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__4(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);

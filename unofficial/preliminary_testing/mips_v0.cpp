@@ -27,6 +27,7 @@ int main( int argc, char **argv, char **env )
 	tb.load_program("../programs/memory_access_testing.txt");
 	tb.dump_memory();
 	tb.run_program();
+	tb.dump_memory();
 	
 	
 }

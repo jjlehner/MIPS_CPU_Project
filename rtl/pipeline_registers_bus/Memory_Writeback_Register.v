@@ -9,9 +9,9 @@ module Memory_Writeback_Register
 	input	logic 			HI_register_write_memory,
 	input	logic			LO_register_write_memory,
 	input	logic			HALT_memory,
-	input	logic			op_memory,
-	input	logic			byteenable_memory,
-	input	logic			src_A_ALU_memory,
+	input	logic [5:0]		op_memory,
+	input	logic [3:0]		byteenable_memory,
+	input	logic [31:0]	src_A_ALU_memory,
 
 
 	output	logic 			register_write_writeback,
@@ -19,9 +19,9 @@ module Memory_Writeback_Register
 	output	logic			HI_register_write_writeback,
 	output	logic			LO_register_write_writeback,
 	output	logic			HALT_writeback,
-	output	logic			op_writeback,
-	output	logic			byteenable_writeback,
-	output	logic			src_A_ALU_writeback,
+	output	logic [5:0]		op_writeback,
+	output	logic [3:0]     byteenable_writeback,
+	output	logic [31:0] 	src_A_ALU_writeback,
 
 	//datapath
 	input	logic [31:0]	ALU_output_memory,

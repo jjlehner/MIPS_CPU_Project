@@ -19,6 +19,7 @@ lower_level=(
     "../../rtl/pipeline_registers_bus/Fetch_Decode_Register.v"
     "../../rtl/pipeline_registers_bus/Memory_Writeback_Register.v"
     "../../rtl/ALU_Input_Mux.v"
+    "../../rtl/Memory_Filter.v"
 )
 while getopts gcl flag
 do

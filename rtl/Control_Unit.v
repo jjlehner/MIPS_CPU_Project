@@ -13,8 +13,7 @@ module Control_Unit(
 	output logic		j_instruction,
 	output logic		LO_register_write,
 	output logic		HI_register_write,
-	output logic		using_HI_LO,
-	output logic [3:0]	byteenable,
+	output logic		using_HI_LO
 );
 
 	logic [5:0] op;
@@ -328,9 +327,9 @@ module Control_Unit(
 				ALU_function			= 6'b100001;//add unsigned function
 				program_counter_multiplexer_jump = 0;
 			end
-			6'b100101: 	controls <= {12{1'bx}};	//LHU
-			6'b101000: 	controls <= {12{1'bx}};	//SB
-			6'b101001: 	controls <= {12{1'bx}};	//SH
+			//6'b100101: 	controls <= {12{1'bx}};	//LHU
+			//6'b101000: 	controls <= {12{1'bx}};	//SB
+			//6'b101001: 	controls <= {12{1'bx}};	//SH
 			
 			6'b101011: 	begin	//SW
 				register_write			= 0;

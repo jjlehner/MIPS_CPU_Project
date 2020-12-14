@@ -95,6 +95,7 @@ module mips_cpu_bus (
 	logic			j_instruction_execute;
 	logic			using_HI_LO_execute;
 	logic			HALT_execute;
+	logic [5:0]		op_execute;
 
 	//Execute Datapath
 	logic [31:0]	src_A_execute;
@@ -123,16 +124,17 @@ module mips_cpu_bus (
 	logic 		program_counter_multiplexer_jump_memory;
 	logic		j_instruction_memory;
 	logic		HALT_memory;
+	logic [5:0]	op_memory;
+	logic [3:0] byteenable_memory;
 
 	//Memory datapath
 	logic [31:0] ALU_output_memory;
 	logic [31:0] ALU_HI_output_memory;
 	logic [31:0] ALU_LO_output_memory;
-	logic [31:0] read_data_memory;
 	logic [31:0] write_data_memory;
 	logic [31:0] ALU_output_memory_resolved;
 	logic [31:0] j_program_counter_memory;
-
+	logic [31:0] src_A_ALU_memory;
 
 	//Writeback controls
 	logic register_write_writeback;
@@ -140,6 +142,9 @@ module mips_cpu_bus (
 	logic LO_register_write_writeback;
 	logic memory_to_register_writeback;
 	logic HALT_writeback;
+	logic [5:0] op_writeback;
+	logic [3:0] byteenable_writeback;
+	logic [31:0] src_A_ALU_writeback;
 
 	//Writeback datapath
 	logic [4:0] write_register_writeback;
@@ -148,6 +153,7 @@ module mips_cpu_bus (
 	logic [31:0] ALU_LO_output_writeback;
 	logic [31:0] ALU_output_writeback;
 	logic [31:0] read_data_writeback;
+	logic [31:0] read_data_writeback_filtered;
 
 	//Hazard Unit Outputs
 	logic       stall_fetch;
@@ -162,6 +168,7 @@ module mips_cpu_bus (
 	logic [31:0] data_address;
 	logic data_write;
 	logic data_read;
+	/* verilator lint_off UNUSED */
 	logic [31:0] instr_address;
 
 
@@ -318,7 +325,9 @@ module mips_cpu_bus (
 		.src_A_execute(src_A_execute),
 		.src_B_execute(src_B_execute),
 		.program_counter_plus_four_execute(program_counter_plus_four_execute),
-		.j_program_counter_execute(j_program_counter_execute)
+		.j_program_counter_execute(j_program_counter_execute),
+		.op_decode(op), //TODO rename toplevel op to op_decode
+		.op_execute(op_execute)
 	);
 
 	Adder plus_four_adder_execute(
@@ -401,16 +410,22 @@ module mips_cpu_bus (
 		.ALU_LO_output_memory(ALU_LO_output_memory),
 		.write_data_memory(write_data_memory),
 		.write_register_memory(write_register_memory),
-		.j_program_counter_memory(j_program_counter_memory)
+		.j_program_counter_memory(j_program_counter_memory),
+
+		.op_execute(op_execute),
+		.op_memory(op_memory),
+		.src_A_ALU_execute(src_A_ALU_execute),
+		.src_A_ALU_memory(src_A_ALU_memory)
 	);
 
 	assign ALU_output_memory_resolved = j_instruction_memory ? j_program_counter_memory : ALU_output_memory;
-	Memory_filter memory_filter(
-		.op(op_writeback),
+	Memory_Filter memory_filter(
+		.reset(reset),
+		.op_writeback(op_writeback),
 		.byteenable_writeback(byteenable_writeback),
 		.src_A_writeback(src_A_ALU_writeback),
 		.read_data_writeback(read_data_writeback),
-		.filtered_output_writeback(read_data_writeback)
+		.filtered_output_writeback(read_data_writeback_filtered)
 	);
 
 	Memory_Writeback_Register memory_writeback_register(
@@ -427,24 +442,29 @@ module mips_cpu_bus (
 		.HALT_memory(HALT_memory),
 		.HALT_writeback(HALT_writeback),
 		.op_memory(op_memory),
+		.byteenable_memory(byteenable_memory),
 
 		.ALU_output_memory(ALU_output_memory),
 		.write_register_memory(write_register_memory),
 		.ALU_HI_output_memory(ALU_HI_output_memory),
 		.ALU_LO_output_memory(ALU_LO_output_memory),
-		.read_data_memory(0),
 		.ALU_output_writeback(ALU_output_writeback),
 		.write_register_writeback(write_register_writeback),
 		.ALU_HI_output_writeback(ALU_HI_output_writeback),
 		.ALU_LO_output_writeback(ALU_LO_output_writeback),
-		.op()
+		.op_writeback(op_writeback),
+
+
+		.byteenable_writeback(byteenable_writeback),
+		.src_A_ALU_memory(src_A_ALU_memory),
+		.src_A_ALU_writeback(src_A_ALU_writeback)
 
 	);
 
 	MUX_2INPUT #(.BUS_WIDTH(32)) writeback_mux(
 		.control(memory_to_register_writeback),
 		.input_0(ALU_output_writeback),
-		.input_1(read_data_writeback),
+		.input_1(read_data_writeback_filtered),
 		.resolved(result_writeback)
 	);
 	Hazard_Unit hazard_unit(
@@ -541,7 +561,7 @@ module mips_cpu_bus (
 						2'b11:	byteenable = 4'b1000;
 					endcase
 				end
-				6'b101000 : begin //SH
+				6'b101001 : begin //SH
 					case(data_address[1:0])
 						2'b00 : byteenable = 4'b0011;
 						2'b10 : byteenable = 4'b1100;
