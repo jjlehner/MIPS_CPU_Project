@@ -3,13 +3,13 @@
 #1
 #additional comment : none
 
-addiu $3, $0, 5 
-addiu $4, $0, 32
-sw $3, 1($4)
+addiu $t0, $zero, 5 
+addiu $t1, $zero, 32
+sw $t0, 1($t1)
 
-addiu $4, $4, 1
+addiu $t1, $t1, 1
 
-lw $2, 0($4)
+lw $v0, 0($t1)
 
-jr $0
+jr $zero
 nop
