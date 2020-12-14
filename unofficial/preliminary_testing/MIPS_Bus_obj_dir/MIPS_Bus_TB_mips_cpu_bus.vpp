@@ -19,24 +19,23 @@ module mips_cpu_bus (
     output logic read,
     input logic waitrequest,
     output logic[31:0] writedata,
-	/*verilator lint_off UNDRIVEN*/ 
     output logic[3:0] byteenable,
     input logic[31:0] readdata
 );
 
-`line 23 "../../rtl/mips_cpu_bus.v" 0
+`line 22 "../../rtl/mips_cpu_bus.v" 0
 	logic internal_clk;
 	logic STALL;
 
-`line 26 "../../rtl/mips_cpu_bus.v" 0
+`line 25 "../../rtl/mips_cpu_bus.v" 0
 	 
 	logic [31:0] program_counter_prime;
-	logic [31:0] program_counter_fetch;
+	logic [31:0] instr_address;
 	logic [31:0] program_counter_plus_four_fetch;
 	logic [31:0] program_counter_mux_1_out;
 	logic 		 HALT_fetch;
 
-`line 33 "../../rtl/mips_cpu_bus.v" 0
+`line 32 "../../rtl/mips_cpu_bus.v" 0
 	 
 	logic       program_counter_src_decode;
 	logic       register_write_decode;
@@ -54,7 +53,7 @@ module mips_cpu_bus (
 	logic		LO_register_write_decode;
 	logic		HALT_decode;
 
-`line 50 "../../rtl/mips_cpu_bus.v" 0
+`line 49 "../../rtl/mips_cpu_bus.v" 0
 	 
 	 
 	 
@@ -89,7 +88,7 @@ module mips_cpu_bus (
 	logic [31:0] 	comparator_2;
 	logic [31:0]	j_program_counter_decode;
 
-`line 84 "../../rtl/mips_cpu_bus.v" 0
+`line 83 "../../rtl/mips_cpu_bus.v" 0
 	 
 	logic [1:0]     register_destination_execute;
 	logic           memory_to_register_execute;
@@ -106,7 +105,7 @@ module mips_cpu_bus (
 	logic			HALT_execute;
 	logic [5:0]		op_execute;
 
-`line 100 "../../rtl/mips_cpu_bus.v" 0
+`line 99 "../../rtl/mips_cpu_bus.v" 0
 	 
 	logic [31:0]	src_A_execute;
 	logic [31:0]	src_B_execute;
@@ -124,7 +123,7 @@ module mips_cpu_bus (
 	logic [31:0]	program_counter_plus_four_execute;
 	logic [31:0]	j_program_counter_execute;
 
-`line 117 "../../rtl/mips_cpu_bus.v" 0
+`line 116 "../../rtl/mips_cpu_bus.v" 0
 	 
 	logic       register_write_memory;
 	logic [4:0] write_register_memory;
@@ -138,7 +137,7 @@ module mips_cpu_bus (
 	logic [5:0]	op_memory;
 	logic [3:0] byteenable_memory;
 
-`line 130 "../../rtl/mips_cpu_bus.v" 0
+`line 129 "../../rtl/mips_cpu_bus.v" 0
 	 
 	logic [31:0] ALU_output_memory;
 	logic [31:0] ALU_HI_output_memory;
@@ -148,7 +147,7 @@ module mips_cpu_bus (
 	logic [31:0] j_program_counter_memory;
 	logic [31:0] src_A_ALU_memory;
 
-`line 139 "../../rtl/mips_cpu_bus.v" 0
+`line 138 "../../rtl/mips_cpu_bus.v" 0
 	 
 	logic register_write_writeback;
 	logic HI_register_write_writeback;
@@ -159,7 +158,7 @@ module mips_cpu_bus (
 	logic [3:0] byteenable_writeback;
 	logic [31:0] src_A_ALU_writeback;
 
-`line 149 "../../rtl/mips_cpu_bus.v" 0
+`line 148 "../../rtl/mips_cpu_bus.v" 0
 	 
 	logic [4:0] write_register_writeback;
 	logic [31:0] result_writeback;
@@ -169,7 +168,7 @@ module mips_cpu_bus (
 	logic [31:0] read_data_writeback;
 	logic [31:0] read_data_writeback_filtered;
 
-`line 158 "../../rtl/mips_cpu_bus.v" 0
+`line 157 "../../rtl/mips_cpu_bus.v" 0
 	 
 	logic       stall_fetch;
 	logic       stall_decode;
@@ -179,28 +178,22 @@ module mips_cpu_bus (
 	logic [2:0] forward_A_execute;
 	logic [2:0] forward_B_execute;
 
-`line 167 "../../rtl/mips_cpu_bus.v" 0
+`line 166 "../../rtl/mips_cpu_bus.v" 0
 	 
 	logic [31:0] data_address;
 	logic data_write;
 	logic data_read;
-	/*verilator lint_off UNUSED*/ 
-	logic [31:0] instr_address;
 
 
-`line 175 "../../rtl/mips_cpu_bus.v" 0
+`line 172 "../../rtl/mips_cpu_bus.v" 0
 	 
 	assign data_address = ALU_output_memory;
 	assign writedata = write_data_memory;
 	assign data_write = memory_write_memory;
 	assign data_read = memory_to_register_memory;
 
-`line 181 "../../rtl/mips_cpu_bus.v" 0
-	 
-	assign instr_address = program_counter_fetch;
 
-
-`line 185 "../../rtl/mips_cpu_bus.v" 0
+`line 179 "../../rtl/mips_cpu_bus.v" 0
 	Register_File register_file(
 		.clk(internal_clk),.pipelined(1), 
 		.write_enable(register_write_writeback), 
@@ -219,24 +212,24 @@ module mips_cpu_bus (
 		.read_data_LO(register_file_output_LO_decode)
 	);
 
-`line 203 "../../rtl/mips_cpu_bus.v" 0
+`line 197 "../../rtl/mips_cpu_bus.v" 0
 	Program_Counter pc (
 		.clk(internal_clk),
 		.address_input(program_counter_prime),
 		.reset(reset),
 		.enable(stall_fetch),
-		.address_output(program_counter_fetch),
+		.address_output(instr_address),
 		.halt(HALT_fetch)
 	);
 
-`line 212 "../../rtl/mips_cpu_bus.v" 0
+`line 206 "../../rtl/mips_cpu_bus.v" 0
 	Adder plus_four_adder(
-		.a(program_counter_fetch),
+		.a(instr_address),
 		.b({{28{1'b0}},4'b0100}),
 		.z(program_counter_plus_four_fetch)
 	);
 
-`line 218 "../../rtl/mips_cpu_bus.v" 0
+`line 212 "../../rtl/mips_cpu_bus.v" 0
 	MUX_2INPUT #(.BUS_WIDTH(32)) program_counter_multiplexer (
 		.control(program_counter_src_decode),
 		.input_0(program_counter_plus_four_fetch),
@@ -244,7 +237,7 @@ module mips_cpu_bus (
 		.resolved(program_counter_mux_1_out)
 	);
 
-`line 225 "../../rtl/mips_cpu_bus.v" 0
+`line 219 "../../rtl/mips_cpu_bus.v" 0
 	MUX_2INPUT #(.BUS_WIDTH(32)) program_counter_multiplexer_two (
 		.control(program_counter_multiplexer_jump_memory),
 		.input_0(program_counter_mux_1_out),
@@ -252,7 +245,7 @@ module mips_cpu_bus (
 		.resolved(program_counter_prime)
 	);
 
-`line 232 "../../rtl/mips_cpu_bus.v" 0
+`line 226 "../../rtl/mips_cpu_bus.v" 0
 	Fetch_Decode_Register fetch_decode_register(
 		.clk(internal_clk),
 		.reset(reset),
@@ -264,7 +257,7 @@ module mips_cpu_bus (
 		.HALT_decode(HALT_decode)
 	);
 
-`line 243 "../../rtl/mips_cpu_bus.v" 0
+`line 237 "../../rtl/mips_cpu_bus.v" 0
 	Control_Unit control_unit(
 		.instruction(instruction_decode),
 		.register_write(register_write_decode),
@@ -281,7 +274,7 @@ module mips_cpu_bus (
 		.using_HI_LO(using_HI_LO_decode)
 	);
 
-`line 259 "../../rtl/mips_cpu_bus.v" 0
+`line 253 "../../rtl/mips_cpu_bus.v" 0
 	 
 	assign comparator_1 = (forward_A_decode) ? ALU_output_memory : register_file_output_A_decode;
 	assign comparator_2 = (forward_B_decode) ? ALU_output_memory : register_file_output_B_decode;
@@ -289,7 +282,7 @@ module mips_cpu_bus (
 	assign src_B_decode = using_HI_LO_decode ? register_file_output_HI_decode : register_file_output_B_decode;
 
 
-`line 266 "../../rtl/mips_cpu_bus.v" 0
+`line 260 "../../rtl/mips_cpu_bus.v" 0
 	Comparator reg_output_comparator(
 		.op(op),
 		.rt(Rt_decode),
@@ -298,19 +291,19 @@ module mips_cpu_bus (
 		.c(equal_decode)
 	);
 
-`line 274 "../../rtl/mips_cpu_bus.v" 0
+`line 268 "../../rtl/mips_cpu_bus.v" 0
 	assign program_counter_src_decode = branch_decode & equal_decode;
 	assign sign_imm_decode = {{16{immediate[15]}},immediate};
 	assign shifter_output_decode = sign_imm_decode << 2;
 
-`line 278 "../../rtl/mips_cpu_bus.v" 0
+`line 272 "../../rtl/mips_cpu_bus.v" 0
 	Adder adder_decode(
 		.a(shifter_output_decode),
 		.b(program_counter_plus_four_decode),
 		.z(program_counter_branch_decode)
 	);
 
-`line 284 "../../rtl/mips_cpu_bus.v" 0
+`line 278 "../../rtl/mips_cpu_bus.v" 0
 	Decode_Execute_Register decode_execute_register(
 		.clk(internal_clk),
 		.clear(flush_execute_register),
@@ -333,7 +326,7 @@ module mips_cpu_bus (
 		.HALT_decode(HALT_decode),
 		.HALT_execute(HALT_execute),
 
-`line 306 "../../rtl/mips_cpu_bus.v" 0
+`line 300 "../../rtl/mips_cpu_bus.v" 0
 		.register_write_execute(register_write_execute),
 		.memory_to_register_execute(memory_to_register_execute),
 		.memory_write_execute(memory_write_execute),
@@ -361,14 +354,14 @@ module mips_cpu_bus (
 		.op_execute(op_execute)
 	);
 
-`line 333 "../../rtl/mips_cpu_bus.v" 0
+`line 327 "../../rtl/mips_cpu_bus.v" 0
 	Adder plus_four_adder_execute(
 		.a(32'd4),
 		.b(program_counter_plus_four_execute),
 		.z(program_counter_plus_eight_execute)
 	);
 
-`line 339 "../../rtl/mips_cpu_bus.v" 0
+`line 333 "../../rtl/mips_cpu_bus.v" 0
 	MUX_4INPUT #(.BUS_WIDTH(5)) write_register_execute_mux(
 		.control(register_destination_execute),
 		.input_0(Rt_execute),
@@ -378,7 +371,7 @@ module mips_cpu_bus (
 		.resolved(write_register_execute)
 	);
 
-`line 348 "../../rtl/mips_cpu_bus.v" 0
+`line 342 "../../rtl/mips_cpu_bus.v" 0
 	ALU_Input_Mux alu_input_mux(
 		.ALU_src_B_execute(ALU_src_B_execute),
 		.forward_one_execute(forward_A_execute),
@@ -395,27 +388,28 @@ module mips_cpu_bus (
 		.sign_imm_execute(sign_imm_execute),
 		.program_counter_plus_eight_execute(program_counter_plus_eight_execute),
 
-`line 364 "../../rtl/mips_cpu_bus.v" 0
+`line 358 "../../rtl/mips_cpu_bus.v" 0
 		.src_A_ALU_execute(src_A_ALU_execute),
-		.src_B_ALU_execute(src_B_ALU_execute)
+		.src_B_ALU_execute(src_B_ALU_execute),
+		.write_data_execute(write_data_execute)
 	);
 
-`line 368 "../../rtl/mips_cpu_bus.v" 0
+`line 363 "../../rtl/mips_cpu_bus.v" 0
 	ALU alu(
 		.ALU_operation(ALU_function_execute),
 		.input_1(src_A_ALU_execute),
 		.input_2(src_B_ALU_execute),
 
-`line 373 "../../rtl/mips_cpu_bus.v" 0
+`line 368 "../../rtl/mips_cpu_bus.v" 0
 		.ALU_output(ALU_output_execute),
 		.ALU_HI_output(ALU_HI_output_execute),
 		.ALU_LO_output(ALU_LO_output_execute)
 	);
 
-`line 378 "../../rtl/mips_cpu_bus.v" 0
+`line 373 "../../rtl/mips_cpu_bus.v" 0
 	assign j_program_counter_decode = {program_counter_plus_four_decode[31:28], j_offset, 2'b00};
 
-`line 380 "../../rtl/mips_cpu_bus.v" 0
+`line 375 "../../rtl/mips_cpu_bus.v" 0
 	Execute_Memory_Register execute_memory_register(
 		.clk(internal_clk),
 		.reset(reset),
@@ -428,7 +422,7 @@ module mips_cpu_bus (
 		.j_instruction_execute(j_instruction_execute),
 		.HALT_execute(HALT_execute),
 
-`line 392 "../../rtl/mips_cpu_bus.v" 0
+`line 387 "../../rtl/mips_cpu_bus.v" 0
 		.register_write_memory(register_write_memory),
 		.memory_to_register_memory(memory_to_register_memory),
 		.memory_write_memory(memory_write_memory),
@@ -438,7 +432,7 @@ module mips_cpu_bus (
 		.j_instruction_memory(j_instruction_memory),
 		.HALT_memory(HALT_memory),
 
-`line 401 "../../rtl/mips_cpu_bus.v" 0
+`line 396 "../../rtl/mips_cpu_bus.v" 0
 		.ALU_output_execute(ALU_output_execute),
 		.ALU_HI_output_execute(ALU_HI_output_execute),
 		.ALU_LO_output_execute(ALU_LO_output_execute),
@@ -446,7 +440,7 @@ module mips_cpu_bus (
 		.write_register_execute(write_register_execute),
 		.j_program_counter_execute(j_program_counter_execute),
 
-`line 408 "../../rtl/mips_cpu_bus.v" 0
+`line 403 "../../rtl/mips_cpu_bus.v" 0
 		.ALU_output_memory(ALU_output_memory),
 		.ALU_HI_output_memory(ALU_HI_output_memory),
 		.ALU_LO_output_memory(ALU_LO_output_memory),
@@ -454,14 +448,14 @@ module mips_cpu_bus (
 		.write_register_memory(write_register_memory),
 		.j_program_counter_memory(j_program_counter_memory),
 
-`line 415 "../../rtl/mips_cpu_bus.v" 0
+`line 410 "../../rtl/mips_cpu_bus.v" 0
 		.op_execute(op_execute),
 		.op_memory(op_memory),
 		.src_A_ALU_execute(src_A_ALU_execute),
 		.src_A_ALU_memory(src_A_ALU_memory)
 	);
 
-`line 421 "../../rtl/mips_cpu_bus.v" 0
+`line 416 "../../rtl/mips_cpu_bus.v" 0
 	assign ALU_output_memory_resolved = j_instruction_memory ? j_program_counter_memory : ALU_output_memory;
 	Memory_Filter memory_filter(
 		.reset(reset),
@@ -472,7 +466,7 @@ module mips_cpu_bus (
 		.filtered_output_writeback(read_data_writeback_filtered)
 	);
 
-`line 431 "../../rtl/mips_cpu_bus.v" 0
+`line 426 "../../rtl/mips_cpu_bus.v" 0
 	Memory_Writeback_Register memory_writeback_register(
 		.clk(internal_clk),
 		.reset(reset),
@@ -489,7 +483,7 @@ module mips_cpu_bus (
 		.op_memory(op_memory),
 		.byteenable_memory(byteenable_memory),
 
-`line 447 "../../rtl/mips_cpu_bus.v" 0
+`line 442 "../../rtl/mips_cpu_bus.v" 0
 		.ALU_output_memory(ALU_output_memory),
 		.write_register_memory(write_register_memory),
 		.ALU_HI_output_memory(ALU_HI_output_memory),
@@ -501,15 +495,15 @@ module mips_cpu_bus (
 		.op_writeback(op_writeback),
 
 
-`line 458 "../../rtl/mips_cpu_bus.v" 0
+`line 453 "../../rtl/mips_cpu_bus.v" 0
 		.byteenable_writeback(byteenable_writeback),
 		.src_A_ALU_memory(src_A_ALU_memory),
 		.src_A_ALU_writeback(src_A_ALU_writeback)
 
-`line 462 "../../rtl/mips_cpu_bus.v" 0
+`line 457 "../../rtl/mips_cpu_bus.v" 0
 	);
 
-`line 464 "../../rtl/mips_cpu_bus.v" 0
+`line 459 "../../rtl/mips_cpu_bus.v" 0
 	MUX_2INPUT #(.BUS_WIDTH(32)) writeback_mux(
 		.control(memory_to_register_writeback),
 		.input_0(ALU_output_writeback),
@@ -545,96 +539,93 @@ module mips_cpu_bus (
 		.forward_register_file_output_B_execute(forward_B_execute)
 	);
 	assign active = !HALT_writeback;
-
-`line 500 "../../rtl/mips_cpu_bus.v" 0
+	assign byteenable = byteenable_memory;
 	logic data_read_write;
 
-`line 502 "../../rtl/mips_cpu_bus.v" 0
+`line 497 "../../rtl/mips_cpu_bus.v" 0
 	always_comb begin
 		address[1:0] = 2'b00;
 		if(!data_read_write) begin
-			byteenable = 4'b1111;
+			byteenable_memory = 4'b1111;
 			address[31:2] = instr_address[31:2];
 		end
 		else begin
 			case(op_memory)
 				6'b100000 : begin  
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0001;
-						2'b01 : byteenable = 4'b0010;
-						2'b10 : byteenable = 4'b0100;
-						2'b11:	byteenable = 4'b1000;
+						2'b00 : byteenable_memory = 4'b0001;
+						2'b01 : byteenable_memory = 4'b0010;
+						2'b10 : byteenable_memory = 4'b0100;
+						2'b11:	byteenable_memory = 4'b1000;
 					endcase
 				end
 				6'b100100 : begin  
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0001;
-						2'b01 : byteenable = 4'b0010;
-						2'b10 : byteenable = 4'b0100;
-						2'b11:	byteenable = 4'b1000;
+						2'b00 : byteenable_memory = 4'b0001;
+						2'b01 : byteenable_memory = 4'b0010;
+						2'b10 : byteenable_memory = 4'b0100;
+						2'b11:	byteenable_memory = 4'b1000;
 					endcase
 				end
 				6'b100001 : begin  
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0011;
-						2'b10 : byteenable = 4'b1100;
-						default : byteenable = 4'b1111;
+						2'b00 : byteenable_memory = 4'b0011;
+						2'b10 : byteenable_memory = 4'b1100;
+						default : byteenable_memory = 4'b1111;
 					endcase
 				end
 				6'b100101 : begin  
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0011;
-						2'b10 : byteenable = 4'b1100;
-						default : byteenable = 4'b1111;
+						2'b00 : byteenable_memory = 4'b0011;
+						2'b10 : byteenable_memory = 4'b1100;
+						default : byteenable_memory = 4'b1111;
 					endcase
 				end
 				6'b100010 : begin  
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0001;
-						2'b01 : byteenable = 4'b0011;
-						2'b10 : byteenable = 4'b0111;
-						2'b11:	byteenable = 4'b1111;
+						2'b00 : byteenable_memory = 4'b0001;
+						2'b01 : byteenable_memory = 4'b0011;
+						2'b10 : byteenable_memory = 4'b0111;
+						2'b11:	byteenable_memory = 4'b1111;
 					endcase
 				end
 				6'b100110 : begin  
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b1111;
-						2'b01 : byteenable = 4'b1110;
-						2'b10 : byteenable = 4'b1100;
-						2'b11:	byteenable = 4'b1000;
+						2'b00 : byteenable_memory = 4'b1111;
+						2'b01 : byteenable_memory = 4'b1110;
+						2'b10 : byteenable_memory = 4'b1100;
+						2'b11:	byteenable_memory = 4'b1000;
 					endcase
 				end
 				6'b101000 : begin  
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0001;
-						2'b01 : byteenable = 4'b0010;
-						2'b10 : byteenable = 4'b0100;
-						2'b11:	byteenable = 4'b1000;
+						2'b00 : byteenable_memory = 4'b0001;
+						2'b01 : byteenable_memory = 4'b0010;
+						2'b10 : byteenable_memory = 4'b0100;
+						2'b11:	byteenable_memory = 4'b1000;
 					endcase
 				end
 				6'b101001 : begin  
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0011;
-						2'b10 : byteenable = 4'b1100;
-						default : byteenable = 4'b1111;
+						2'b00 : byteenable_memory = 4'b0011;
+						2'b10 : byteenable_memory = 4'b1100;
+						default : byteenable_memory = 4'b1111;
 					endcase
 				end
 
-`line 572 "../../rtl/mips_cpu_bus.v" 0
-				default : byteenable = 4'b1111;
+`line 567 "../../rtl/mips_cpu_bus.v" 0
+				default : byteenable_memory = 4'b1111;
 			endcase
 			address[31:2] = data_address[31:2];
 		end
 	end
-
-`line 578 "../../rtl/mips_cpu_bus.v" 0
 	always_ff @(posedge clk, negedge clk, posedge reset) begin
 		if(reset) begin
-			internal_clk <= clk;
-			STALL <= 0;
+			STALL <= 1;
 			data_read_write <= 0;
 			read <= 1;
-		end else begin
+			internal_clk <= clk;
+		end else if(!waitrequest) begin
 			if(!STALL) begin
 				internal_clk <= clk;
 				if(clk && !program_counter_src_decode) begin
@@ -654,7 +645,7 @@ module mips_cpu_bus (
 					end
 				end
 			end
-			if(STALL && !waitrequest) begin
+			else if(STALL) begin
 				if(!data_read_write && !clk) begin
 					instruction_decode <= readdata;
 					if(data_read) begin
@@ -674,6 +665,7 @@ module mips_cpu_bus (
 					internal_clk <= clk;
 					read <= 1;
 					data_read_write <= 0;
+					write <= 0;
 				end
 			end
 		end
@@ -681,6 +673,6 @@ module mips_cpu_bus (
 	end
 
 
-`line 631 "../../rtl/mips_cpu_bus.v" 0
+`line 626 "../../rtl/mips_cpu_bus.v" 0
 endmodule
-`line 632 "../../rtl/mips_cpu_bus.v" 2
+`line 627 "../../rtl/mips_cpu_bus.v" 2

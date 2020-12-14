@@ -3,16 +3,16 @@ digraph v3graph {
 		 labelloc=t, labeljust=l,
 		 //size="7.5,10",
 		 rankdir=TB];
-	n0	[fontsize=8 label="0x55a8ac07f950\n ALWAYS", color=yellow];
-	n1	[fontsize=8 label="0x55a8aba62440 PRE\n TOP->mips_cpu_bus__DOT__instruction_decode", color=lightblue];
-	n2	[fontsize=8 label="0x55a8aba60a20\n TOP->mips_cpu_bus__DOT__internal_clk", color=skyblue];
-	n3	[fontsize=8 label="0x55a8abfd3860\n ACTIVE", color=yellow];
-	n4	[fontsize=8 label="0x55a8aba61120 PRE\n TOP->mips_cpu_bus__DOT__HALT_fetch", color=lightblue];
-	n5	[fontsize=8 label="0x55a8abd68260 PRE\n TOP->mips_cpu_bus__DOT__j_program_counter_execute", color=lightblue];
-	n6	[fontsize=8 label="0x55a8abd67540 PRE\n TOP->mips_cpu_bus__DOT__op_execute", color=lightblue];
-	n7	[fontsize=8 label="0x55a8abd68b20 PRE\n TOP->mips_cpu_bus__DOT__op_memory", color=lightblue];
-	n0 -> n0 [fontsize=8 label="" weight=6 color=yellow style=dashed];
+	n0	[fontsize=8 label="0x55e37e6f31e0\n ALWAYS", color=yellow];
+	n1	[fontsize=8 label="0x55e37e0cf720 PRE\n TOP->mips_cpu_bus__DOT__instruction_decode", color=lightblue];
+	n2	[fontsize=8 label="0x55e37e0cdd00\n TOP->mips_cpu_bus__DOT__internal_clk", color=skyblue];
+	n3	[fontsize=8 label="0x55e37e6448f0\n ACTIVE", color=yellow];
+	n4	[fontsize=8 label="0x55e37e0ce400 PRE\n TOP->mips_cpu_bus__DOT__HALT_fetch", color=lightblue];
+	n5	[fontsize=8 label="0x55e37e3d7610 PRE\n TOP->mips_cpu_bus__DOT__j_program_counter_execute", color=lightblue];
+	n6	[fontsize=8 label="0x55e37e3d68f0 PRE\n TOP->mips_cpu_bus__DOT__op_execute", color=lightblue];
+	n7	[fontsize=8 label="0x55e37e3d7ed0 PRE\n TOP->mips_cpu_bus__DOT__op_memory", color=lightblue];
 	n0 -> n2 [fontsize=8 label="" weight=1 color=yellow style=dashed];
+	n0 -> n0 [fontsize=8 label="" weight=6 color=yellow style=dashed];
 	n1 -> n0 [fontsize=8 label="" weight=3 color=yellow style=dashed];
 	n2 -> n3 [fontsize=8 label="" weight=8 color=red];
 	n2 -> n7 [fontsize=8 label="" weight=32 color=red];

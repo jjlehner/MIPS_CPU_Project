@@ -15,7 +15,6 @@ module mips_cpu_bus (
     output logic read,
     input logic waitrequest,
     output logic[31:0] writedata,
-	/* verilator lint_off UNDRIVEN */
     output logic[3:0] byteenable,
     input logic[31:0] readdata
 );
@@ -25,7 +24,7 @@ module mips_cpu_bus (
 
 	//Fetch control
 	logic [31:0] program_counter_prime;
-	logic [31:0] program_counter_fetch;
+	logic [31:0] instr_address;
 	logic [31:0] program_counter_plus_four_fetch;
 	logic [31:0] program_counter_mux_1_out;
 	logic 		 HALT_fetch;
@@ -168,8 +167,6 @@ module mips_cpu_bus (
 	logic [31:0] data_address;
 	logic data_write;
 	logic data_read;
-	/* verilator lint_off UNUSED */
-	logic [31:0] instr_address;
 
 
 	//Data Memory
@@ -177,9 +174,6 @@ module mips_cpu_bus (
 	assign writedata = write_data_memory;
 	assign data_write = memory_write_memory;
 	assign data_read = memory_to_register_memory;
-
-	//Instruction memory
-	assign instr_address = program_counter_fetch;
 
 
 	Register_File register_file(
@@ -205,12 +199,12 @@ module mips_cpu_bus (
 		.address_input(program_counter_prime),
 		.reset(reset),
 		.enable(stall_fetch),
-		.address_output(program_counter_fetch),
+		.address_output(instr_address),
 		.halt(HALT_fetch)
 	);
 
 	Adder plus_four_adder(
-		.a(program_counter_fetch),
+		.a(instr_address),
 		.b({{28{1'b0}},4'b0100}),
 		.z(program_counter_plus_four_fetch)
 	);
@@ -362,7 +356,8 @@ module mips_cpu_bus (
 		.program_counter_plus_eight_execute(program_counter_plus_eight_execute),
 
 		.src_A_ALU_execute(src_A_ALU_execute),
-		.src_B_ALU_execute(src_B_ALU_execute)
+		.src_B_ALU_execute(src_B_ALU_execute),
+		.write_data_execute(write_data_execute)
 	);
 
 	ALU alu(
@@ -496,92 +491,91 @@ module mips_cpu_bus (
 		.forward_register_file_output_B_execute(forward_B_execute)
 	);
 	assign active = !HALT_writeback;
-
+	assign byteenable = byteenable_memory;
 	logic data_read_write;
 
 	always_comb begin
 		address[1:0] = 2'b00;
 		if(!data_read_write) begin
-			byteenable = 4'b1111;
+			byteenable_memory = 4'b1111;
 			address[31:2] = instr_address[31:2];
 		end
 		else begin
+			address[31:2] = data_address[31:2];
 			case(op_memory)
 				6'b100000 : begin //LB
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0001;
-						2'b01 : byteenable = 4'b0010;
-						2'b10 : byteenable = 4'b0100;
-						2'b11:	byteenable = 4'b1000;
+						2'b00 : byteenable_memory = 4'b0001;
+						2'b01 : byteenable_memory = 4'b0010;
+						2'b10 : byteenable_memory = 4'b0100;
+						2'b11:	byteenable_memory = 4'b1000;
 					endcase
 				end
 				6'b100100 : begin //LBU
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0001;
-						2'b01 : byteenable = 4'b0010;
-						2'b10 : byteenable = 4'b0100;
-						2'b11:	byteenable = 4'b1000;
+						2'b00 : byteenable_memory = 4'b0001;
+						2'b01 : byteenable_memory = 4'b0010;
+						2'b10 : byteenable_memory = 4'b0100;
+						2'b11:	byteenable_memory = 4'b1000;
 					endcase
 				end
 				6'b100001 : begin //LHW
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0011;
-						2'b10 : byteenable = 4'b1100;
-						default : byteenable = 4'b1111;
+						2'b00 : byteenable_memory = 4'b0011;
+						2'b10 : byteenable_memory = 4'b1100;
+						default : byteenable_memory = 4'b1111;
 					endcase
 				end
 				6'b100101 : begin //LHWU
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0011;
-						2'b10 : byteenable = 4'b1100;
-						default : byteenable = 4'b1111;
+						2'b00 : byteenable_memory = 4'b0011;
+						2'b10 : byteenable_memory = 4'b1100;
+						default : byteenable_memory = 4'b1111;
 					endcase
 				end
 				6'b100010 : begin //LWL
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0001;
-						2'b01 : byteenable = 4'b0011;
-						2'b10 : byteenable = 4'b0111;
-						2'b11:	byteenable = 4'b1111;
+						2'b00 : byteenable_memory = 4'b0001;
+						2'b01 : byteenable_memory = 4'b0011;
+						2'b10 : byteenable_memory = 4'b0111;
+						2'b11:	byteenable_memory = 4'b1111;
 					endcase
 				end
 				6'b100110 : begin //LWR
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b1111;
-						2'b01 : byteenable = 4'b1110;
-						2'b10 : byteenable = 4'b1100;
-						2'b11:	byteenable = 4'b1000;
+						2'b00 : byteenable_memory = 4'b1111;
+						2'b01 : byteenable_memory = 4'b1110;
+						2'b10 : byteenable_memory = 4'b1100;
+						2'b11:	byteenable_memory = 4'b1000;
 					endcase
 				end
 				6'b101000 : begin //SB
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0001;
-						2'b01 : byteenable = 4'b0010;
-						2'b10 : byteenable = 4'b0100;
-						2'b11:	byteenable = 4'b1000;
+						2'b00 : byteenable_memory = 4'b0001;
+						2'b01 : byteenable_memory = 4'b0010;
+						2'b10 : byteenable_memory = 4'b0100;
+						2'b11:	byteenable_memory = 4'b1000;
 					endcase
 				end
 				6'b101001 : begin //SH
 					case(data_address[1:0])
-						2'b00 : byteenable = 4'b0011;
-						2'b10 : byteenable = 4'b1100;
-						default : byteenable = 4'b1111;
+						2'b00 : byteenable_memory = 4'b0011;
+						2'b10 : byteenable_memory = 4'b1100;
+						default : byteenable_memory = 4'b1111;
 					endcase
 				end
 
-				default : byteenable = 4'b1111;
+				default : byteenable_memory = 4'b1111;
 			endcase
-			address[31:2] = data_address[31:2];
 		end
 	end
-
 	always_ff @(posedge clk, negedge clk, posedge reset) begin
 		if(reset) begin
-			internal_clk <= clk;
-			STALL <= 0;
+			STALL <= 1;
 			data_read_write <= 0;
 			read <= 1;
-		end else begin
+			internal_clk <= clk;
+		end else if(!waitrequest) begin
 			if(!STALL) begin
 				internal_clk <= clk;
 				if(clk && !program_counter_src_decode) begin
@@ -601,7 +595,7 @@ module mips_cpu_bus (
 					end
 				end
 			end
-			if(STALL && !waitrequest) begin
+			else if(STALL) begin
 				if(!data_read_write && !clk) begin
 					instruction_decode <= readdata;
 					if(data_read) begin
@@ -621,6 +615,7 @@ module mips_cpu_bus (
 					internal_clk <= clk;
 					read <= 1;
 					data_read_write <= 0;
+					write <= 0;
 				end
 			end
 		end

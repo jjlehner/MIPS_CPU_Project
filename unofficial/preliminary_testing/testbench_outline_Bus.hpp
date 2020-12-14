@@ -139,6 +139,8 @@ public:
 
 	virtual void reset( void )
 	{
+		m_core->reset = 0;
+		m_core->eval();
 		m_core->reset = 1;
 		this->tick();
 		m_core->reset = 0;
@@ -195,7 +197,9 @@ public:
 	}
 
 	void update_data_output(){
-		m_core->readdata = memory[m_core->address];
+		if(m_core->read){
+			m_core->readdata = memory[m_core->address];
+		}
 	}
 	void update_memory_file(){
 		memory.set(m_core->address,m_core->writedata, m_core->byteenable);

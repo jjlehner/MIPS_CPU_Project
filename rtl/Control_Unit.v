@@ -333,7 +333,7 @@ module Control_Unit(
 			
 			6'b101011: 	begin	//SW
 				register_write			= 0;
-				memory_to_register		= 1;
+				memory_to_register		= 0;
 				memory_write			= 1;
 				ALU_src_B				= 1;
 				register_destination 	= 0;

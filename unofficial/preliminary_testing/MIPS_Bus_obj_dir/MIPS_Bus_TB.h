@@ -108,7 +108,7 @@ VL_MODULE(MIPS_Bus_TB) {
     struct {
         CData/*0:0*/ mips_cpu_bus__DOT__hazard_unit__DOT__branchstall;
         IData/*31:0*/ mips_cpu_bus__DOT__program_counter_prime;
-        IData/*31:0*/ mips_cpu_bus__DOT__program_counter_fetch;
+        IData/*31:0*/ mips_cpu_bus__DOT__instr_address;
         IData/*31:0*/ mips_cpu_bus__DOT__instruction_decode;
         IData/*31:0*/ mips_cpu_bus__DOT__program_counter_plus_four_decode;
         IData/*31:0*/ mips_cpu_bus__DOT__register_file_output_A_decode;
@@ -223,6 +223,7 @@ VL_MODULE(MIPS_Bus_TB) {
     static void traceChgThis__18(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__19(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__2(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__20(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__3(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__4(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__5(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
