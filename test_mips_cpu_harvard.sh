@@ -157,6 +157,8 @@ else
 				set +e
 				test/simulator0/mips_cpu_bus_tb_delay0_$hexed > test/results0/mips_cpu_bus_tb_delay0_$hexed.stdout
 				output=$?
+				echo "out $output"
+				echo "exp $expectedValue"
 				set -e
 
 				###testing for failure code
