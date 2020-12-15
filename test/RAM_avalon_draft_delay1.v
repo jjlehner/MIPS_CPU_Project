@@ -47,12 +47,23 @@ module RAM_32x2048_delay1(
 	
 	always @(posedge clk) begin
 	
-		if (write & state == writeinstr) begin
+		if (write && state==writeinstr) begin
 		    mem[address] <= writedata;
 		end
-		
 		readdata <= mem[address]; // read after writing, delay1
 
+
+	always @(*)
+		if (read && !write && state==read_data)
+		    readdata = mem[address][31:0];
+		else
+		    readdata = readdata
+	end
+
+	always @(posedge clk)
+		if (write && !read && state==write_data) begin
+		    mem[address][31:0] <= writedata;
+		end
 	end
 
 endmodule
