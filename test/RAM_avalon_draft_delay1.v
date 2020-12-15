@@ -43,6 +43,7 @@ module RAM_32x2048_delay1(
 		    j++;
 		end
 	end
+	/*divide the memory into datamem and instr mem according to the address*/
 
 	
 	always @(posedge clk) begin
