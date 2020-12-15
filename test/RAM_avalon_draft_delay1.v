@@ -4,12 +4,23 @@ module RAM_32x2048_delay1(
 	input logic write,
 	input logic read,
 	input logic[31:0] writedata,
-	output logic[31:0] readdata
+	output logic[31:0] readdata,
+	output waitrequest
 );
+	typedef enum logic[1:0] {
+            read_instr = 2'b00
+            write_instr = 2'b01
+            read_data = 2'b10
+	    write_data = 2'b11
+	}state_t;
+
 	parameter RAM_INIT_FILE = "";
 
 	reg [31:0] tmp [0:2048];
 	reg [31:0] mem [32'hbfc00000:32'hbfffffff];
+
+	reg[3:0] stall_length;
+	reg[1:0] state;
 
 
 	initial begin
@@ -36,7 +47,7 @@ module RAM_32x2048_delay1(
 	
 	always @(posedge clk) begin
 	
-		if (write) begin
+		if (write & state == writeinstr) begin
 		    mem[address] <= writedata;
 		end
 		
