@@ -16,8 +16,8 @@ module RAM_32x2048_delay1(
 
 	parameter RAM_INIT_FILE = "";
 
-	reg [31:0] tmp [0:2048];
-	reg [31:0] mem [32'hbfc00000:32'hbfffffff];
+	reg [31:0] tmp [2048:0];
+	reg [31:0] mem [32'hbfffffff:32'hbfc00000];
 
 	reg[3:0] stall_length;
 	reg[1:0] state;
