@@ -41,7 +41,7 @@ lower_level=("${SOURCEDIR}/mips_cpu_*.v"
 if [ -z "$INSTRUCTION" ]; then
 	touch test/results1/result1.csv
 	>&2 echo "Instruction has not been specified. Proceeding with all functional tests."
-	for type in r i j ; do
+	for type in r i j e s ; do
 		TESTS="test/tests/${type}_type/*.s"
 
 		>&2 echo "Commencing ${type} type instruction tests."	
@@ -110,7 +110,7 @@ if [ -z "$INSTRUCTION" ]; then
 
 
 else
-	for type in r i j ; do
+	for type in r i j e s ; do
 		TESTS="test/tests/${type}_type/*.s"
 		touch test/results1/result1_${INSTRUCTION}.csv
 		>&2 echo "Instruction has been specified. Proceeding with ${INSTRUCTION} test."
