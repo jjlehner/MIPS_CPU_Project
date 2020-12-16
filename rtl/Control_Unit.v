@@ -277,48 +277,61 @@ module Control_Unit(
 			end
 			
 			
-			6'b100000: 	begin	//LB
-				register_write			= 1;
-				memory_to_register		= 0;
-				memory_write			= 0;
-				ALU_src_B				= 1;
-				register_destination 	= 0;
-				branch					= 0;
-				HI_register_write		= 0;
-				LO_register_write		= HI_register_write;
-				ALU_function			= 6'b100000;//add signed function
-				program_counter_multiplexer_jump = 0;
-			end
-			6'b100001:	begin	//LH
-				register_write			= 1;
-				memory_to_register		= 0;
-				memory_write			= 0;
-				ALU_src_B				= 1;
-				register_destination 	= 0;
-				branch					= 0;
-				HI_register_write		= 0;
-				LO_register_write		= HI_register_write;
-				ALU_function			= 6'b100001;//add unsigned function
-				program_counter_multiplexer_jump = 0;
-			end
+			//6'b100000: 	begin	//LB
+			//	register_write			= 1;
+			//	memory_to_register		= 0;
+			//	memory_write			= 0;
+			//	ALU_src_B				= 1;
+			//	register_destination 	= 0;
+			//	branch					= 0;
+			//	HI_register_write		= 0;
+			//	LO_register_write		= HI_register_write;
+			//	ALU_function			= 6'b100000;//add signed function
+			//	program_counter_multiplexer_jump = 0;
+			//end
+			//6'b100001:	begin	//LH
+			//	register_write			= 1;
+			//	memory_to_register		= 0;
+			//	memory_write			= 0;
+			//	ALU_src_B				= 1;
+			//	register_destination 	= 0;
+			//	branch					= 0;
+			//	HI_register_write		= 0;
+			//	LO_register_write		= HI_register_write;
+			//	ALU_function			= 6'b100001;//add unsigned function
+			//	program_counter_multiplexer_jump = 0;
+			//end
 			
-			6'b100011:	begin				//LW
-				register_write			= 1;
-				memory_to_register		= 1;
-				memory_write			= 0;
-				ALU_src_B				= 1;
-				register_destination 	= 0;
-				branch					= 0;
-				HI_register_write		= 0;
-				LO_register_write		= HI_register_write;
-				ALU_function			= 6'b100001;//add unsigned function
-				program_counter_multiplexer_jump = 0;
-			end
+			//6'b100011:	begin				//LW
+			//	register_write			= 1;
+			//	memory_to_register		= 1;
+			//	memory_write			= 0;
+			//	ALU_src_B				= 1;
+			//	register_destination 	= 0;
+			//	branch					= 0;
+			//	HI_register_write		= 0;
+			//	LO_register_write		= HI_register_write;
+			//	ALU_function			= 6'b100001;//add unsigned function
+			//	program_counter_multiplexer_jump = 0;
+			//end
 			
-			6'b100100: begin	//LBU
-				register_write			= 1;
+			//6'b100100: begin	//LBU
+			//	register_write			= 1;
+			//	memory_to_register		= 0;
+			//	memory_write			= 0;
+			//	ALU_src_B				= 1;
+			//	register_destination 	= 0;
+			//	branch					= 0;
+			//	HI_register_write		= 0;
+			//	LO_register_write		= HI_register_write;
+			//	ALU_function			= 6'b100001;//add unsigned function
+			//	program_counter_multiplexer_jump = 0;
+			//end
+
+			6'b100101: begin	//LHU
+				register_write			= 0;
 				memory_to_register		= 0;
-				memory_write			= 0;
+				memory_write			= 1;
 				ALU_src_B				= 1;
 				register_destination 	= 0;
 				branch					= 0;
@@ -326,8 +339,9 @@ module Control_Unit(
 				LO_register_write		= HI_register_write;
 				ALU_function			= 6'b100001;//add unsigned function
 				program_counter_multiplexer_jump = 0;
+				j_instruction 			= 0;
+				using_HI_LO				= 0;
 			end
-			//6'b100101: 	controls <= {12{1'bx}};	//LHU
 			//6'b101000: 	controls <= {12{1'bx}};	//SB
 			//6'b101001: 	controls <= {12{1'bx}};	//SH
 			

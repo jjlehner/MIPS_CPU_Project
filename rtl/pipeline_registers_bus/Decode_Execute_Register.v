@@ -18,7 +18,7 @@ module Decode_Execute_Register
 	input	logic			using_HI_LO_decode,
 	input	logic			HALT_decode,
 	input	logic [5:0]		op_decode,
-
+	
 	output	logic 			register_write_execute,
 	output 	logic			memory_to_register_execute,
 	output	logic			memory_write_execute,
@@ -58,7 +58,31 @@ module Decode_Execute_Register
 );
 
 	always_ff @(posedge clk, posedge reset) begin
-		if(clear || reset) begin
+		if(clear) begin
+			register_write_execute <= 0;
+			memory_to_register_execute <= 0;
+			memory_write_execute <= 0;
+			ALU_src_B_execute <= 0;
+			register_destination_execute <= 2'b00;
+			HI_register_write_execute <= 0;
+			LO_register_write_execute <= 0;
+			ALU_function_execute <= {6{1'b0}};
+			Rt_execute <= {5{1'b0}};
+			Rd_execute <= {5{1'b0}};
+			Rs_execute <= {5{1'b0}};
+			sign_imm_execute <= {32{1'b0}};
+			program_counter_multiplexer_jump_execute <= 0;
+			j_instruction_execute <= 0;
+			using_HI_LO_execute <= 0;
+			op_execute <= 0;
+
+			program_counter_plus_four_execute <= {32{1'b0}};
+			j_program_counter_execute <= {32{1'b0}};
+			src_A_execute <= {32{1'b0}};
+			src_B_execute <= {32{1'b0}};
+
+			HALT_execute <= 0;
+		end else if(reset) begin
 			register_write_execute <= 0;
 			memory_to_register_execute <= 0;
 			memory_write_execute <= 0;

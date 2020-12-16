@@ -22,10 +22,13 @@ int main( int argc, char **argv, char **env )
 	TESTBENCH tb("trace.vcd");
 	//tb.load_program("../programs/test_ALU.txt");
 	//tb.run_program();
-	//tb.load_program("../programs/branch_test_ALU.txt");
+	//tb.load_program("../programs/nop.txt");
 	//tb.run_program();
-	tb.load_program("../programs/memory_access_testing.txt");
+	tb.load_program("../programs/branch_test_ALU.txt");
 	tb.dump_memory();
+	//tb.run_program();
+	//tb.load_program("../programs/memory_access_testing.txt");
+	//tb.dump_memory();
 	tb.run_program();
 	tb.dump_memory();
 	

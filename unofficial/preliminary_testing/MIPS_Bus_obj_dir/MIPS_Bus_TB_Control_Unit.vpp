@@ -295,57 +295,72 @@ module Control_Unit(
 			end
 			
 			
-			6'b100000: 	begin	 
-				register_write			= 1;
-				memory_to_register		= 0;
-				memory_write			= 0;
-				ALU_src_B				= 1;
-				register_destination 	= 0;
-				branch					= 0;
-				HI_register_write		= 0;
-				LO_register_write		= HI_register_write;
-				ALU_function			= 6'b100000; 
-				program_counter_multiplexer_jump = 0;
-			end
-			6'b100001:	begin	 
-				register_write			= 1;
-				memory_to_register		= 0;
-				memory_write			= 0;
-				ALU_src_B				= 1;
-				register_destination 	= 0;
-				branch					= 0;
-				HI_register_write		= 0;
-				LO_register_write		= HI_register_write;
-				ALU_function			= 6'b100001; 
-				program_counter_multiplexer_jump = 0;
-			end
-			
-			6'b100011:	begin				 
-				register_write			= 1;
-				memory_to_register		= 1;
-				memory_write			= 0;
-				ALU_src_B				= 1;
-				register_destination 	= 0;
-				branch					= 0;
-				HI_register_write		= 0;
-				LO_register_write		= HI_register_write;
-				ALU_function			= 6'b100001; 
-				program_counter_multiplexer_jump = 0;
-			end
-			
-			6'b100100: begin	 
-				register_write			= 1;
-				memory_to_register		= 0;
-				memory_write			= 0;
-				ALU_src_B				= 1;
-				register_destination 	= 0;
-				branch					= 0;
-				HI_register_write		= 0;
-				LO_register_write		= HI_register_write;
-				ALU_function			= 6'b100001; 
-				program_counter_multiplexer_jump = 0;
-			end
 			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+
+`line 331 "../../rtl/Control_Unit.v" 0
+			6'b100101: begin	 
+				register_write			= 0;
+				memory_to_register		= 0;
+				memory_write			= 1;
+				ALU_src_B				= 1;
+				register_destination 	= 0;
+				branch					= 0;
+				HI_register_write		= 0;
+				LO_register_write		= HI_register_write;
+				ALU_function			= 6'b100001; 
+				program_counter_multiplexer_jump = 0;
+				j_instruction 			= 0;
+				using_HI_LO				= 0;
+			end
 			 
 			 
 			
@@ -365,7 +380,7 @@ module Control_Unit(
 			end
 			
 
-`line 350 "../../rtl/Control_Unit.v" 0
+`line 364 "../../rtl/Control_Unit.v" 0
  
 			default : begin						 
 				register_write			= 1'bx;
@@ -384,4 +399,4 @@ module Control_Unit(
 		endcase
 	end
 endmodule
-`line 368 "../../rtl/Control_Unit.v" 2
+`line 382 "../../rtl/Control_Unit.v" 2

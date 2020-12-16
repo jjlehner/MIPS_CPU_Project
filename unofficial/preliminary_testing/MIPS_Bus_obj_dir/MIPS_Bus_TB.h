@@ -41,7 +41,6 @@ VL_MODULE(MIPS_Bus_TB) {
     // Anonymous structures to workaround compiler member-count bugs
     struct {
         CData/*0:0*/ mips_cpu_bus__DOT__internal_clk;
-        CData/*0:0*/ mips_cpu_bus__DOT__STALL;
         CData/*0:0*/ mips_cpu_bus__DOT__HALT_fetch;
         CData/*0:0*/ mips_cpu_bus__DOT__program_counter_src_decode;
         CData/*0:0*/ mips_cpu_bus__DOT__register_write_decode;
@@ -50,7 +49,6 @@ VL_MODULE(MIPS_Bus_TB) {
         CData/*1:0*/ mips_cpu_bus__DOT__ALU_src_B_decode;
         CData/*1:0*/ mips_cpu_bus__DOT__register_destination_decode;
         CData/*0:0*/ mips_cpu_bus__DOT__branch_decode;
-        CData/*0:0*/ mips_cpu_bus__DOT__equal_decode;
         CData/*5:0*/ mips_cpu_bus__DOT__ALU_function_decode;
         CData/*0:0*/ mips_cpu_bus__DOT__program_counter_multiplexer_jump_decode;
         CData/*0:0*/ mips_cpu_bus__DOT__using_HI_LO_decode;
@@ -99,16 +97,16 @@ VL_MODULE(MIPS_Bus_TB) {
         CData/*0:0*/ mips_cpu_bus__DOT__flush_execute_register;
         CData/*2:0*/ mips_cpu_bus__DOT__forward_A_execute;
         CData/*2:0*/ mips_cpu_bus__DOT__forward_B_execute;
-        CData/*0:0*/ mips_cpu_bus__DOT__data_read_write;
+        CData/*1:0*/ mips_cpu_bus__DOT__fetch_state;
         CData/*5:0*/ mips_cpu_bus__DOT__control_unit__DOT__op;
         CData/*4:0*/ mips_cpu_bus__DOT__control_unit__DOT__rt;
         CData/*5:0*/ mips_cpu_bus__DOT__control_unit__DOT__funct;
         CData/*0:0*/ mips_cpu_bus__DOT__hazard_unit__DOT__lwstall;
+        CData/*0:0*/ mips_cpu_bus__DOT__hazard_unit__DOT__branchstall;
+        IData/*31:0*/ mips_cpu_bus__DOT__instr_address;
     };
     struct {
-        CData/*0:0*/ mips_cpu_bus__DOT__hazard_unit__DOT__branchstall;
-        IData/*31:0*/ mips_cpu_bus__DOT__program_counter_prime;
-        IData/*31:0*/ mips_cpu_bus__DOT__instr_address;
+        IData/*31:0*/ mips_cpu_bus__DOT__program_counter_mux_1_out;
         IData/*31:0*/ mips_cpu_bus__DOT__instruction_decode;
         IData/*31:0*/ mips_cpu_bus__DOT__program_counter_plus_four_decode;
         IData/*31:0*/ mips_cpu_bus__DOT__register_file_output_A_decode;
@@ -224,6 +222,7 @@ VL_MODULE(MIPS_Bus_TB) {
     static void traceChgThis__19(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__2(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__20(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
+    static void traceChgThis__21(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__3(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__4(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);
     static void traceChgThis__5(MIPS_Bus_TB__Syms* __restrict vlSymsp, VerilatedVcd* vcdp, uint32_t code);

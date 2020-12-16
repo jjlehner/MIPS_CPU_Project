@@ -16,7 +16,7 @@ module Fetch_Decode_Register
 
 	always_ff @(posedge clk, posedge reset) begin
 		if(reset) begin
-			program_counter_plus_four_decode <= {32{1'b0}};
+			program_counter_plus_four_decode <=  32'hBFC00004;
 			HALT_decode <= 0;
 		end
 		else if(!enable) begin

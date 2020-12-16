@@ -17,6 +17,7 @@ module Comparator
 				else if(rt == 5'b00000 || rt == 5'b10000) begin
 					c = $signed(a) < $signed(0);
 				end
+				else c = 0;
 			end
 			6'b000100: begin
 				c = (a == b);
@@ -36,4 +37,4 @@ module Comparator
 		endcase
 	end
 endmodule
-`line 37 "../../rtl/Comparator.v" 2
+`line 38 "../../rtl/Comparator.v" 2

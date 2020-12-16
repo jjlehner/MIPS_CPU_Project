@@ -38,7 +38,7 @@ public:
 	}
 	void dump_memory() const{
 		int i = 0;
-		uint32_t temp;
+		uint32_t temp = 0;
 		for(auto x : memory){
 			temp += ((uint32_t)x.second) << (8*i);
 			i++;
@@ -148,52 +148,22 @@ public:
 
 	virtual void tick( void )
 	{
-		// we do this
 		m_tickcount++;
+		for(int clk = 0; clk < 2; ++clk)
+        {
+            m_core->eval();
+        	m_trace->dump((2 * m_tickcount) + clk);
 
-		// Allow any combinatorial logic to settle before we tick
-		// the clock.  This becomes necessary in the case where
-		// we may have modified or adjusted the inputs prior to
-		// coming into here, since we need all combinatorial logic
-		// to be settled before we call for a clock tick.
-		//
-		m_core->clk = 0;
-		m_core->eval();
+            if (clk==1) m_core->clk = !m_core->clk;
 
-		//
-		// Here's the new item:
-		//
-		//	Dump values to our trace file
-		//
-		if ( trace )
-			m_trace->dump( TIME_UNIT * m_tickcount - 2 );
+         }
+			if( m_core->write == 1){
+				update_memory_file();
+			}
+			if(m_core->read == 1){
+				update_data_output();
+			}
 
-		// Repeat for the positive edge of the clock
-		m_core->clk = 1;
-		m_core->eval();
-		if(m_core->write == 1){
-			update_memory_file();
-		}
-		update_data_output();
-		m_core->eval();
-		if ( trace )
-			m_trace->dump( TIME_UNIT * m_tickcount );
-
-		// Now the negative edge
-		m_core->clk = 0;
-		m_core->eval();
-		if ( m_trace )
-		{
-			// This portion, though, is a touch different.
-			// After dumping our values as they exist on the
-			// negative clock edge ...
-			m_trace->dump( TIME_UNIT * m_tickcount + TIME_UNIT / 2);
-			//
-			// We'll also need to make sure we flush any I/O to
-			// the trace file, so that we can use the assert()
-			// function between now and the next tick if we want to.
-			m_trace->flush();
-		}
 	}
 
 	void update_data_output(){
@@ -202,6 +172,7 @@ public:
 		}
 	}
 	void update_memory_file(){
+		std::cout<<"now "<<m_core->address<<std::endl;
 		memory.set(m_core->address,m_core->writedata, m_core->byteenable);
 	}
 
