@@ -3,9 +3,9 @@
 #1
 #none
 
-addiu $3, $0, 0x0001
+addiu $t0, $zero, 0x0001
 
-sll $2, $3, 16
+sll $v0, $t0, 0x0010
 
-jr $0
+jr $zero
 nop

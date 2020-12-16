@@ -3,8 +3,8 @@
 #1
 #make sure mthi is working
 
-addiu $4, $0, 0x0004
-mtlo $4
-mflo $2
-jr $0
+addiu $t1, $zero, 0x0004
+mtlo $t1
+mflo $v0
+jr $zero
 nop

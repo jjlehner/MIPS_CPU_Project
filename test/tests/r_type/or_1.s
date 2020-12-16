@@ -3,10 +3,10 @@
 #1
 #bitwise or
 
-addiu $3, $0, 0x0001
-addiu $4, $0, 0x0FFF
+addiu $t0, $zero, 0x0001
+addiu $t1, $zero, 0x0FFF
 
-or $2, $3, $4
+or $v0, $t0, $t1
 
-jr $0
+jr $zero
 nop

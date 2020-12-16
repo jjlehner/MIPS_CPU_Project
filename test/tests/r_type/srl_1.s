@@ -3,9 +3,9 @@
 #1
 #none
 
-lui $3, 0x0001
+lui $t0, 0x0001
 
-srl $2, $3, 16
+srl $v0, $t0, 0x0010
 
-jr $0
+jr $zero
 nop
