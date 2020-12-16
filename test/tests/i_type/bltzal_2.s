@@ -4,15 +4,15 @@
 #testing bltz and link together
 
 
-	lui $3, 0x0000
+	lui $t0, 0x0000
 
-	bltzal $3, Target
+	bltzal $t0, Target
 
-	addiu $2, $3, 0x0100
+	addiu $v0, $t0, 0x0100
 
-	jr $0
+	jr $zero
 
-Target: addiu $3, $3, 0x0010
+Target: addiu $t0, $t0, 0x0010
 
-jr $31
+jr $ra
 

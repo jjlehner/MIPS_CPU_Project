@@ -1,19 +1,16 @@
 #lw 
-#0
+#65536
 #1
 #additional comment : none
 
-lui $4, 0x3600
+lui $t1, 0x2000
 
-lui $3, 0x1000
+lui $t0, 0x0001
 
-sw $3, 0x1000($4)
+sw $t0, 0x001($t1)
 
-addiu $4, $4, 0x1000
-lw $5, 0($4)
-
-subu $2, $5, $3
-
+addiu $t1, $t1, 0x001
+lw $v0, 0($t1)
 jr $0
 nop
 

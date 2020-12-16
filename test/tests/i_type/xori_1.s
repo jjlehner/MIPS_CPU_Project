@@ -3,6 +3,6 @@
 #1
 #none
 
-addi $2, $0, 3
-xori $2, $2, 0x5F
-jr $0
+addi $v0, $zero, 0x3
+xori $v0, $v0, 0x5F
+jr $zero

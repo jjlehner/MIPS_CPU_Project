@@ -1,17 +1,18 @@
 #bgez
 #65552
 #1
-#$3 is greater than 0
+#t0 is greater than 0
 
-	lui $3, 0x0001
+	lui $t0, 0x0001
 
-	bgez $3, Target
+	bgez $t0, Target
 
-	addiu $2, $3, 0x1000
+	addiu $v0, $t0, 0x1000
 
-	jr $0
+	jr $zero
 
-Target: addiu $2, $3, 0x0010
+#Target
+	addiu $v0, $t0, 0x0010
 
-jr $0
+	jr $zero
 

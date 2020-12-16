@@ -3,16 +3,16 @@
 #1
 #0xFFFFFFFF represented as -1
 
-	lui $3, 0xFFFF
-	addiu $3, $3, 0xFFFF 
+	lui $t0, 0xFFFF
+	addiu $t0, $t0, 0xFFFF 
 
-	bltz $3, Target
+	bltz $t0, Target
 
-	addiu $2, $3, 0x0010
+	addiu $v0, $t0, 0x0010
 	
-	jr $0
+	jr $zero
 
-Target: addiu $2, $3, 0x0010
+Target: addiu $v0, $t0, 0x0010
 
-jr $0
+jr $zero
 
