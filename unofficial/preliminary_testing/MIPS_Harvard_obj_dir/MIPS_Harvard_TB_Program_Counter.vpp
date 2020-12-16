@@ -10,18 +10,21 @@ module Program_Counter(
 
 `line 9 "../../rtl/Program_Counter.v" 0
 );
-	always_comb begin
-		halt = (address_output == 0);
-	end
+
+`line 11 "../../rtl/Program_Counter.v" 0
 	always_ff @(posedge clk, posedge reset) begin
 		if(reset) begin
 			address_output <= 32'hBFC00000;
+			halt <= 0;
 		end
-		if (!enable && !reset) begin
+		if (!enable && !reset && !halt) begin
 			address_output <= address_input;
+			if(address_input == 0) begin
+				halt <= 1;
+			end
 		end
 	end
 
-`line 22 "../../rtl/Program_Counter.v" 0
+`line 24 "../../rtl/Program_Counter.v" 0
 endmodule
-`line 23 "../../rtl/Program_Counter.v" 2
+`line 25 "../../rtl/Program_Counter.v" 2

@@ -1,0 +1,37 @@
+digraph v3graph {
+	graph	[label="MIPS_Bus_obj_dir/MIPS_Bus_TB_001_linkcells.dot",
+		 labelloc=t, labeljust=l,
+		 //size="7.5,10",
+		 rankdir=TB];
+	n0	[fontsize=8 label="mips_cpu_bus", color=black];
+	n1	[fontsize=8 label="Register_File", color=black];
+	n2	[fontsize=8 label="Program_Counter", color=black];
+	n3	[fontsize=8 label="Adder", color=black];
+	n4	[fontsize=8 label="MUX_2INPUT", color=black];
+	n5	[fontsize=8 label="Fetch_Decode_Register", color=black];
+	n6	[fontsize=8 label="Control_Unit", color=black];
+	n7	[fontsize=8 label="Comparator", color=black];
+	n8	[fontsize=8 label="Decode_Execute_Register", color=black];
+	n9	[fontsize=8 label="MUX_4INPUT", color=black];
+	n10	[fontsize=8 label="ALU_Input_Mux", color=black];
+	n11	[fontsize=8 label="ALU", color=black];
+	n12	[fontsize=8 label="Execute_Memory_Register", color=black];
+	n13	[fontsize=8 label="Memory_Filter", color=black];
+	n14	[fontsize=8 label="Memory_Writeback_Register", color=black];
+	n15	[fontsize=8 label="Hazard_Unit", color=black];
+	n0 -> n1 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n2 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n3 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n4 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n5 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n6 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n7 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n8 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n9 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n10 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n11 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n12 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n13 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n14 [fontsize=8 label="" weight=1 color=red];
+	n0 -> n15 [fontsize=8 label="" weight=1 color=red];
+}

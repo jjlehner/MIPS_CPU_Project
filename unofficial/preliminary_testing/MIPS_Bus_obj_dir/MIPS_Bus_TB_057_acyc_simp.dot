@@ -1,0 +1,45 @@
+digraph v3graph {
+	graph	[label="MIPS_Bus_obj_dir/MIPS_Bus_TB_057_acyc_simp.dot",
+		 labelloc=t, labeljust=l,
+		 //size="7.5,10",
+		 rankdir=TB];
+	n0	[fontsize=8 label="0x55573e849450\n ALWAYS", color=yellow];
+	n1	[fontsize=8 label="0x55573e548a90\n TOP->mips_cpu_bus__DOT__internal_clk", color=skyblue];
+	n2	[fontsize=8 label="0x55573e549dd0 PRE\n TOP->mips_cpu_bus__DOT__instruction_decode", color=lightblue];
+	n3	[fontsize=8 label="0x55573e7b3c80\n ACTIVE", color=yellow];
+	n4	[fontsize=8 label="0x55573e550d10 PRE\n TOP->mips_cpu_bus__DOT__j_program_counter_memory", color=lightblue];
+	n5	[fontsize=8 label="0x55573e548c50 PRE\n TOP->mips_cpu_bus__DOT__instr_address", color=lightblue];
+	n6	[fontsize=8 label="0x55573e549eb0 PRE\n TOP->mips_cpu_bus__DOT__program_counter_plus_four_decode", color=lightblue];
+	n7	[fontsize=8 label="0x55573e869e40\n ALWAYS", color=yellow];
+	n8	[fontsize=8 label="0x55573e54fe30 PRE\n TOP->mips_cpu_bus__DOT__j_program_counter_execute", color=lightblue];
+	n9	[fontsize=8 label="0x55573e54f110 PRE\n TOP->mips_cpu_bus__DOT__op_execute", color=lightblue];
+	n10	[fontsize=8 label="0x55573e5506f0 PRE\n TOP->mips_cpu_bus__DOT__op_memory", color=lightblue];
+	n0 -> n0 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+	n0 -> n1 [fontsize=8 label="" weight=1 color=yellow style=dashed];
+	n1 -> n3 [fontsize=8 label="" weight=8 color=red];
+	n1 -> n10 [fontsize=8 label="" weight=32 color=red];
+	n1 -> n9 [fontsize=8 label="" weight=32 color=red];
+	n1 -> n8 [fontsize=8 label="" weight=32 color=red];
+	n1 -> n7 [fontsize=8 label="" weight=32 color=red];
+	n1 -> n6 [fontsize=8 label="" weight=32 color=red];
+	n1 -> n2 [fontsize=8 label="" weight=32 color=red];
+	n1 -> n5 [fontsize=8 label="" weight=32 color=red];
+	n1 -> n4 [fontsize=8 label="" weight=32 color=red];
+	n2 -> n0 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+	n3 -> n7 [fontsize=8 label="" weight=32 color=red];
+	n3 -> n4 [fontsize=8 label="" weight=32 color=red];
+	n3 -> n5 [fontsize=8 label="" weight=32 color=red];
+	n3 -> n2 [fontsize=8 label="" weight=32 color=red];
+	n3 -> n6 [fontsize=8 label="" weight=32 color=red];
+	n3 -> n8 [fontsize=8 label="" weight=32 color=red];
+	n3 -> n9 [fontsize=8 label="" weight=32 color=red];
+	n3 -> n10 [fontsize=8 label="" weight=32 color=red];
+	n4 -> n8 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+	n5 -> n4 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+	n6 -> n5 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+	n7 -> n6 [fontsize=8 label="" weight=32 color=red];
+	n7 -> n2 [fontsize=8 label="" weight=32 color=red];
+	n8 -> n7 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+	n9 -> n2 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+	n10 -> n9 [fontsize=8 label="" weight=3 color=yellow style=dashed];
+}

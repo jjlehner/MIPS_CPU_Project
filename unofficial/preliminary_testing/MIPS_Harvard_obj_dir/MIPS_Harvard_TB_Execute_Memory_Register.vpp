@@ -14,8 +14,9 @@ module Execute_Memory_Register
 	input	logic			LO_register_write_execute,
 	input	logic 			program_counter_multiplexer_jump_execute,
 	input	logic			j_instruction_execute,
+	input	logic			HALT_execute,
 
-`line 15 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
+`line 16 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
 	output	logic 			register_write_memory,
 	output 	logic			memory_to_register_memory,
 	output	logic			memory_write_memory,
@@ -23,8 +24,9 @@ module Execute_Memory_Register
 	output	logic			LO_register_write_memory,
 	output	logic 			program_counter_multiplexer_jump_memory,
 	output	logic			j_instruction_memory,
+	output	logic			HALT_memory,
 
-`line 23 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
+`line 25 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
 	 
 	input	logic [31:0]	ALU_output_execute,
 	input	logic [31:0]	ALU_HI_output_execute,
@@ -33,7 +35,7 @@ module Execute_Memory_Register
 	input	logic [4:0]		write_register_execute,
 	input	logic [31:0]	j_program_counter_execute,
 
-`line 31 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
+`line 33 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
 	output	logic [31:0]	ALU_output_memory,
 	output	logic [31:0]	ALU_HI_output_memory,
 	output	logic [31:0]	ALU_LO_output_memory,
@@ -41,10 +43,10 @@ module Execute_Memory_Register
 	output	logic [4:0]		write_register_memory,
 	output	logic [31:0]	j_program_counter_memory
 
-`line 38 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
+`line 40 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
 );
 
-`line 40 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
+`line 42 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
 	always_ff @(posedge clk, posedge reset) begin
 		if(reset) begin
 			register_write_memory <= 0;
@@ -60,6 +62,7 @@ module Execute_Memory_Register
 			write_register_memory <= 0;
 			j_instruction_memory <= 0;
 			j_program_counter_memory <= 0;
+			HALT_memory <= 0;
 		end
 		else begin
 			register_write_memory <= register_write_execute;
@@ -75,11 +78,12 @@ module Execute_Memory_Register
 			write_data_memory <=write_data_execute;
 			write_register_memory <=write_register_execute;
 			j_program_counter_memory <= j_program_counter_execute;
+			HALT_memory <= HALT_execute;
 		end
 
-`line 72 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
+`line 76 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
 	end
 
-`line 74 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
+`line 78 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 0
 endmodule
-`line 75 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 2
+`line 79 "../../rtl/pipeline_registers/Execute_Memory_Register.v" 2

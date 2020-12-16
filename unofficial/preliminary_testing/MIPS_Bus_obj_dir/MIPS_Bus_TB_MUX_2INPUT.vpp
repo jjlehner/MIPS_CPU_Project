@@ -1,0 +1,21 @@
+`begin_keywords "1800-2017"
+`line 1 "../../rtl/MUX_2INPUT.v" 1
+module MUX_2INPUT
+#(
+	parameter BUS_WIDTH = 1
+)
+(
+	input logic control,
+	input logic [BUS_WIDTH-1:0] input_0,
+	input logic [BUS_WIDTH-1:0] input_1,
+
+`line 10 "../../rtl/MUX_2INPUT.v" 0
+	output logic [BUS_WIDTH-1:0] resolved
+);
+
+`line 13 "../../rtl/MUX_2INPUT.v" 0
+	assign resolved = (control) ? input_1 : input_0;
+
+`line 15 "../../rtl/MUX_2INPUT.v" 0
+endmodule
+`line 16 "../../rtl/MUX_2INPUT.v" 2
