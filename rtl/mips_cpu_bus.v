@@ -18,7 +18,8 @@ module mips_cpu_bus (
     output logic[3:0] byteenable,
     input logic[31:0] readdata
 );
-
+	logic [31:0] instruction_number;
+	assign instruction_number = (instr_address - 32'hBFC00000)>>2;
 	logic internal_clk;
 
 	//Fetch control
@@ -174,7 +175,7 @@ module mips_cpu_bus (
 
 	logic [31:0] register_v0_reg_file;
 	Register_File register_file(
-		.clk(internal_clk),.pipelined(1), 
+		.clk(internal_clk),.pipelined(1'h1), 
 		.write_enable(register_write_writeback), 
 		.HI_write_enable(HI_register_write_writeback),
 		.LO_write_enable(LO_register_write_writeback),
@@ -188,7 +189,8 @@ module mips_cpu_bus (
 		.read_data_2(register_file_output_B_decode),
 		.read_register_2(register_v0_reg_file),
 		.read_data_HI(register_file_output_HI_decode),
-		.read_data_LO(register_file_output_LO_decode)
+		.read_data_LO(register_file_output_LO_decode),
+		.reset(reset)
 	);
 
 	Program_Counter pc (

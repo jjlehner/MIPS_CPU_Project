@@ -13,8 +13,10 @@ module Program_Counter(
 			address_output <= 32'hBFC00000;
 			halt <= 0;
 		end
-		else if (!enable && !halt) begin
-			address_output <= address_input;
+		else if (!enable) begin
+			if(!halt) begin
+				address_output <= address_input;
+			end
 			if(address_input == 32'h0) begin
 				halt <= 1;
 			end

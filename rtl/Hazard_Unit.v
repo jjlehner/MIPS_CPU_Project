@@ -70,9 +70,9 @@ module Hazard_Unit(
 		branchstall = branch_decode && register_write_execute && (write_register_execute == Rs_decode || write_register_execute == Rt_decode) || branch_decode && memory_to_register_memory && (write_register_memory == Rs_decode || write_register_memory == Rt_decode);
 		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-		stall_fetch = branchstall || lwstall || program_counter_multiplexer_jump_execute;
-		stall_decode = branchstall || lwstall || program_counter_multiplexer_jump_execute;
-		flush_execute_register = branchstall || lwstall;
+		stall_fetch = branchstall || lwstall;
+		stall_decode = branchstall || lwstall;
+		flush_execute_register = branchstall || lwstall || program_counter_multiplexer_jump_execute;
 	
 
 	end

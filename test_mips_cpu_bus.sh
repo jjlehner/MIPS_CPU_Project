@@ -34,10 +34,11 @@ lower_level=(
 	"${SOURCEDIR}/Register_File.v"
 	"${SOURCEDIR}/Sign_Extension.v"
 	"${SOURCEDIR}/Or_Gate.v"
-	"${SOURCEDIR}/pipeline_registers/Decode_Execute_Register.v"
-	"${SOURCEDIR}/pipeline_registers/Execute_Memory_Register.v"
-	"${SOURCEDIR}/pipeline_registers/Fetch_Decode_Register.v"
-	"${SOURCEDIR}/pipeline_registers/Memory_Writeback_Register.v"
+	"${SOURCEDIR}/Memory_Filter.v"
+	"${SOURCEDIR}/pipeline_registers_bus/Decode_Execute_Register.v"
+	"${SOURCEDIR}/pipeline_registers_bus/Execute_Memory_Register.v"
+	"${SOURCEDIR}/pipeline_registers_bus/Fetch_Decode_Register.v"
+	"${SOURCEDIR}/pipeline_registers_bus/Memory_Writeback_Register.v"
 )
 
 if [ -z "$INSTRUCTION" ]; then
@@ -77,7 +78,7 @@ if [ -z "$INSTRUCTION" ]; then
 				
 			mipsel-linux-gnu-objcopy -O binary --only-section=.text test/tmp1/${type}_type/$hexed.o test/bin1/${type}_type/$hexed.bin
 				
-			hexdump test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/$hexed.hex.txt
+			#hexdump test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/$hexed.hex.txt
 
 			###compile testbench
 			iverilog -g 2012 \
@@ -146,7 +147,7 @@ else
 				
 				mipsel-linux-gnu-objcopy -O binary --only-section=.text test/tmp1/${type}_type/$hexed.o test/bin1/${type}_type/$hexed.bin
 				
-				hexdump test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/$hexed.hex.txt
+				#hexdump test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/$hexed.hex.txt
 				
 
 				###compile testbench
