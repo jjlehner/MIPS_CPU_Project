@@ -3,8 +3,8 @@
 #1
 #bitwise andi
 
-lui $3, 0x0001
+lui $t0, 0x0001
 
-andi $2, $3, 1
+andi $v0, $t0, 0x0001
 
-jr $0
+jr $zero
