@@ -33,27 +33,10 @@ mkdir -p test/simulator1
 
 SOURCEDIR="$1"
 INSTRUCTION="$2"
-lower_level=(
-	"${SOURCEDIR}/Adder.v"
-	"${SOURCEDIR}/ALU_Input_Mux.v"
-	"${SOURCEDIR}/ALU.v"
-	"${SOURCEDIR}/And_Gate.v"
-	"${SOURCEDIR}/Control_Unit.v"
-	"${SOURCEDIR}/Comparator.v"
-	"${SOURCEDIR}/Hazard_Unit.v"
-	"${SOURCEDIR}/Left_Shift.v"
-	"${SOURCEDIR}/MUX_2INPUT.v"
-	"${SOURCEDIR}/MUX_4INPUT.v"
-	"${SOURCEDIR}/Program_Counter.v"
-	"${SOURCEDIR}/Register_File.v"
-	"${SOURCEDIR}/Sign_Extension.v"
-	"${SOURCEDIR}/Or_Gate.v"
-	"${SOURCEDIR}/Memory_Filter.v"
-	"${SOURCEDIR}/pipeline_registers_bus/Decode_Execute_Register.v"
-	"${SOURCEDIR}/pipeline_registers_bus/Execute_Memory_Register.v"
-	"${SOURCEDIR}/pipeline_registers_bus/Fetch_Decode_Register.v"
-	"${SOURCEDIR}/pipeline_registers_bus/Memory_Writeback_Register.v"
-)
+
+lower_level=("${SOURCEDIR}/mips_cpu_*.v"
+	"${SOURCEDIR}/mips_cpu/*.v"
+	)
 
 if [ -z "$INSTRUCTION" ]; then
 	touch test/results1/result1.csv
@@ -96,7 +79,7 @@ if [ -z "$INSTRUCTION" ]; then
 
 			###compile testbench
 			iverilog -g 2012 \
-				${SOURCEDIR}/mips_cpu_bus.v test/mips_cpu_bus_tb_delay1.v test/RAM_32x2048_delay1.v ${lower_level[@]} -s mips_cpu_bus_tb_delay1 -Pmips_cpu_bus_tb_delay1.RAM_INIT_FILE=\"test/hex1/${type}_type/$hexed.hex.txt\" -o test/simulator1/mips_cpu_bus_tb_delay1_$hexed
+				test/mips_cpu_bus_tb_delay1.v test/RAM_32x2048_delay1.v ${lower_level[@]} -s mips_cpu_bus_tb_delay1 -Pmips_cpu_bus_tb_delay1.RAM_INIT_FILE=\"test/hex1/${type}_type/$hexed.hex.txt\" -o test/simulator1/mips_cpu_bus_tb_delay1_$hexed
 
 
 			###run testbench
@@ -166,7 +149,7 @@ else
 				
 				###compile testbench
 				iverilog -g 2012 \
-					${SOURCEDIR}/mips_cpu_bus.v test/mips_cpu_bus_tb_delay1.v test/RAM_32x2048_delay1.v ${lower_level[@]} -s mips_cpu_bus_tb_delay1 -Pmips_cpu_bus_tb_delay1.RAM_INIT_FILE=\"test/hex1/${type}_type/$hexed.hex.txt\" -o test/simulator1/mips_cpu_bus_tb_delay1_$hexed
+					test/mips_cpu_bus_tb_delay1.v test/RAM_32x2048_delay1.v ${lower_level[@]} -s mips_cpu_bus_tb_delay1 -Pmips_cpu_bus_tb_delay1.RAM_INIT_FILE=\"test/hex1/${type}_type/$hexed.hex.txt\" -o test/simulator1/mips_cpu_bus_tb_delay1_$hexed
 
 				###run testbench
 				set +e
