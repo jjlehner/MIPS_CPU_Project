@@ -226,7 +226,6 @@ module mips_cpu_bus (
 		.clk(internal_clk),
 		.reset(reset),
 		.enable(stall_decode),
-		.clear(program_counter_src_decode),
 		.program_counter_plus_four_fetch(program_counter_plus_four_fetch),
 		.program_counter_plus_four_decode(program_counter_plus_four_decode),
 		.HALT_fetch(HALT_fetch),
@@ -588,42 +587,48 @@ module mips_cpu_bus (
 			fetch_state <= 2'b11;
 		end else if(!clk) begin
 				internal_clk <= 0;
+				if(!waitrequest) begin
+					if(fetch_state ==2'b00) begin
+						read <= !memory_write_memory;
+						write <= memory_write_memory;
+					end
+					else if(fetch_state ==2'b01) begin
+						read <= 1;
+						write <= 0;
+					end
+					else if(fetch_state ==2'b10) begin
+						read <= !memory_write_memory;
+						write <= memory_write_memory;
+					end
+					else if(fetch_state ==2'b11) begin
+						read <= 1;
+						write <= 0;
+					end
+				end
 		end else if(!waitrequest) begin
-			if(fetch_state == 2'b00) begin
-				if(!stall_decode && !program_counter_src_decode) begin
-					instruction_decode <= readdata;
-				end
-				else if(!stall_decode && program_counter_src_decode) begin
-					instruction_decode <= 0;
-				end
-				fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
-				read <= !memory_write_memory;
-				write <= memory_write_memory;
-				internal_clk <= 1;
-			end
-			if(fetch_state == 2'b10) begin
-				if(!stall_decode && !program_counter_src_decode) begin
-					instruction_decode <= readdata;
-				end
-				else if(!stall_decode && program_counter_src_decode) begin
-					instruction_decode <= 0;
-				end
-				read <= 1;
+				read <= 0;
 				write <= 0;
-				internal_clk <= 1;
-			end
-			else if(fetch_state == 2'b01) begin
-				read_data_writeback <= readdata;
-				fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
-				read <= !memory_write_memory;
-				write <= memory_write_memory;
-				internal_clk <= 1;
-			end
-			else if(fetch_state == 2'b11) begin
-				fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
-				read <= 1;
-				write <= 0;
-			end
+				if(fetch_state == 2'b00) begin
+					if(!stall_decode) begin
+						instruction_decode <= readdata;
+					end
+					fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
+					internal_clk <= 1;
+				end
+				else if(fetch_state == 2'b10) begin
+					if(!stall_decode) begin
+						instruction_decode <= readdata;
+					end
+					internal_clk <= 1;
+				end
+				else if(fetch_state == 2'b01) begin
+					read_data_writeback <= readdata;
+					fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
+					internal_clk <= 1;
+				end
+				else if(fetch_state == 2'b11) begin
+					fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
+				end
 		end
 		
 	end

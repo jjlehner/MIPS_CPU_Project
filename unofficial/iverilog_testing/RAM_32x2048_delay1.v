@@ -39,22 +39,29 @@ module RAM_32x2048_delay1(
 		waitrequest = 0;
 
 	end
-
+	logic [1:0] state;
 	always @(posedge read, posedge write) begin
 		waitrequest <= 1;
+		state = 2'b01;
 	end
 	
 	always @(posedge clk) begin
-		if (write) begin
-		    mem[address] <= writedata;
-			waitrequest <= 0;
+		if(state == 2'b01) begin
+			state <= 2'b11;
 		end
-		else if (read) begin
-			$display("%h %h %h", address, mem[address],readdata);
-			readdata <= mem[address]; // read after writing, delay1
-			waitrequest <= 0;
+		else if(state == 2'b11) begin
+			if (write) begin
+			    mem[address] <= writedata;
+				waitrequest <= 0;
+			end
+			else if (read) begin
+				$display("%h %h %h", address, mem[address],readdata);
+				readdata <= mem[address]; // read after writing, delay1
+				waitrequest <= 0;
+			end
+			test <= mem[address];
+			state <= 2'b00;
 		end
-		test <= mem[address];
 	end
 
 endmodule

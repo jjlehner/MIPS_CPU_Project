@@ -91,7 +91,7 @@ if [ -z "$INSTRUCTION" ]; then
 			mipsel-linux-gnu-gcc -c -O3 test/tests/${type}_type/$hexed.s -o test/tmp1/${type}_type/$hexed.o
 				
 			mipsel-linux-gnu-objcopy -O binary --only-section=.text test/tmp1/${type}_type/$hexed.o test/bin1/${type}_type/$hexed.bin
-				
+					
 			hexdump -v test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/$hexed.hex.txt -e '1/4 "%08x " "\n"'
 
 			###compile testbench
