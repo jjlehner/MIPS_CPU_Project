@@ -1,4 +1,18 @@
 #!/bin/bash
+rm -rf test/bin1
+rm -rf test/bin1/r_type
+rm -rf test/bin1/i_type
+rm -rf test/bin1/j_type
+rm -rf test/tmp1
+rm -rf test/tmp1/r_type
+rm -rf test/tmp1/i_type
+rm -rf test/tmp1/j_type
+rm -rf test/hex1
+rm -rf test/hex1/r_type
+rm -rf test/hex1/i_type
+rm -rf test/hex1/j_type
+rm -rf test/results1
+rm -rf test/simulator1
 
 mkdir -p test/bin1
 mkdir -p test/bin1/r_type
@@ -54,7 +68,7 @@ if [ -z "$INSTRUCTION" ]; then
 			TESTCASE="$t"
 			basename "$TESTCASE"
 			hexname="$(basename -- $TESTCASE)"
-			hexed="${hexname%.*.*}"
+			hexed="${hexname%.*}"
 			exec 5< $t	
 
 			### first line specifies what is being tested
@@ -78,7 +92,7 @@ if [ -z "$INSTRUCTION" ]; then
 				
 			mipsel-linux-gnu-objcopy -O binary --only-section=.text test/tmp1/${type}_type/$hexed.o test/bin1/${type}_type/$hexed.bin
 				
-			#hexdump test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/$hexed.hex.txt
+			hexdump -v test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/$hexed.hex.txt -e '1/4 "%08x " "\n"'
 
 			###compile testbench
 			iverilog -g 2012 \
@@ -87,16 +101,17 @@ if [ -z "$INSTRUCTION" ]; then
 
 			###run testbench
 			set +e
-			test/simulator1/mips_cpu_bus_tb_delay1_$hexed > test/results1/mips_cpu_bus_tb_delay1_$hexed.stdout
-			output=$?
+			test/simulator1/mips_cpu_bus_tb_delay1_$hexed > test/results1/mips_cpu_bus_tb_delay1_$hexed.txt
+			output=$(tail -n 1 test/results1/mips_cpu_bus_tb_delay1_${hexed}.txt)
+			echo "out $output"
+			echo "exp $expectedValue"
 			set -e
-
 			echo "fix check $output $expectedValue "
 
 			###testing for failure code
-			if [[ "${output}" -ne 0 ]]; then
-				echo "${testType}_${testId} "fail" ${output}" >> test/results1/result1.csv
-			fi
+			# if [[ "${output}" -ne 0 ]]; then
+			# 	echo "${testType}_${testId} "fail" ${output}" >> test/results1/result1.csv
+			# fi
 
 		
 			###compare output to expected
@@ -144,28 +159,27 @@ else
 		
 				### assemble input file
 				mipsel-linux-gnu-gcc -c test/tests/${type}_type/$hexed.s -o test/tmp1/${type}_type/$hexed.o
-				
+			
 				mipsel-linux-gnu-objcopy -O binary --only-section=.text test/tmp1/${type}_type/$hexed.o test/bin1/${type}_type/$hexed.bin
+			
+				hexdump -v test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/$hexed.hex.txt -e '1/4 "%08x " "\n"'
 				
-				#hexdump test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/$hexed.hex.txt
-				
-
 				###compile testbench
 				iverilog -g 2012 \
 					${SOURCEDIR}/mips_cpu_bus.v test/mips_cpu_bus_tb_delay1.v test/RAM_32x2048_delay1.v ${lower_level[@]} -s mips_cpu_bus_tb_delay1 -Pmips_cpu_bus_tb_delay1.RAM_INIT_FILE=\"test/hex1/${type}_type/$hexed.hex.txt\" -o test/simulator1/mips_cpu_bus_tb_delay1_$hexed
 
 				###run testbench
 				set +e
-				test/simulator1/mips_cpu_bus_tb_delay1_$hexed > test/results1/mips_cpu_bus_tb_delay1_$hexed.stdout
-				output=$?
+				test/simulator1/mips_cpu_bus_tb_delay1_$hexed > test/results1/mips_cpu_bus_tb_delay1_$hexed.txt
+				output=$(tail -n 1 test/results1/mips_cpu_bus_tb_delay1_${hexed}.txt)
 				echo "out $output"
 				echo "exp $expectedValue"
 				set -e
 
 				###testing for failure code
-				if [[ "${output}" -ne 0 ]]; then
-					echo "${testType}_${testId} "fail" ${output}" >> test/results1/result1_${INSTRUCTION}.csv
-				fi
+				# if [[ "${output}" -ne 0 ]]; then
+				# 	echo "${testType}_${testId} "fail" ${output}" >> test/results1/result1_${INSTRUCTION}.csv
+				# fi
 
 			
 				###compare output to expected

@@ -31,7 +31,6 @@ module RAM_32x2048_delay1(
 		j = 0;
 
 		for(i=32'hbfc00000; i<32'hc0000000; i=i+32'h00000004) begin
-		    $display("data=%d\n", tmp[j]);
 			mem[i] = tmp[j];
 		    j++;
 		end

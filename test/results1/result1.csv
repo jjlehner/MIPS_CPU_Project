@@ -1,0 +1,13 @@
+r tests:
+add_1 pass addition between signed values, check lui, addiu and jr works
+addu_1 fail ensure addiu works
+addu_2 fail trying with lui dependency
+and_1 fail bitwise and
+and_2 fail bitwise and
+and_3 pass bitwise and
+div_1 fail none
+div_2 fail none
+divu_1 fail none
+divu_2 fail testing remainder
+jalr_1 fail 
+jr_1 fail additional comment : none
