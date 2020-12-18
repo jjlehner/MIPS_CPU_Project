@@ -1,4 +1,0 @@
-WARNING: test/RAM_32x2048_delay1.v:30: $readmemh(test/hex1/r_type/div_1.hex.txt): Not enough words in the file for the requested range [0:2048].
-VCD info: dumpfile mips_cpu_bus_tb_delay1_waves.vcd opened for output.
-FATAL: test/mips_cpu_bus_tb_delay1.v:37: Simulation did not finish within       10000 cycles.
-       Time: 20000000 Scope: mips_cpu_bus_tb_delay1
