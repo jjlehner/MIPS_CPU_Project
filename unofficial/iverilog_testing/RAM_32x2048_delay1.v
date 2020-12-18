@@ -10,7 +10,7 @@ module RAM_32x2048_delay1(
 );
 	parameter RAM_INIT_FILE = "";
 
-	reg [31:0] tmp [0:2048];
+	reg [31:0] tmp [0:400000];
 	reg [31:0] mem [32'hbfc00000:32'hc0000000];
 
 
@@ -19,7 +19,7 @@ module RAM_32x2048_delay1(
 		integer j;
 
 		/*zero initialise*/
-		for(i=0; i<2048; i++) begin
+		for(i=0; i<400000; i++) begin
 		    tmp[i] = 32'h0000;
 		end
 
@@ -39,29 +39,25 @@ module RAM_32x2048_delay1(
 		waitrequest = 0;
 
 	end
-	logic [1:0] state;
 	always @(posedge read, posedge write) begin
 		waitrequest <= 1;
-		state = 2'b01;
 	end
 	
 	always @(posedge clk) begin
-		if(state == 2'b01) begin
-			state <= 2'b11;
-		end
-		else if(state == 2'b11) begin
 			if (write) begin
 			    mem[address] <= writedata;
 				waitrequest <= 0;
 			end
 			else if (read) begin
 				$display("%h %h %h", address, mem[address],readdata);
-				readdata <= mem[address]; // read after writing, delay1
+				if(mem[address] == 32'hxxxxxxxx || address < 32'hbfc00000 || address > 32'hc0000000) begin
+					mem[address] = 32'h0;
+				end
+				else begin
+					readdata <= mem[address]; // read after writing, delay1
+				end
 				waitrequest <= 0;
 			end
-			test <= mem[address];
-			state <= 2'b00;
-		end
 	end
 
 endmodule

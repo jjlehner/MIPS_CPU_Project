@@ -13,7 +13,8 @@ module Control_Unit(
 	output logic		j_instruction,
 	output logic		LO_register_write,
 	output logic		HI_register_write,
-	output logic		using_HI_LO
+	output logic		using_HI_LO,
+	output logic		no_sign_extend
 );
 
 	logic [5:0] op;
@@ -54,6 +55,7 @@ module Control_Unit(
 				program_counter_multiplexer_jump = ( funct ==  6'b001000 || funct == 6'b001001 ); //checks if instruction is jr or jalr
 				j_instruction 			= 0;
 				using_HI_LO				= (funct == 6'b010000 || funct == 6'b010010); //MFHI, //MFLO
+				no_sign_extend = 0;
 			end
 			
 			6'b000001:	begin		//BLTZ,BLTZAL, BGEZ,BGEZAL instruction
@@ -69,6 +71,7 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
 
 			end
 			
@@ -85,6 +88,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 1;
 				j_instruction 			= 1;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			6'b000011: 	begin		//JAL instruction
 				register_write			= 1;
@@ -99,6 +104,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 1;
 				j_instruction 			= 1;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			6'b000100: 	begin 		//BEQ instruction
 				register_write			= 0;
@@ -113,6 +120,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			
 			6'b000101: 	begin		//BNE
@@ -128,6 +137,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			
 			
@@ -144,6 +155,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end	
 			6'b000111:	begin					//BGTZ 
 				register_write			= 0;
@@ -158,6 +171,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			
 			6'b001000: 	begin 					//ADDI
@@ -173,6 +188,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			
 			6'b001001: begin					//ADDIU
@@ -188,6 +205,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 1;
+
 			end
 			
 			6'b001010:	begin					//SLTI
@@ -203,6 +222,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			
 			6'b001011: 	begin					//SLTIU
@@ -218,6 +239,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			6'b001100: 	begin					//ANDI
 				register_write			= 1;
@@ -232,6 +255,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			6'b001101:  begin					//ORI
 				register_write			= 1;
@@ -246,6 +271,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			6'b001110: 	begin 					//XORI
 				register_write			= 1;
@@ -260,10 +287,12 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			6'b001111: 	begin					//LUI 
 				register_write			= 1;
-				memory_to_register		= 0;
+				memory_to_register		= 1;
 				memory_write			= 0;
 				ALU_src_B				= 1;
 				register_destination 	= 0;
@@ -274,12 +303,14 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			
 			
 			6'b100000: 	begin	//LB
 				register_write			= 1;
-				memory_to_register		= 0;
+				memory_to_register		= 1;
 				memory_write			= 0;
 				ALU_src_B				= 1;
 				register_destination 	= 0;
@@ -288,18 +319,26 @@ module Control_Unit(
 				LO_register_write		= HI_register_write;
 				ALU_function			= 6'b100000;
 				program_counter_multiplexer_jump = 0;
+				j_instruction 			= 0;
+				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			6'b100001:	begin	//LH
 				register_write			= 1;
-				memory_to_register		= 0;
+				memory_to_register		= 1;
 				memory_write			= 0;
 				ALU_src_B				= 1;
 				register_destination 	= 0;
 				branch					= 0;
 				HI_register_write		= 0;
 				LO_register_write		= HI_register_write;
-				ALU_function			= 6'b100001;//add unsigned function
+				ALU_function			= 6'b100000;
 				program_counter_multiplexer_jump = 0;
+				j_instruction 			= 0;
+				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			
 			6'b100011:	begin				//LW
@@ -313,25 +352,33 @@ module Control_Unit(
 				LO_register_write		= HI_register_write;
 				ALU_function			= 6'b100001;//add unsigned function
 				program_counter_multiplexer_jump = 0;
+				j_instruction 			= 0;
+				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			
 			6'b100100: begin	//LBU
 				register_write			= 1;
-				memory_to_register		= 0;
+				memory_to_register		= 1;
 				memory_write			= 0;
 				ALU_src_B				= 1;
 				register_destination 	= 0;
 				branch					= 0;
 				HI_register_write		= 0;
 				LO_register_write		= HI_register_write;
-				ALU_function			= 6'b100001;//add unsigned function
+				ALU_function			= 6'b100000;
 				program_counter_multiplexer_jump = 0;
+				j_instruction 			= 0;
+				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 
 			6'b100101: begin	//LHU
-				register_write			= 0;
-				memory_to_register		= 0;
-				memory_write			= 1;
+				register_write			= 1;
+				memory_to_register		= 1;
+				memory_write			= 0;
 				ALU_src_B				= 1;
 				register_destination 	= 0;
 				branch					= 0;
@@ -341,6 +388,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			6'b101000: 	begin   //SB
 				register_write			= 0;
@@ -355,6 +404,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			6'b101001: 	begin	//SH
 				register_write			= 0;
@@ -369,6 +420,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			6'b101011: 	begin	//SW
 				register_write			= 0;
@@ -383,6 +436,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
+				no_sign_extend = 0;
+
 			end
 			/*
 			6'b010000: 	controls <= {12{1'bx}};	//Exception instruction MFC0 and MTC0 instruction
@@ -400,6 +455,8 @@ module Control_Unit(
 				program_counter_multiplexer_jump  = 1'bx;
 				j_instruction 			= 1'bx;
 				using_HI_LO				= 1'bx;
+				no_sign_extend = 1'bx;
+
 			end
 		endcase
 	end

@@ -28,11 +28,13 @@ module Memory_Writeback_Register
 	input	logic [4:0]		write_register_memory,
 	input 	logic [31:0]	ALU_HI_output_memory,
 	input	logic [31:0]	ALU_LO_output_memory,
+	input	logic [31:0]	read_data_memory,
 	
 	output	logic [31:0]	ALU_output_writeback,
 	output	logic [4:0]		write_register_writeback,
 	output	logic [31:0]	ALU_HI_output_writeback,
-	output	logic [31:0]	ALU_LO_output_writeback
+	output	logic [31:0]	ALU_LO_output_writeback,
+	output	logic [31:0]	read_data_writeback
 );
 
 	always_ff @(posedge clk, posedge reset) begin
@@ -49,6 +51,7 @@ module Memory_Writeback_Register
 			op_writeback <= 0;
 			byteenable_writeback <= 0;
 			src_A_ALU_writeback <= 0;
+			read_data_writeback <= 0;
 		end
 		else begin
 			register_write_writeback <= register_write_memory;
@@ -67,6 +70,7 @@ module Memory_Writeback_Register
 			op_writeback <= op_memory;
 			byteenable_writeback <= byteenable_memory;
 			src_A_ALU_writeback <= src_A_ALU_memory;
+			read_data_writeback <= read_data_memory;
 		end
 
 	end

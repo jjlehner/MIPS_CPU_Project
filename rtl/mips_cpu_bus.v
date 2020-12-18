@@ -18,8 +18,7 @@ module mips_cpu_bus (
     output logic[3:0] byteenable,
     input logic[31:0] readdata
 );
-	logic [31:0] instruction_number;
-	assign instruction_number = (instr_address - 32'hBFC00000)>>2;
+
 	logic internal_clk;
 
 	//Fetch control
@@ -28,6 +27,7 @@ module mips_cpu_bus (
 	logic [31:0] program_counter_plus_four_fetch;
 	logic [31:0] program_counter_mux_1_out;
 	logic 		 HALT_fetch;
+	logic [31:0] instruction_fetch;
 
 	//decode Controls
 	logic       program_counter_src_decode;
@@ -45,6 +45,7 @@ module mips_cpu_bus (
 	logic		HI_register_write_decode;
 	logic		LO_register_write_decode;
 	logic		HALT_decode;
+	logic		no_sign_extend;
 
 	//decode datapath
 	//TODO move instruction logic to control
@@ -134,6 +135,7 @@ module mips_cpu_bus (
 	logic [31:0] ALU_output_memory_resolved;
 	logic [31:0] j_program_counter_memory;
 	logic [31:0] src_A_ALU_memory;
+	logic [31:0] read_data_memory;
 
 	//Writeback controls
 	logic register_write_writeback;
@@ -226,6 +228,8 @@ module mips_cpu_bus (
 		.clk(internal_clk),
 		.reset(reset),
 		.enable(stall_decode),
+		.instruction_fetch(instruction_fetch),
+		.instruction_decode(instruction_decode),
 		.program_counter_plus_four_fetch(program_counter_plus_four_fetch),
 		.program_counter_plus_four_decode(program_counter_plus_four_decode),
 		.HALT_fetch(HALT_fetch),
@@ -245,7 +249,8 @@ module mips_cpu_bus (
 		.ALU_function(ALU_function_decode),
 		.program_counter_multiplexer_jump(program_counter_multiplexer_jump_decode),
 		.j_instruction(j_instruction_decode),
-		.using_HI_LO(using_HI_LO_decode)
+		.using_HI_LO(using_HI_LO_decode),
+		.no_sign_extend(no_sign_extend)
 	);
 
 	//Post-Register File multiplexers
@@ -264,7 +269,7 @@ module mips_cpu_bus (
 	);
 
 	assign program_counter_src_decode = branch_decode & equal_decode;
-	assign sign_imm_decode = {{16{immediate[15]}},immediate};
+	assign sign_imm_decode = no_sign_extend ? {{16{1'b0}},immediate} : {{16{immediate[15]}},immediate};
 	assign shifter_output_decode = sign_imm_decode << 2;
 
 	Adder adder_decode(
@@ -450,7 +455,9 @@ module mips_cpu_bus (
 
 		.byteenable_writeback(byteenable_writeback),
 		.src_A_ALU_memory(src_A_ALU_memory),
-		.src_A_ALU_writeback(src_A_ALU_writeback)
+		.src_A_ALU_writeback(src_A_ALU_writeback),
+		.read_data_memory(read_data_memory),
+		.read_data_writeback(read_data_writeback)
 
 	);
 
@@ -490,9 +497,54 @@ module mips_cpu_bus (
 	);
 	assign active = !HALT_writeback;
 	assign byteenable = byteenable_memory;
-//	logic [1:0] fetch_state; //0 == inst_prev_inst, 1 = inst_prev_data, 2 = data, 3 =  instr_prev_data;
+
+
+	
+	logic [1:0] next_state;
+	logic [1:0] fetch_state; //0 = instruction_fetch_stall, 1 = instruction fetch read, 2 = data fetch stall, 3 = data fetch read
+	logic clk_enable;
+	logic clk_enable_next;
+	logic 
+	assign internal_clk = clk & clk_enable;
+	always_ff @(posedge clk, posedge reset) begin
+		if(reset) begin
+			read <= 0;
+			write <= 0;
+			instruction_fetch <= 0;
+			read_data_memory <= 0;
+			fetch_state <= 2'b00;
+		end
+		else begin
+			clk_enable <= clk_enable_next;
+			fetch_state <= next_state;
+		end
+
+	end
 	always_comb begin
 		address[1:0] = 2'b00;
+		if(fetch_state == 2'b00) begin
+			read = 0;
+			write = 0;
+			next_state = 2'b01;
+		end
+		else if(fetch_state == 2'b01) read = 1;
+		else if(fetch_state == 2'b10) begin
+			read = 0;
+			write = 0;
+			next_state = 2'b11;
+		end
+		else if(fetch_state == 2'b11) begin
+			if(memory_write_memory) begin
+				write = 1;
+				read = 0;
+			end
+			else begin
+				write = 0;
+				read = 1;
+			end
+
+		end
+
 		if(write_register_memory == 5'h2) begin
 			register_v0 = ALU_output_memory;
 		end else if(write_register_writeback == 5'h2) begin
@@ -573,65 +625,151 @@ module mips_cpu_bus (
 			endcase
 		end
 	end
+	// logic [1:0] fetch_state; //0 == inst_prev_inst, 1 = inst_prev_data, 2 = data, 3 =  instr_prev_data;
+	// always_comb begin
+	// 	address[1:0] = 2'b00;
+	// 	if(write_register_memory == 5'h2) begin
+	// 		register_v0 = ALU_output_memory;
+	// 	end else if(write_register_writeback == 5'h2) begin
+	// 		register_v0 = result_writeback;
+	// 	end else begin
+	// 		register_v0 = register_v0_reg_file;
+	// 	end
+	// 	if(fetch_state == 2'b00 || fetch_state == 2'b01 || fetch_state == 2'b11) begin
+	// 		byteenable_memory = 4'b1111;
+	// 		address[31:2] = instr_address[31:2];
+	// 	end
+	// 	else begin
+	// 		address[31:2] = data_address[31:2];
+	// 		case(op_memory)
+	// 			6'b100000 : begin //LB
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory = 4'b0001;
+	// 					2'b01 : byteenable_memory = 4'b0010;
+	// 					2'b10 : byteenable_memory = 4'b0100;
+	// 					2'b11:	byteenable_memory = 4'b1000;
+	// 				endcase
+	// 			end
+	// 			6'b100100 : begin //LBU
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory = 4'b0001;
+	// 					2'b01 : byteenable_memory = 4'b0010;
+	// 					2'b10 : byteenable_memory = 4'b0100;
+	// 					2'b11:	byteenable_memory = 4'b1000;
+	// 				endcase
+	// 			end
+	// 			6'b100001 : begin //LHW
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory = 4'b0011;
+	// 					2'b10 : byteenable_memory = 4'b1100;
+	// 					default : byteenable_memory = 4'b1111;
+	// 				endcase
+	// 			end
+	// 			6'b100101 : begin //LHWU
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory = 4'b0011;
+	// 					2'b10 : byteenable_memory = 4'b1100;
+	// 					default : byteenable_memory = 4'b1111;
+	// 				endcase
+	// 			end
+	// 			6'b100010 : begin //LWL
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory = 4'b0001;
+	// 					2'b01 : byteenable_memory = 4'b0011;
+	// 					2'b10 : byteenable_memory = 4'b0111;
+	// 					2'b11:	byteenable_memory = 4'b1111;
+	// 				endcase
+	// 			end
+	// 			6'b100110 : begin //LWR
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory = 4'b1111;
+	// 					2'b01 : byteenable_memory = 4'b1110;
+	// 					2'b10 : byteenable_memory = 4'b1100;
+	// 					2'b11:	byteenable_memory = 4'b1000;
+	// 				endcase
+	// 			end
+	// 			6'b101000 : begin //SB
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory = 4'b0001;
+	// 					2'b01 : byteenable_memory = 4'b0010;
+	// 					2'b10 : byteenable_memory = 4'b0100;
+	// 					2'b11:	byteenable_memory = 4'b1000;
+	// 				endcase
+	// 			end
+	// 			6'b101001 : begin //SH
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory = 4'b0011;
+	// 					2'b10 : byteenable_memory = 4'b1100;
+	// 					default : byteenable_memory = 4'b1111;
+	// 				endcase
+	// 			end
 
-	logic [1:0] fetch_state; //0 == inst_prev_inst, 1 = inst_prev_data, 2 = data, 3 =  instr_prev_data;
+	// 			default : byteenable_memory = 4'b1111;
+	// 		endcase
+	// 	end
+	// end
 
-	always_ff @(posedge clk, negedge clk, posedge reset) begin
+	
+	// always_ff @(posedge clk, negedge clk, posedge reset) begin
 
-		if(reset) begin
-			read <= 0;
-			write <= 0;
-			instruction_decode <= 0;
-			read_data_writeback <= 0;
-			internal_clk <= 0;
-			fetch_state <= 2'b11;
-		end else if(!clk) begin
-				internal_clk <= 0;
-				if(!waitrequest) begin
-					if(fetch_state ==2'b00) begin
-						read <= !memory_write_memory;
-						write <= memory_write_memory;
-					end
-					else if(fetch_state ==2'b01) begin
-						read <= 1;
-						write <= 0;
-					end
-					else if(fetch_state ==2'b10) begin
-						read <= !memory_write_memory;
-						write <= memory_write_memory;
-					end
-					else if(fetch_state ==2'b11) begin
-						read <= 1;
-						write <= 0;
-					end
-				end
-		end else if(!waitrequest) begin
-				read <= 0;
-				write <= 0;
-				if(fetch_state == 2'b00) begin
-					if(!stall_decode) begin
-						instruction_decode <= readdata;
-					end
-					fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
-					internal_clk <= 1;
-				end
-				else if(fetch_state == 2'b10) begin
-					if(!stall_decode) begin
-						instruction_decode <= readdata;
-					end
-					internal_clk <= 1;
-				end
-				else if(fetch_state == 2'b01) begin
-					read_data_writeback <= readdata;
-					fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
-					internal_clk <= 1;
-				end
-				else if(fetch_state == 2'b11) begin
-					fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
-				end
-		end
+	// 	if(reset) begin
+	// 		read <= 0;
+	// 		write <= 0;
+	// 		instruction_fetch <= 0;
+	// 		read_data_memory <= 0;
+	// 		internal_clk <= 0;
+	// 		fetch_state <= 2'b11;
+	// 	end else if(!clk) begin
+	// 			internal_clk <= 0;
+	// 			if(!waitrequest) begin
+	// 				if(fetch_state ==2'b00) begin
+	// 					read <= !memory_write_memory;
+	// 					write <= memory_write_memory;
+	// 				end
+	// 				else if(fetch_state ==2'b01) begin
+	// 					read <= 1;
+	// 					write <= 0;
+	// 				end
+	// 				else if(fetch_state ==2'b10) begin
+	// 					read <= !memory_write_memory;
+	// 					write <= memory_write_memory;
+	// 				end
+	// 				else if(fetch_state ==2'b11) begin
+	// 					read <= 1;
+	// 					write <= 0;
+	// 				end
+	// 			end
+	// 	end else if(!waitrequest) begin
+	// 			read <= 0;
+	// 			write <= 0;
+	// 			if(fetch_state == 2'b00) begin
+	// 				if(!stall_decode) begin
+	// 					instruction_fetch <= readdata;
+	// 				end
+	// 				fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
+	// 				internal_clk <= (memory_to_register_memory || memory_write_memory) ? 0 : 1;
+	// 			end
+	// 			else if(fetch_state == 2'b10) begin
+	// 				read_data_memory <= readdata;
+	// 				internal_clk <= 1;
+	// 				fetch_state <= 2'b00;
+	// 			end
+	// 			else if(fetch_state == 2'b01) begin
+	// 				if(!stall_decode) begin
+	// 					instruction_fetch <= readdata;
+	// 				end
+	// 				fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
+	// 				internal_clk <= (memory_to_register_memory || memory_write_memory) ? 0 : 1;
+	// 			end
+	// 			else if(fetch_state == 2'b11) begin
+	// 				fetch_state <= (memory_to_register_memory || memory_write_memory) ? 2'b10 : 2'b00;
+	// 				instruction_fetch <= readdata;
+	// 				internal_clk <= 1;
+	// 			end
+	// 	end
 		
 	end
+	
 
 
 endmodule
