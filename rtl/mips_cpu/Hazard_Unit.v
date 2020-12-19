@@ -12,7 +12,7 @@ module Hazard_Unit(
 	input	logic		register_write_memory,
 	input	logic [4:0]	write_register_writeback,
 	input	logic		register_write_writeback,
-	input	logic		program_counter_multiplexer_jump_execute,
+	input	logic		program_counter_multiplexer_jump_memory,
 	input	logic		HI_register_write_memory,
 	input	logic		LO_register_write_memory,
 	input	logic		LO_register_write_writeback,
@@ -72,7 +72,7 @@ module Hazard_Unit(
 
 		stall_fetch = branchstall || lwstall;
 		stall_decode = branchstall || lwstall;
-		flush_execute_register = branchstall || lwstall || program_counter_multiplexer_jump_execute;
+		flush_execute_register = branchstall || lwstall || program_counter_multiplexer_jump_memory;
 	
 
 	end

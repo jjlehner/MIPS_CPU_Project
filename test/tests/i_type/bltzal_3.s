@@ -1,5 +1,5 @@
 #bltzal
-#47
+#31
 #3
 #testing bgezal part only, check branching occurs when $3<0
 
@@ -7,7 +7,6 @@
 	addiu $t0, $t0, 0xFFFF 
 
 	bltzal $t0, Target
-
 	addiu $v0, $t0, 0x0020
 
 	jr $zero

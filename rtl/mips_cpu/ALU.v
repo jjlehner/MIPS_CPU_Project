@@ -30,7 +30,7 @@ module ALU
 		ALU_HI_LO_output = {64{1'bx}};
 		case(ALU_operation)
 			6'b000000: 	ALU_output = input_2 << shift_amount; 					//SLL
-			6'b000001:	ALU_output = input_2 >> shift_amount; 					//SRL
+			6'b000010:	ALU_output = input_2 >> shift_amount; 					//SRL
 			6'b000011: 	ALU_output = input_2 >>> shift_amount;					//SRA
 			6'b000100:	ALU_output = input_2 <<	input_1;					//SLLV
 			6'b000110: 	ALU_output = input_2 >> input_1;					//SRLV

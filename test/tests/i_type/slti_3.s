@@ -1,5 +1,5 @@
 #slti
-#0
+#1
 #3
 #set $2 to 1 when $3 is LESS THAN immediate, signed
 

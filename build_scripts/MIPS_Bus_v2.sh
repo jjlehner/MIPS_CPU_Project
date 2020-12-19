@@ -4,25 +4,25 @@ cd "$(dirname "$0")"
 cd ../unofficial/iverilog_testing/programs/
 ### get file input 
 lower_level=(
-	"../../../rtl/Adder.v"
-	"../../../rtl/ALU_Input_Mux.v"
-	"../../../rtl/ALU.v"
-	"../../../rtl/Control_Unit.v"
-	"../../../rtl/Comparator.v"
-	"../../../rtl/Hazard_Unit.v"
-	"../../../rtl/MUX_2INPUT.v"
-	"../../../rtl/MUX_4INPUT.v"
-	"../../../rtl/Program_Counter.v"
-	"../../../rtl/Register_File.v"
-	"../../../rtl/Memory_Filter.v"
-	"../../../rtl/pipeline_registers_bus/Decode_Execute_Register.v"
-	"../../../rtl/pipeline_registers_bus/Execute_Memory_Register.v"
-	"../../../rtl/pipeline_registers_bus/Fetch_Decode_Register.v"
-	"../../../rtl/pipeline_registers_bus/Memory_Writeback_Register.v"
+	"../../../rtl/mips_cpu/Adder.v"
+	"../../../rtl/mips_cpu/ALU_Input_Mux.v"
+	"../../../rtl/mips_cpu/ALU.v"
+	"../../../rtl/mips_cpu/Control_Unit.v"
+	"../../../rtl/mips_cpu/Comparator.v"
+	"../../../rtl/mips_cpu/Hazard_Unit.v"
+	"../../../rtl/mips_cpu/MUX_2INPUT.v"
+	"../../../rtl/mips_cpu/MUX_4INPUT.v"
+	"../../../rtl/mips_cpu/Program_Counter.v"
+	"../../../rtl/mips_cpu/Register_File.v"
+	"../../../rtl/mips_cpu/Memory_Filter.v"
+	"../../../rtl/mips_cpu/Decode_Execute_Register.v"
+	"../../../rtl/mips_cpu/Execute_Memory_Register.v"
+	"../../../rtl/mips_cpu/Fetch_Decode_Register.v"
+	"../../../rtl/mips_cpu/Memory_Writeback_Register.v"
 )
 
 programs_to_run=(
-	"slt"
+	"bltzal"
 )
 
 g++ stage2_assembler.cpp -o stage2_assembler

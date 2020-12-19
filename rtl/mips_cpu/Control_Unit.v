@@ -33,7 +33,7 @@ module Control_Unit(
 				memory_to_register		= 0;
 				memory_write			= 0;
 				ALU_src_B				= 0;
-				ALU_src_A				= (funct == 6'b000000 || funct == 6'b000001 || funct == 6'b000011) ? 1 : 0;
+				ALU_src_A				= (funct == 6'b000000 || funct == 6'b000010 || funct == 6'b000011);
 				register_destination 	= 1;
 				branch					= 0;
 				HI_register_write 		= ( funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 || funct == 6'b010001); //checks if instruction is mult/multu/div/divu
@@ -305,7 +305,7 @@ module Control_Unit(
 				ALU_function			= 6'b101100;
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
-				using_HI_LO				= 1;
+				using_HI_LO				= 0;
 				no_sign_extend = 0;
 
 			end

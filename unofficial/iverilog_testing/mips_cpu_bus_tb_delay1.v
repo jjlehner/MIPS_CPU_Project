@@ -66,6 +66,7 @@ module mips_cpu_bus_tb_delay1;
         end
 
         $display("TB : finished; running=0");
+        $display("%0d",register_v0);
 
         $finish;
         

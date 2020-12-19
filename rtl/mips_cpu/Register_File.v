@@ -71,6 +71,8 @@ module Register_File(
 			for(int i = 0; i < 32; i++) begin
 				registers[i] <= 32'h0;
 			end
+			LO_reg <= 0;
+			HI_reg <= 0;
 		end
 		else begin
 			if(write_enable) registers[write_address]<= write_data;

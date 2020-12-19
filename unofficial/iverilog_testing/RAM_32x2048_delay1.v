@@ -7,11 +7,13 @@ module RAM_32x2048_delay1(
 	input logic[3:0] byteenable,
 	output logic[31:0] readdata,
 	output logic[31:0] test,
-	output	logic waitrequest
+	output	logic waitrequest,
+	output logic [31:0]val
 );
 	parameter RAM_INIT_FILE = "";
 
 	reg [31:0] tmp [0:400000];
+	reg [31:0] lower_mem [32'h0:32'h0F00];
 	reg [31:0] mem [32'hbfc00000:32'hc0000000];
 
 	logic [7:0] a;
@@ -51,16 +53,21 @@ module RAM_32x2048_delay1(
 	
 	always @(posedge clk) begin
 			if (write) begin
-				
-			    mem[address] <= writedata_mod;
+				if(address >= 32'hbfc00000 && address <= 32'hc0000000) begin
+					mem[address] <= writedata_mod; // read after writing, delay1
+				end else if(address >= 32'h0 && address <= 32'h0F00) begin
+					lower_mem[address] <= writedata_mod; // read after writing, delay1
+				end
 				waitrequest <= 0;
 			end
 			else if (read) begin
-				if(mem[address] == 32'hxxxxxxxx || address < 32'hbfc00000 || address > 32'hc0000000) begin
-					mem[address] = 32'h0;
+				if(address == 32'h0) begin
+					readdata <= 32'h0;
 				end
-				else begin
+				else if(address >= 32'hbfc00000 && address <= 32'hc0000000) begin
 					readdata <= mem[address]; // read after writing, delay1
+				end else if(address > 32'h0 && address <= 32'h0F00) begin
+					readdata <= lower_mem[address]; // read after writing, delay1
 				end
 				waitrequest <= 0;
 			end
@@ -72,6 +79,6 @@ module RAM_32x2048_delay1(
 		d = !byteenable[0] ? writedata[7:0] : 4'h0;
 
 		writedata_mod = {a,b,c,d};
-
+		val = lower_mem[32'h20];
 	end
 endmodule

@@ -4,7 +4,7 @@ module ALU_Input_Mux(
 	input	logic [2:0]	forward_one_execute,
 	input	logic [2:0]	forward_two_execute,
 
-	input	logic [10:6] sa_execute,
+	input	logic [4:0] sa_execute,
 	input	logic [31:0] read_data_1_reg,
 	input	logic [31:0] result_writeback,
 	input	logic [31:0] ALU_output_memory,

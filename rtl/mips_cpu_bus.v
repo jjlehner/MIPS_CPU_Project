@@ -497,7 +497,7 @@ module mips_cpu_bus (
 		.HI_register_write_writeback(HI_register_write_writeback),
 		.LO_register_write_writeback(LO_register_write_writeback),
 		.register_write_writeback(register_write_writeback),
-		.program_counter_multiplexer_jump_execute(program_counter_multiplexer_jump_execute),
+		.program_counter_multiplexer_jump_memory(program_counter_multiplexer_jump_memory),
 		.using_HI_LO_execute(using_HI_LO_execute),
 		.stall_fetch(stall_fetch),
 		.stall_decode(stall_decode),
@@ -689,6 +689,9 @@ module mips_cpu_bus (
 						2'b10 : byteenable_memory_next = 4'b0011;
 						default : byteenable_memory_next = 4'b1111;
 					endcase
+				end
+				6'b101011 : begin //SW
+					byteenable_memory_next = 4'b0000;
 				end
 
 				default : byteenable_memory_next = 4'b1111;

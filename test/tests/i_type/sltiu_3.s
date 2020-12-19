@@ -5,6 +5,6 @@
 
 lui $3, 0xFFFF
 
-slti $2, $3, 0x0000
+sltiu $2, $3, 0x0000
 
 jr $0

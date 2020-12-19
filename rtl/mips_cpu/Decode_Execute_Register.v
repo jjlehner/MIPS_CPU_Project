@@ -108,15 +108,17 @@ module Decode_Execute_Register
 			j_instruction_execute <= 0;
 			using_HI_LO_execute <= 0;
 			op_execute <= 0;
-
+			
 			program_counter_plus_four_execute <= {32{1'b0}};
 			j_program_counter_execute <= {32{1'b0}};
 			src_A_execute <= {32{1'b0}};
 			src_B_execute <= {32{1'b0}};
-
-			HALT_execute <= 0;
+			if(reset) begin
+				HALT_execute <= 0;
+			end
 			sa_execute <= 0;
 		end
+		
 	end
 	
 	

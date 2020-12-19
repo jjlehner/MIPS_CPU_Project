@@ -1,0 +1,2 @@
+../../../rtl/mips_cpu_bus.v:621: syntax error
+../../../rtl/mips_cpu_bus.v:621: error: Malformed conditional expression.

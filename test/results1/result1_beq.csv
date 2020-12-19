@@ -1,2 +1,0 @@
-beq_1 pass none
-beq_2 fail not equal should not branch
