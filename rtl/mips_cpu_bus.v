@@ -613,6 +613,7 @@ module mips_cpu_bus (
 			register_v0 = register_v0_reg_file;
 		end
 		
+		
 		if(fetch_state == 3'b101 || fetch_state == 3'b110) begin
 			case(op_memory)
 				6'b100000 : begin //LB
