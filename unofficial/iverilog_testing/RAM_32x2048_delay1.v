@@ -49,7 +49,6 @@ module RAM_32x2048_delay1(
 				waitrequest <= 0;
 			end
 			else if (read) begin
-				$display("%h %h %h", address, mem[address],readdata);
 				if(mem[address] == 32'hxxxxxxxx || address < 32'hbfc00000 || address > 32'hc0000000) begin
 					mem[address] = 32'h0;
 				end

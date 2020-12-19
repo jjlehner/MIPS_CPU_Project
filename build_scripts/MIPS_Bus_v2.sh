@@ -40,7 +40,7 @@ do
 	echo "COMPILING VERILOG"
    iverilog -Wall -g 2012 ../../../rtl/mips_cpu_bus.v ../mips_cpu_bus_tb_delay1.v ../RAM_32x2048_delay1.v ${lower_level[@]} -s mips_cpu_bus_tb_delay1 -Pmips_cpu_bus_tb_delay1.VCD_FILE=\"output/$i/$i.vcd\" -Pmips_cpu_bus_tb_delay1.RAM_INIT_FILE=\"output/$i/${program}\" -o output/$i/$i.exe  &>output/$i/${i}_vcompilation_output.txt
 	echo "SUCCESFULY COMPILED VERILOG"
-	echo "\n \n \n----------------------------------------------------------\n\n\n"
+	echo "----------------------------------------------------------"
 	set +e
 	output/$i/$i.exe > output/$i/$i.output
 	set -e
