@@ -3,10 +3,10 @@
 #1
 #set $2 to 1 when $3 is LESS THAN $4 (unsigned)
 
-lui $3, 0x1000
-lui $4, 0x2000
+lui $t0, 0x1000
+lui $t1, 0x2000
 
-sltu $2, $3, $4
+sltu $v0, $t0, $t1
 
-jr $0
+jr $zero
 nop

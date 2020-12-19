@@ -3,16 +3,14 @@
 #3
 #additional comment : both sb and lb must be working, ensure the lower byte is stored and loaded
 
-lui $3, 0x0001
-addiu $3, $0, 0x0005
+lui $t0, 0x0001
+addiu $t0, $zero, 0x0500
  
-addiu $4, $0, 32
+addiu $t1, $zero, 32
 
-sb $3, 1($4)
+sb $t0, 0x0001($t1)
 
-addiu $4, $4, 1
+lb $v0, 0x0001($t1)
 
-lb $2, 0($4)
-
-jr $0
+jr $zero
 nop

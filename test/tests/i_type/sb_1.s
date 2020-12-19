@@ -3,18 +3,18 @@
 #1
 #additional comment : both sb and lb must be working
 
-lui $4, 0x1000
+lui $t1, 0x1000
 
-lui $3, 0x0000
+lui $t0, 0x0000
 
-sb $3, 1($4)
+sb $t0, 1($t1)
 
-addiu $4, $4, 1
+addiu $t1, $t1, 1
 
-lb $5, 0($4)
+lb $t2, 0($t1)
 
-subu $2, $5, $3
+subu $v0, $t2, $t0
 
-jr $0
+jr $zero
 nop
 

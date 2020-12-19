@@ -3,8 +3,8 @@
 #1
 #none
 
-addiu $3, $0, 0x0002
-addiu $4, $0, 0x0008
-mult $2, $3, $4
-jr $0
+addiu $t0, $zero, 0x0002
+addiu $t1, $zero, 0x0008
+mult $v0, $t0, $t1
+jr $zero
 nop

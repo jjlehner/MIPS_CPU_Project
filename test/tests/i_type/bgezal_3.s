@@ -3,16 +3,16 @@
 #3
 #testing bgezal part only, check no branching when $3<0
 
-	lui $3, 0xFFFF
-	addiu $3, $3, 0xFFFF 
+	lui $t0, 0xFFFF
+	addiu $t0, $t0, 0xFFFF 
 
-	bgezal $3, Target
+	bgezal $t0, Target
 
-	addiu $2, $3, 0x000E
+	addiu $v0, $t0, 0x000E
 
-	jr $0	
+	jr $zero	
 
-Target: addiu $3, $3, 0x0010
+Target: addiu $t0, $t0, 0x0010
 
-jr $31
+jr $ra
 

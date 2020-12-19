@@ -3,10 +3,10 @@
 #1
 #lui and addiu should be working
 
-lui $3, 0xFFFF
-addiu $4, $0, 0xFFF1
+lui $t0, 0xFFFF
+addiu $t1, $zero, 0xFFF1
 
-nor $2, $3, $4
+nor $v0, $t0, $t1
 
-jr $0
+jr $zero
 nop

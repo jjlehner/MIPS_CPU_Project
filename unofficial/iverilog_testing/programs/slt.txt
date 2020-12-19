@@ -1,0 +1,6 @@
+.main
+	0x24020001 //ADDIU $v0 $zero 0x0001
+	0x0002102A //slt v0 zero v0
+	0x24020001 //ADDIU $v0 $zero 0x0001
+	0x0040102A //slt v0 v0 zero
+	0x00000008

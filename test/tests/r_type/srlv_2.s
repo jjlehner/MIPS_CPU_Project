@@ -3,10 +3,10 @@
 #2
 #none
 
-lui $3, 0x0001
-addiu $4, $0, 0x0004
+lui $t0, 0x0001
+addiu $t1, $zero, 0x0004
 
-srlv $2, $3, $4
+srlv $v0, $t0, $t1
 
-jr $0
+jr $zero
 nop

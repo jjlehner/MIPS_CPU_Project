@@ -3,10 +3,10 @@
 #1
 #none
 
-lui $2, 0x0000
-lui $16, 0x2000
-lui $17, 0x1000
-sw $17, 0($16)
-lwr $2, 4($16)
+lui $v0, 0x0000
+lui $t0, 0x2000
+lui $t1, 0x1000
+sw $t1, 0($t0)
+lwr $v0, 4($t0)
 jr $0
 nop

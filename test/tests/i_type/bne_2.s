@@ -3,16 +3,16 @@
 #2
 #none
 
-	lui $3, 0x0001
-	lui $4, 0x0001
+	lui $t0, 0x0001
+	lui $t1, 0x0001
 
-	bne $3, $4, Target
+	bne $t0, $t1, Target
 
-	addiu $2, $3, 0x1000
+	addiu $v0, $t0, 0x1000
 
-	jr $0
+	jr $zero
 
-Target: addiu $2, $3, 0x0010
+Target: addiu $v0, $t0, 0x0010
 
-jr $0
+jr $zero
 

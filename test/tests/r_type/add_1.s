@@ -3,13 +3,13 @@
 #1
 #addition between signed values, check lui, addiu and jr works
 
-lui $3, 0xFFFF
-addiu $3, $3, 0xFFFF
+lui $t0, 0xFFFF
+addiu $t0, $t0, 0xFFFF
 
-addiu $4, $0, 0x0001
+addiu $t1, $zero, 0x0001
 
-add $2, $3, $4
+add $v0, $t0, $t1
 
-jr $0
+jr $zero
 
 nop
