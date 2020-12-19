@@ -1,3 +1,0 @@
-slt_1 pass set $2 to 1 when $3 is LESS THAN $4
-slt_2 pass set $2 to 0 when $3 is NOT LESS THAN $4
-slt_3 pass set $2 to 0 when $3 is NOT LESS THAN $4

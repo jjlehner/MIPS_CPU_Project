@@ -375,6 +375,7 @@ module mips_cpu_bus (
 		.write_data_execute(write_data_execute)
 	);
 
+	logic ALU_STALL;
 	ALU alu(
 		.ALU_operation(ALU_function_execute),
 		.input_1(src_A_ALU_execute),
@@ -382,7 +383,11 @@ module mips_cpu_bus (
 
 		.ALU_output(ALU_output_execute),
 		.ALU_HI_output(ALU_HI_output_execute),
-		.ALU_LO_output(ALU_LO_output_execute)
+		.ALU_LO_output(ALU_LO_output_execute),
+		.clk(clk),
+		.fetch_state(fetch_state),
+		.ALU_STALL(ALU_STALL),
+		.reset(reset)
 	);
 
 	assign j_program_counter_decode = {program_counter_plus_four_decode[31:28], j_offset, 2'b00};
@@ -541,10 +546,10 @@ module mips_cpu_bus (
 	always_comb begin
 		case(fetch_state) 
 			3'b000: begin
-				fetch_state_next = 3'b001;
+				fetch_state_next = (!ALU_STALL) ? 3'b001 : 3'b011;
 				read_enable = 0;
 				write = 0;
-				clk_enable = 1;
+				clk_enable = !ALU_STALL;
 				instruction_fetch_next = instruction_fetch;
 				read_data_memory_next = read_data_memory;
 			end
@@ -564,13 +569,13 @@ module mips_cpu_bus (
 				instruction_fetch_next = instruction_fetch;
 				read_data_memory_next = read_data_memory;
 			end
-			3'b011: begin //STATE ELIMINATED
-				fetch_state_next = 3'bxxx;
-				read_enable = 1'bx;
-				write = 1'bx;
-				clk_enable = 1'bx;
-				instruction_fetch_next = {32{1'bx}};
-				read_data_memory_next = {32{1'bx}};
+			3'b011: begin //STATE ELIMINATED -> now alu hold state
+				fetch_state_next = (!ALU_STALL) ? 3'b001 : 3'b011;
+				read_enable = 0;
+				write = 0;
+				clk_enable = !ALU_STALL;
+				instruction_fetch_next = instruction_fetch;
+				read_data_memory_next = read_data_memory;
 			end
 			3'b100: begin
 				fetch_state_next = 3'b101;

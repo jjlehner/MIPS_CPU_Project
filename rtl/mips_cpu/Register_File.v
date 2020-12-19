@@ -7,14 +7,14 @@ module Register_File(
 	input	logic [31:0]	write_data,		HI_write_data,	LO_write_data,
 	output	logic [31:0]	read_data_1,	read_data_2,
 	output	logic [31:0]	read_data_LO,	read_data_HI,
-	output	logic [31:0]	read_register_2//,
+	output	logic [31:0]	read_register_2,
 	// output	logic [31:0] 	registers_out_0_DELETE_ME,
 	// output	logic [31:0] 	registers_out_1_DELETE_ME,
 	// output	logic [31:0] 	registers_out_2_DELETE_ME,
 	// output	logic [31:0] 	registers_out_3_DELETE_ME,
-	// output	logic [31:0] 	registers_out_4_DELETE_ME,
-	// output	logic [31:0] 	registers_out_5_DELETE_ME,
-	// output	logic [31:0] 	registers_out_6_DELETE_ME,
+	output	logic [31:0] 	registers_out_4_DELETE_ME,
+	output	logic [31:0] 	registers_out_5_DELETE_ME,
+	output	logic [31:0] 	registers_out_6_DELETE_ME
 	// output	logic [31:0] 	registers_out_7_DELETE_ME,
 	// output	logic [31:0] 	registers_out_8_DELETE_ME,
 	// output	logic [31:0] 	registers_out_9_DELETE_ME,
@@ -34,9 +34,9 @@ module Register_File(
 	// assign registers_out_1_DELETE_ME = registers[1];
 	// assign registers_out_2_DELETE_ME = registers[2];
 	// assign registers_out_3_DELETE_ME = registers[3];
-	// assign registers_out_4_DELETE_ME = registers[4];
-	// assign registers_out_5_DELETE_ME = registers[5];
-	// assign registers_out_6_DELETE_ME = registers[6];
+	assign registers_out_4_DELETE_ME = registers[4];
+	assign registers_out_5_DELETE_ME = registers[5];
+	assign registers_out_6_DELETE_ME = registers[6];
 	// assign registers_out_7_DELETE_ME = registers[7];
 	// assign registers_out_8_DELETE_ME = registers[8];
 	// assign registers_out_9_DELETE_ME = registers[9];

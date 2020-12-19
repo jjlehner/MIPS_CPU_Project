@@ -38,23 +38,7 @@ module Control_Unit(
 				branch					= 0;
 				HI_register_write 		= ( funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 || funct == 6'b010001); //checks if instruction is mult/multu/div/divu
 				LO_register_write		= ( funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 || funct == 6'b010011);
-				case(funct)
-					6'b010001: begin	//MTHI
-						ALU_function = 6'b111111;
-					end
-					6'b010011: begin	//MTLO
-						ALU_function = 6'b111110;
-					end
-					6'b010000: begin	//MFLO
-						ALU_function = 6'b111110;
-					end
-					6'b010010: begin	//MFHI
-						ALU_function = 6'b111111;
-					end
-					default: begin
-						ALU_function = funct;
-					end
-				endcase
+				ALU_function = funct;
 				program_counter_multiplexer_jump = ( funct ==  6'b001000 || funct == 6'b001001 ); //checks if instruction is jr or jalr
 				j_instruction 			= 0;
 				using_HI_LO				= (funct == 6'b010000 || funct == 6'b010010); //MFHI, //MFLO

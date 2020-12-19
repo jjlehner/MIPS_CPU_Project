@@ -19,15 +19,16 @@ lower_level=(
 	"../../../rtl/mips_cpu/Execute_Memory_Register.v"
 	"../../../rtl/mips_cpu/Fetch_Decode_Register.v"
 	"../../../rtl/mips_cpu/Memory_Writeback_Register.v"
+	"../../../rtl/mips_cpu/multiplier.v"
 )
 
 programs_to_run=(
-	"bltzal"
+	"mult_test"
 )
 
 g++ stage2_assembler.cpp -o stage2_assembler
 
-verilator -Wall ../../../rtl/mips_cpu_bus.v ${lower_level[@]} --lint-only
+#verilator -Wall ../../../rtl/mips_cpu_bus.v ${lower_level[@]} --lint-only
 
 for i in "${programs_to_run[@]}"
 do
