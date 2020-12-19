@@ -1,4 +1,0 @@
-** VVP Stop(0) **
-** Flushing output streams.
-** Current simulation time is 0 ticks.
-> ** Continue **

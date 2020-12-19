@@ -3,7 +3,7 @@
 #2
 #additional comment : both sb and lb must be working
 
-addiu $t0, $zero, 5 
+addiu $t0, $zero, 0x0500 
 addiu $t1, $zero, 32
 sb $t0, 0x0001($t1)
 
