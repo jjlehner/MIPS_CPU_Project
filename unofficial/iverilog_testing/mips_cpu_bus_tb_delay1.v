@@ -26,7 +26,8 @@ module mips_cpu_bus_tb_delay1;
         .writedata(writedata),
         .readdata(readdata),
         .waitrequest(waitrequest),
-        .test(test)
+        .test(test),
+        .byteenable(byteenable)
     );
     
     mips_cpu_bus cpuInst(clk, rst, active, register_v0, address, write, read, waitrequest, writedata, byteenable, readdata);

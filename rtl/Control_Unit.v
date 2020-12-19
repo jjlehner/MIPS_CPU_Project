@@ -340,7 +340,22 @@ module Control_Unit(
 				no_sign_extend = 0;
 
 			end
-			
+			6'b100010:	begin	//LWL
+				register_write			= 1;
+				memory_to_register		= 1;
+				memory_write			= 0;
+				ALU_src_B				= 1;
+				register_destination 	= 1;
+				branch					= 0;
+				HI_register_write		= 0;
+				LO_register_write		= HI_register_write;
+				ALU_function			= 6'b100001;
+				program_counter_multiplexer_jump = 0;
+				j_instruction 			= 0;
+				using_HI_LO				= 0;
+				no_sign_extend 			= 0;
+
+			end
 			6'b100011:	begin				//LW
 				register_write			= 1;
 				memory_to_register		= 1;

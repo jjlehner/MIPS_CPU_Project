@@ -7,7 +7,7 @@ module Register_File(
 	input	logic [31:0]	write_data,		HI_write_data,	LO_write_data,
 	output	logic [31:0]	read_data_1,	read_data_2,
 	output	logic [31:0]	read_data_LO,	read_data_HI,
-	output	logic [31:0]	read_register_2,
+	output	logic [31:0]	read_register_2//,
 	// output	logic [31:0] 	registers_out_0_DELETE_ME,
 	// output	logic [31:0] 	registers_out_1_DELETE_ME,
 	// output	logic [31:0] 	registers_out_2_DELETE_ME,
@@ -26,7 +26,7 @@ module Register_File(
 	// output	logic [31:0] 	registers_out_15_DELETE_ME,
 	// output	logic [31:0] 	registers_out_16_DELETE_ME,
 	// output	logic [31:0] 	registers_out_17_DELETE_ME,
-	output	logic [31:0] 	registers_out_31_DELETE_ME
+	//output	logic [31:0] 	registers_out_31_DELETE_ME
 );
 	
 	logic [31:0] registers[31:0];
@@ -48,7 +48,7 @@ module Register_File(
 	// assign registers_out_15_DELETE_ME = registers[15];
 	// assign registers_out_16_DELETE_ME = registers[16];
 	// assign registers_out_17_DELETE_ME = registers[17];
-	assign registers_out_31_DELETE_ME = registers[31];
+	//assign registers_out_31_DELETE_ME = registers[31];
 
 	logic [31:0] HI_reg, LO_reg;
 

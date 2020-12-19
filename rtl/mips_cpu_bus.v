@@ -497,7 +497,7 @@ module mips_cpu_bus (
 	);
 	assign active = !HALT_writeback;
 	assign byteenable = byteenable_memory;
-
+	logic [3:0] byteenable_memory_next;
 
 	
 	logic [2:0] fetch_state_next;
@@ -512,11 +512,13 @@ module mips_cpu_bus (
 			fetch_state <= 3'b111;
 			instruction_fetch <= 0;
 			read_data_memory <= 0;
+			byteenable_memory <= 0;
 		end
 		else begin
 			fetch_state <= fetch_state_next;
 			instruction_fetch <= instruction_fetch_next;
 			read_data_memory <= read_data_memory_next;
+			byteenable_memory <= byteenable_memory_next;
 		end
 
 	end
@@ -611,74 +613,74 @@ module mips_cpu_bus (
 			register_v0 = register_v0_reg_file;
 		end
 		
-		if(fetch_state == 3'b101) begin
+		if(fetch_state == 3'b101 || fetch_state == 3'b110) begin
 			case(op_memory)
 				6'b100000 : begin //LB
 					case(data_address[1:0])
-						2'b00 : byteenable_memory = 4'b0001;
-						2'b01 : byteenable_memory = 4'b0010;
-						2'b10 : byteenable_memory = 4'b0100;
-						2'b11:	byteenable_memory = 4'b1000;
+						2'b00 : byteenable_memory_next = 4'b0001;
+						2'b01 : byteenable_memory_next = 4'b0010;
+						2'b10 : byteenable_memory_next = 4'b0100;
+						2'b11:	byteenable_memory_next = 4'b1000;
 					endcase
 				end
 				6'b100100 : begin //LBU
 					case(data_address[1:0])
-						2'b00 : byteenable_memory = 4'b0001;
-						2'b01 : byteenable_memory = 4'b0010;
-						2'b10 : byteenable_memory = 4'b0100;
-						2'b11:	byteenable_memory = 4'b1000;
+						2'b00 : byteenable_memory_next = 4'b0001;
+						2'b01 : byteenable_memory_next = 4'b0010;
+						2'b10 : byteenable_memory_next = 4'b0100;
+						2'b11:	byteenable_memory_next = 4'b1000;
 					endcase
 				end
 				6'b100001 : begin //LHW
 					case(data_address[1:0])
-						2'b00 : byteenable_memory = 4'b0011;
-						2'b10 : byteenable_memory = 4'b1100;
-						default : byteenable_memory = 4'b1111;
+						2'b00 : byteenable_memory_next = 4'b0011;
+						2'b10 : byteenable_memory_next = 4'b1100;
+						default : byteenable_memory_next = 4'b1111;
 					endcase
 				end
 				6'b100101 : begin //LHWU
 					case(data_address[1:0])
-						2'b00 : byteenable_memory = 4'b0011;
-						2'b10 : byteenable_memory = 4'b1100;
-						default : byteenable_memory = 4'b1111;
+						2'b00 : byteenable_memory_next = 4'b0011;
+						2'b10 : byteenable_memory_next = 4'b1100;
+						default : byteenable_memory_next = 4'b1111;
 					endcase
 				end
 				6'b100010 : begin //LWL
 					case(data_address[1:0])
-						2'b00 : byteenable_memory = 4'b0001;
-						2'b01 : byteenable_memory = 4'b0011;
-						2'b10 : byteenable_memory = 4'b0111;
-						2'b11:	byteenable_memory = 4'b1111;
+						2'b00 : byteenable_memory_next = 4'b0001;
+						2'b01 : byteenable_memory_next = 4'b0011;
+						2'b10 : byteenable_memory_next = 4'b0111;
+						2'b11:	byteenable_memory_next = 4'b1111;
 					endcase
 				end
 				6'b100110 : begin //LWR
 					case(data_address[1:0])
-						2'b00 : byteenable_memory = 4'b1111;
-						2'b01 : byteenable_memory = 4'b1110;
-						2'b10 : byteenable_memory = 4'b1100;
-						2'b11:	byteenable_memory = 4'b1000;
+						2'b00 : byteenable_memory_next = 4'b1111;
+						2'b01 : byteenable_memory_next = 4'b1110;
+						2'b10 : byteenable_memory_next = 4'b1100;
+						2'b11:	byteenable_memory_next = 4'b1000;
 					endcase
 				end
 				6'b101000 : begin //SB
 					case(data_address[1:0])
-						2'b00 : byteenable_memory = 4'b0001;
-						2'b01 : byteenable_memory = 4'b0010;
-						2'b10 : byteenable_memory = 4'b0100;
-						2'b11:	byteenable_memory = 4'b1000;
+						2'b00 : byteenable_memory_next = 4'b1110;
+						2'b01 : byteenable_memory_next = 4'b1101;
+						2'b10 : byteenable_memory_next = 4'b1011;
+						2'b11:	byteenable_memory_next = 4'b0111;
 					endcase
 				end
 				6'b101001 : begin //SH
 					case(data_address[1:0])
-						2'b00 : byteenable_memory = 4'b0011;
-						2'b10 : byteenable_memory = 4'b1100;
-						default : byteenable_memory = 4'b1111;
+						2'b00 : byteenable_memory_next = 4'b1100;
+						2'b10 : byteenable_memory_next = 4'b0011;
+						default : byteenable_memory_next = 4'b1111;
 					endcase
 				end
 
-				default : byteenable_memory = 4'b1111;
+				default : byteenable_memory_next = 4'b1111;
 			endcase
 		end else begin
-			byteenable_memory = 4'b1111;
+			byteenable_memory_next = 4'b1111;
 		end
 	end
 	// logic [1:0] fetch_state; //0 == inst_prev_inst, 1 = inst_prev_data, 2 = data, 3 =  instr_prev_data;

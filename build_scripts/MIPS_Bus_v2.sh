@@ -22,12 +22,12 @@ lower_level=(
 )
 
 programs_to_run=(
-	"ram_access"
+	"LWLR"
 )
 
 g++ stage2_assembler.cpp -o stage2_assembler
 
-#verilator -Wall ../../../rtl/mips_cpu_bus.v ${lower_level[@]} --lint-only
+verilator -Wall ../../../rtl/mips_cpu_bus.v ${lower_level[@]} --lint-only
 
 for i in "${programs_to_run[@]}"
 do

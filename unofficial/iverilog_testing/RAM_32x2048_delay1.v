@@ -4,6 +4,7 @@ module RAM_32x2048_delay1(
 	input logic write,
 	input logic read,
 	input logic[31:0] writedata,
+	input logic[3:0] byteenable,
 	output logic[31:0] readdata,
 	output logic[31:0] test,
 	output	logic waitrequest
@@ -13,6 +14,11 @@ module RAM_32x2048_delay1(
 	reg [31:0] tmp [0:400000];
 	reg [31:0] mem [32'hbfc00000:32'hc0000000];
 
+	logic [7:0] a;
+	logic [7:0] b;
+	logic [7:0] c;
+	logic [7:0] d;
+	logic [31:0] writedata_mod;
 
 	initial begin
 		integer i;
@@ -45,7 +51,8 @@ module RAM_32x2048_delay1(
 	
 	always @(posedge clk) begin
 			if (write) begin
-			    mem[address] <= writedata;
+				
+			    mem[address] <= writedata_mod;
 				waitrequest <= 0;
 			end
 			else if (read) begin
@@ -59,4 +66,12 @@ module RAM_32x2048_delay1(
 			end
 	end
 
+	always_comb begin
+		a = !byteenable[3] ? writedata[31:24] : 4'h0;
+		b = !byteenable[2] ? writedata[23:16] : 4'h0;
+		c = !byteenable[1] ? writedata[15:8] : 4'h0;
+		d = !byteenable[0] ? writedata[7:0] : 4'h0;
+
+		writedata_mod = {a,b,c,d};
+	end
 endmodule
