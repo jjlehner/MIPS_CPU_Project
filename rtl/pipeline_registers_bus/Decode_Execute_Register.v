@@ -8,6 +8,7 @@ module Decode_Execute_Register
 	input	logic 			register_write_decode,
 	input 	logic			memory_to_register_decode,
 	input	logic			memory_write_decode,
+	input	logic 			ALU_src_A_decode,
 	input	logic [1:0]		ALU_src_B_decode,
 	input	logic [1:0]		register_destination_decode,
 	input	logic			HI_register_write_decode,
@@ -22,6 +23,7 @@ module Decode_Execute_Register
 	output	logic 			register_write_execute,
 	output 	logic			memory_to_register_execute,
 	output	logic			memory_write_execute,
+	output	logic 			ALU_src_A_execute,
 	output	logic [1:0]		ALU_src_B_execute,
 	output	logic [1:0]		register_destination_execute,
 	output	logic			HI_register_write_execute,
@@ -37,11 +39,13 @@ module Decode_Execute_Register
 	input 	logic [4:0]		Rt_decode,
 	input	logic [4:0]		Rd_decode,
 	input	logic [31:0]	sign_imm_decode,		
+	input	logic [4:0]		sa_decode,
 
 	output 	logic [4:0]		Rs_execute,
 	output	logic [4:0]		Rt_execute,
 	output	logic [4:0]		Rd_execute,
 	output	logic [31:0]	sign_imm_execute,
+	output	logic [4:0]		sa_execute,
 
 	//datapath
 	input	logic [31:0]	src_A_decode,
@@ -69,6 +73,7 @@ module Decode_Execute_Register
 			register_write_execute <= register_write_decode;
 			memory_to_register_execute <= memory_to_register_decode;
 			memory_write_execute <= memory_write_decode;
+			ALU_src_A_execute <= ALU_src_A_decode;
 			ALU_src_B_execute <= ALU_src_B_decode;
 			register_destination_execute <= register_destination_decode;
 			HI_register_write_execute <= HI_register_write_decode;
@@ -82,13 +87,14 @@ module Decode_Execute_Register
 			j_instruction_execute <= j_instruction_decode;
 			using_HI_LO_execute <= using_HI_LO_decode;
 			op_execute <= op_decode;
-			
+			sa_execute <= sa_decode;
 
 		end
 		else begin
 			register_write_execute <= 0;
 			memory_to_register_execute <= 0;
 			memory_write_execute <= 0;
+			ALU_src_A_execute <= 0;
 			ALU_src_B_execute <= 0;
 			register_destination_execute <= 2'b00;
 			HI_register_write_execute <= 0;
@@ -109,6 +115,7 @@ module Decode_Execute_Register
 			src_B_execute <= {32{1'b0}};
 
 			HALT_execute <= 0;
+			sa_execute <= 0;
 		end
 	end
 	

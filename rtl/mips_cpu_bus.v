@@ -34,6 +34,7 @@ module mips_cpu_bus (
 	logic       register_write_decode;
 	logic       memory_to_register_decode;
 	logic       memory_write_decode;
+	logic 		ALU_src_A_decode;
 	logic [1:0] ALU_src_B_decode;
 	logic [1:0] register_destination_decode;
 	logic       branch_decode;
@@ -68,7 +69,9 @@ module mips_cpu_bus (
 		assign immediate = instruction_decode[15:0];
 	logic [25:0]	j_offset;
 		assign j_offset = instruction_decode[25:0];
-	
+	logic [4:0] sa_decode;
+		assign sa_decode = instruction_decode[10:6];
+
 	logic [31:0]	register_file_output_LO_decode;
 	logic [31:0]	register_file_output_HI_decode;
 	logic [31:0]    shifter_output_decode;
@@ -86,6 +89,7 @@ module mips_cpu_bus (
 	logic           memory_to_register_execute;
 	logic           memory_write_execute;
 	logic [4:0]     write_register_execute;
+	logic			ALU_src_A_execute;
 	logic [1:0]     ALU_src_B_execute;
 	logic [5:0]     ALU_function_execute;
 	logic           HI_register_write_execute;
@@ -113,6 +117,7 @@ module mips_cpu_bus (
 	logic [31:0]	program_counter_plus_eight_execute;
 	logic [31:0]	program_counter_plus_four_execute;
 	logic [31:0]	j_program_counter_execute;
+	logic [4:0]		sa_execute;
 
 	//Memory controls
 	logic       register_write_memory;
@@ -241,6 +246,7 @@ module mips_cpu_bus (
 		.register_write(register_write_decode),
 		.memory_to_register(memory_to_register_decode),
 		.memory_write(memory_write_decode),
+		.ALU_src_A(ALU_src_A_decode),
 		.ALU_src_B(ALU_src_B_decode),
 		.register_destination(register_destination_decode),
 		.branch(branch_decode),
@@ -285,6 +291,7 @@ module mips_cpu_bus (
 		.register_write_decode(register_write_decode),
 		.memory_to_register_decode(memory_to_register_decode),
 		.memory_write_decode(memory_write_decode),
+		.ALU_src_A_decode(ALU_src_A_decode),
 		.ALU_src_B_decode(ALU_src_B_decode),
 		.register_destination_decode(register_destination_decode),
 		.HI_register_write_decode(HI_register_write_decode),
@@ -299,10 +306,13 @@ module mips_cpu_bus (
 		.using_HI_LO_decode(using_HI_LO_decode),
 		.HALT_decode(HALT_decode),
 		.HALT_execute(HALT_execute),
+		.sa_decode(sa_decode),
+		.sa_execute(sa_execute),
 
 		.register_write_execute(register_write_execute),
 		.memory_to_register_execute(memory_to_register_execute),
 		.memory_write_execute(memory_write_execute),
+		.ALU_src_A_execute(ALU_src_A_execute),
 		.ALU_src_B_execute(ALU_src_B_execute),
 		.register_destination_execute(register_destination_execute),
 		.HI_register_write_execute(HI_register_write_execute),
@@ -343,10 +353,12 @@ module mips_cpu_bus (
 	);
 
 	ALU_Input_Mux alu_input_mux(
+		.ALU_src_A_execute(ALU_src_A_execute),
 		.ALU_src_B_execute(ALU_src_B_execute),
 		.forward_one_execute(forward_A_execute),
 		.forward_two_execute(forward_B_execute),
 		
+		.sa_execute(sa_execute),
 		.read_data_1_reg(src_A_execute),
 		.result_writeback(result_writeback),
 		.ALU_output_memory(ALU_output_memory),
@@ -613,7 +625,7 @@ module mips_cpu_bus (
 			register_v0 = register_v0_reg_file;
 		end
 		
-		
+
 		if(fetch_state == 3'b101 || fetch_state == 3'b110) begin
 			case(op_memory)
 				6'b100000 : begin //LB

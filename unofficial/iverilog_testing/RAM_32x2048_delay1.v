@@ -65,7 +65,6 @@ module RAM_32x2048_delay1(
 				waitrequest <= 0;
 			end
 	end
-
 	always_comb begin
 		a = !byteenable[3] ? writedata[31:24] : 4'h0;
 		b = !byteenable[2] ? writedata[23:16] : 4'h0;
@@ -73,5 +72,6 @@ module RAM_32x2048_delay1(
 		d = !byteenable[0] ? writedata[7:0] : 4'h0;
 
 		writedata_mod = {a,b,c,d};
+
 	end
 endmodule

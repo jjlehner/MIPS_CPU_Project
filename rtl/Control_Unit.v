@@ -5,6 +5,7 @@ module Control_Unit(
 	output logic 		register_write,
 	output logic 		memory_to_register,
 	output logic 		memory_write,
+	output logic 		ALU_src_A,
 	output logic [1:0]	ALU_src_B,
 	output logic [1:0]	register_destination,
 	output logic 		branch,
@@ -25,12 +26,14 @@ module Control_Unit(
 		op = instruction[31:26];
 		rt = instruction[20:16]; 
 		funct = instruction[5:0];
+		ALU_src_A = 0;
 		case(op)
 			6'b000000:	begin		//R-type instruction
 				register_write			= 1;
 				memory_to_register		= 0;
 				memory_write			= 0;
 				ALU_src_B				= 0;
+				ALU_src_A				= (funct == 6'b000000 || funct == 6'b000001 || funct == 6'b000011) ? 1 : 0;
 				register_destination 	= 1;
 				branch					= 0;
 				HI_register_write 		= ( funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011 || funct == 6'b010001); //checks if instruction is mult/multu/div/divu
@@ -218,7 +221,7 @@ module Control_Unit(
 				branch					= 0;
 				HI_register_write		= 0;
 				LO_register_write		= HI_register_write;
-				ALU_function			= 6'b100001;
+				ALU_function			= 6'b101010;
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
@@ -235,11 +238,11 @@ module Control_Unit(
 				branch					= 0;
 				HI_register_write		= 0;
 				LO_register_write		= HI_register_write;
-				ALU_function			= 6'b100001;
+				ALU_function			= 6'b101011;
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
-				no_sign_extend = 0;
+				no_sign_extend 			= 1;
 
 			end
 			6'b001100: 	begin					//ANDI
@@ -287,7 +290,7 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
-				no_sign_extend = 0;
+				no_sign_extend 			= 1;
 
 			end
 			6'b001111: 	begin					//LUI 
@@ -302,7 +305,7 @@ module Control_Unit(
 				ALU_function			= 6'b101100;
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
-				using_HI_LO				= 0;
+				using_HI_LO				= 1;
 				no_sign_extend = 0;
 
 			end
@@ -404,6 +407,22 @@ module Control_Unit(
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
 				no_sign_extend = 0;
+
+			end
+			6'b100110:	begin	//LWR
+				register_write			= 1;
+				memory_to_register		= 1;
+				memory_write			= 0;
+				ALU_src_B				= 1;
+				register_destination 	= 1;
+				branch					= 0;
+				HI_register_write		= 0;
+				LO_register_write		= HI_register_write;
+				ALU_function			= 6'b100001;
+				program_counter_multiplexer_jump = 0;
+				j_instruction 			= 0;
+				using_HI_LO				= 0;
+				no_sign_extend 			= 0;
 
 			end
 			6'b101000: 	begin   //SB

@@ -11,14 +11,13 @@ module ALU
 
 );
 
-	logic [4:0] shift_amount;
 	logic [63:0] sign_extened_input_1;
 	logic [63:0] sign_extened_input_2;
 	logic [63:0] extended_input_1;
 	logic [63:0] extended_input_2;
 	logic [63:0] ALU_HI_LO_output;
-		
-	assign shift_amount = input_1[10:6];
+	logic [4:0]  shift_amount;
+	assign shift_amount = input_1[4:0];
 	assign sign_extened_input_1 = { { 32{ input_1[31] } }, input_1[31:0] };			
 	assign sign_extened_input_2 = { { 32{ input_2[31] } }, input_2[31:0] };			
 	assign extended_input_1 =  { { 32{ 1'b0 } }, input_1 };
@@ -33,9 +32,9 @@ module ALU
 			6'b000000: 	ALU_output = input_2 << shift_amount; 					//SLL
 			6'b000001:	ALU_output = input_2 >> shift_amount; 					//SRL
 			6'b000011: 	ALU_output = input_2 >>> shift_amount;					//SRA
-			6'b000100:	ALU_output = input_2 << input_1[4:0];					//SLLV
-			6'b000110: 	ALU_output = input_2 >> input_1[4:0];					//SRLV
-			6'b000111: 	ALU_output = input_2 >>> input_1[4:0];					//SRAV
+			6'b000100:	ALU_output = input_2 <<	input_1;					//SLLV
+			6'b000110: 	ALU_output = input_2 >> input_1;					//SRLV
+			6'b000111: 	ALU_output = input_2 >>> input_1;					//SRAV
 			6'b001000:	ALU_output = input_2; 									//JR
 			6'b001001:	ALU_output = input_2;									//JALR
 			6'b010000:	ALU_output = input_2;									//MFHI TODO Some thing wrong here
@@ -58,7 +57,7 @@ module ALU
 			6'b100011:	ALU_output = input_1 - input_2;							//SUBU
 			6'b100100:	ALU_output = input_1 & input_2;							//AND
 			6'b100101:	ALU_output = input_1 | input_2;							//OR
-			6'b100110:	ALU_output = input_1 ^~ input_2;						//XOR
+			6'b100110:	ALU_output = input_1 ^ input_2;						//XOR
 			6'b100111:	ALU_output = ~(input_1|input_2);						//NOR
 			6'b101010:	ALU_output = ($signed(input_1) < $signed(input_2)) ? {{31{1'b0}},1'b1} : {32{1'b0}};	//SLT
 			6'b101011:	ALU_output = (input_1 < input_2) ? {{31{1'b0}},1'b1} : {32{1'b0}};						//SLTU

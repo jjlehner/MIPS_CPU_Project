@@ -22,7 +22,7 @@ lower_level=(
 )
 
 programs_to_run=(
-	"LWLR"
+	"slt"
 )
 
 g++ stage2_assembler.cpp -o stage2_assembler
