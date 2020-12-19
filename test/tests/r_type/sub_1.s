@@ -3,11 +3,11 @@
 #1
 #subtraction between two unsigned values, check lui works
 
-lui $3, 0x0010
-lui $4, 0x000F
+lui $t0, 0x0010
+lui $t1, 0x000F
 
-sub $2, $3, $4
+sub $v0, $t0, $t1
 
-jr $0
+jr $zero
 
 nop

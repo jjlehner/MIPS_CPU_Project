@@ -3,13 +3,13 @@
 #2
 #additional comment : both sb and lb must be working
 
-addiu $3, $0, 5 
-addiu $4, $0, 32
-sb $3, 1($4)
+addiu $t0, $zero, 5 
+addiu $t1, $zero, 32
+sb $t0, 0x0001($t1)
 
-addiu $4, $4, 1
+addiu $t1, $t1, 0x0001
 
-lb $2, 0($4)
+lb $v0, 0x0000($t1)
 
-jr $0
+jr $zero
 nop

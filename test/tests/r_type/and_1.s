@@ -3,9 +3,9 @@
 #1
 #bitwise and
 
-lui $3, 0x0001
-lui $4, 0x0FFF
+lui $t0, 0x0001
+lui $t1, 0x0FFF
 
-and $2, $3, $4
+and $v0, $t0, $t1
 
-jr $0
+jr $zero

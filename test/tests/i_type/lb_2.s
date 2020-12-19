@@ -3,11 +3,11 @@
 #2
 #none
 
-lui $3, 0x0001
-addiu $3, $0, 0x0005
-addiu $4, $0, 32
-sw $3, 1($4)
-addiu $4, $4, 1
-lb $2, 0($4)
-jr $0
+lui $t0, 0x0001
+addiu $t0, $0, 0x0005
+addiu $t1, $0, 0x0020
+sw $t0, 1($t1)
+addiu $t1, $t1, 0x0001
+lb $v0, 0($1)
+jr $zero
 nop

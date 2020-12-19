@@ -1,4 +1,0 @@
-WARNING: test/RAM_32x2048_delay1.v:30: $readmemh(test/hex1/r_type/divu_1.hex.txt): Not enough words in the file for the requested range [0:2048].
-VCD info: dumpfile mips_cpu_bus_tb_delay1_waves.vcd opened for output.
-TB : finished; running=0
-         0

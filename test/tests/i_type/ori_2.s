@@ -3,8 +3,8 @@
 #2
 #bitwise ori
 
-addiu $3, $0, 0x0010
+addiu $t0, $0, 0x0010
 
-ori $2, $3, 256
+ori $v0, $t0, 256
 
-jr $0
+jr $zero

@@ -3,8 +3,8 @@
 #1
 #none
 
-addi $1, $0, 3
-addi $2, $0, 0x5F
-xor $2, $2, $1
-jr $0
+addi $t0, $zero, 0x0003
+addi $t1, $zero, 0x5F
+xor $v0, $t1, $t0
+jr $zero
 nop

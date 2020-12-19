@@ -3,14 +3,14 @@
 #2
 #additional comment: subtraction between two signed values
 
-lui $3, 0xFFFF
-addiu $3, $3, 0xFFFF
+lui $t0, 0xFFFF
+addiu $t0, $t0, 0xFFFF
 
-lui $4, 0x000F
-addiu $4, $4, 0xFFFE
+lui $t1, 0x000F
+addiu $t1, $t1, 0xFFFE
 
-sub $2, $3, $4
+sub $v0, $t0, $t1
 
-jr $0
+jr $zero
 
 nop
