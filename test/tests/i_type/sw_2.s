@@ -1,6 +1,7 @@
 #sw
 #255
 #2
+#Add lines after the end of the program including 2 additions and a jump to register
 
 ori   $t1, $0, 0x55     #bfc00000
 lui   $t2, 0xbfc0       #bfc00004
