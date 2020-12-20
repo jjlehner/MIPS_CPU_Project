@@ -5,13 +5,12 @@
 
 	lui $t0, 0x0000
 
-	j 2
-
+	j Target
+  nop
 	addiu $v0, $t0, 0x1000
-	
 	jr $zero
+  nop
 
 Target: addiu $v0, $t0, 0x0010
-
 jr $zero
 
