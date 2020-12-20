@@ -25,7 +25,7 @@ lower_level=(
 )
 
 programs_to_run=(
-	"mult_test_2"
+	"mult_test"
 )
 
 g++ stage2_assembler.cpp -o stage2_assembler

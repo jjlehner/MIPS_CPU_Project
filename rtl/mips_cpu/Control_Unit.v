@@ -33,7 +33,7 @@ module Control_Unit(
 		ALU_src_A = 0;
 		case(op)
 			6'b000000:	begin		//R-type instruction
-				register_write			= 1;
+				register_write			= !(funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011);
 				memory_to_register		= 0;
 				memory_write			= 0;
 				ALU_src_B				= 0;
@@ -468,6 +468,7 @@ module Control_Unit(
 				register_write			= 1'bx;
 				memory_to_register		= 1'bx;
 				memory_write			= 1'bx;
+				ALU_src_A				= 1'bx;
 				ALU_src_B				= 2'bxx;
 				register_destination 	= 2'bxx;
 				branch					= 1'bx;
