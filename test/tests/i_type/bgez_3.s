@@ -1,12 +1,14 @@
 #bgez
 #255
 #3
-#0xFFFF as -1, signed
+#0xFFFF as -1, branching should fail and $v0 = 255 not $v0 = 16
 
 	lui $t0, 0xFFFF
 	addiu $t0, $t0, 0xFFFF 
 	
 	bgez $t0, Target
+
+	nop
 
 	addiu $v0, $t0, 0x0100
 
