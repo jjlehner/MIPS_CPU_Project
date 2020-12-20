@@ -7,7 +7,7 @@
 
 	bgtz $t0, Target
 
-	addiu $v0, t03, 0x0100
+	addiu $v0, $t0, 0x0100
 
 	jr $zero
 
