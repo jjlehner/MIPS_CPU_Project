@@ -79,6 +79,6 @@ module RAM_32x2048_delay1(
 		d = !byteenable[0] ? writedata[7:0] : 4'h0;
 
 		writedata_mod = {a,b,c,d};
-		val = lower_mem[32'h20];
+		val = mem[32'hBD000000];
 	end
 endmodule

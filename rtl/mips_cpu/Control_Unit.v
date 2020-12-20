@@ -246,7 +246,7 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
-				no_sign_extend = 0;
+				no_sign_extend = 1;
 
 			end
 			6'b001101:  begin					//ORI
@@ -262,7 +262,7 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
-				no_sign_extend = 0;
+				no_sign_extend = 1;
 
 			end
 			6'b001110: 	begin 					//XORI
