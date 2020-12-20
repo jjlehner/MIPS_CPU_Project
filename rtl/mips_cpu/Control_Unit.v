@@ -17,6 +17,10 @@ module Control_Unit(
 	output logic		using_HI_LO,
 	output logic		no_sign_extend
 );
+	//div 011010
+	//divu 011011
+	//mult 011000
+	//multu 011001
 
 	logic [5:0] op;
 	logic [4:0] rt;
@@ -242,7 +246,7 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
-				no_sign_extend = 0;
+				no_sign_extend = 1;
 
 			end
 			6'b001101:  begin					//ORI
@@ -258,7 +262,7 @@ module Control_Unit(
 				program_counter_multiplexer_jump = 0;
 				j_instruction 			= 0;
 				using_HI_LO				= 0;
-				no_sign_extend = 0;
+				no_sign_extend = 1;
 
 			end
 			6'b001110: 	begin 					//XORI
