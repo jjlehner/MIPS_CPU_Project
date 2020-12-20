@@ -31,10 +31,16 @@ module Memory_Filter(
 					endcase
 				end
 				6'b100001 : begin //Load Half-Word
-					filtered_output_writeback = {{16{read_data_writeback[15]}},read_data_writeback[15:0]};
+					case(byteenable_writeback)
+						4'b0011 : filtered_output_writeback = {{16{read_data_writeback[15]}},read_data_writeback[15:0]};
+						4'b1100 : filtered_output_writeback = {{16{read_data_writeback[31]}}, read_data_writeback[31:16]};
+					endcase
 				end
 				6'b100101 : begin //Load Half-Word Unsigned
-					filtered_output_writeback = {{16{1'b0}},read_data_writeback[15:0]};
+					case(byteenable_writeback)
+						4'b0011 : filtered_output_writeback = {{16{1'b0}},read_data_writeback[15:0]};
+						4'b1100 : filtered_output_writeback = {{16{1'b0}},read_data_writeback[31:16]};
+					endcase
 				end
 				6'b100010 : begin //Load word left
 					case(byteenable_writeback)
