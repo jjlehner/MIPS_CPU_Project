@@ -1,5 +1,5 @@
 #andi
-#FFFF
+#65535
 #4
 #extreme bitwise andi FFFF & FFFF = FFFF
 
