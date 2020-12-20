@@ -17,6 +17,10 @@ module Control_Unit(
 	output logic		using_HI_LO,
 	output logic		no_sign_extend
 );
+	//div 011010
+	//divu 011011
+	//mult 011000
+	//multu 011001
 
 	logic [5:0] op;
 	logic [4:0] rt;
