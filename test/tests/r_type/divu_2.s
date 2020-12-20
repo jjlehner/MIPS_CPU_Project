@@ -1,5 +1,5 @@
 #divu
-#1
+#3
 #2
 #testing remainder
 
