@@ -1,7 +1,7 @@
 #bne
 #69632
 #2
-#none
+#failed to not branch when the registers were equal 
 
 	lui $t0, 0x0001
 	lui $t1, 0x0001
