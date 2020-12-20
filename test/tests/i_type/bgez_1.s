@@ -13,7 +13,7 @@
 
 	jr $zero
 
-Target: addiu $v0, $t0, 0x0010
+Target: addiu $v0, $0, 0x0010
 
 jr $zero
 
