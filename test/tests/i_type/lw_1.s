@@ -3,7 +3,7 @@
 #1
 #additional comment : none
 
-lui $t1, 0x2000
+ori $t1, $0, 4
 
 lui $t0, 0x0001
 

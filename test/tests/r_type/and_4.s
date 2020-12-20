@@ -1,5 +1,5 @@
 #and
-#65535
+#4294901760
 #4
 #extreme bitwise and FFFF & FFFF = FFFF
 
