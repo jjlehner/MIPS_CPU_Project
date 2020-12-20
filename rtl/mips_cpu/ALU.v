@@ -29,23 +29,45 @@ module ALU
 	// logic [31:0] temp_HI_div;
 	// logic [31]
 
-	logic temp_STALL;
-	assign ALU_STALL = temp_STALL;
 
 	always_latch begin
 		if(!clk) begin
 			mult_start_enable = mult_start && (fetch_state == 3'b010 || fetch_state == 3'b110);
 		end
 	end
+	always_latch begin
+		if(!clk) begin
+			div_start_enable = div_start && (fetch_state == 3'b010 || fetch_state == 3'b110);
+		end
+	end
 
-	multiplier mult(
+	logic mult_signedctrl;
+	logic temp_mul_STALL;
+	Multiplier mult(
 		.clk(clk),
 		.start(clk&mult_start_enable),
 		.input_1(input_1),
 		.input_2(input_2),
 		.hi_output(temp_HI_mult),
 		.lo_output(temp_LO_mult),
-		.stall(temp_STALL),
+		.stall(temp_mul_STALL),
+		.reset(reset)
+	);
+	logic div_signedctrl;
+	logic div_start;
+	logic div_start_enable;
+	logic temp_div_STALL;
+
+	assign ALU_STALL = temp_mul_STALL || temp_div_STALL;
+	Divider div(
+		.clk(clk),
+		.start(clk&div_start_enable),
+		.signedctrl(div_signedctrl),
+		.input_1(input_1),
+		.input_2(input_2),
+		.output_1(temp_LO_div),
+		.output_2(temp_HI_div),
+		.stall(temp_div_STALL),
 		.reset(reset)
 	);
 
@@ -53,7 +75,10 @@ module ALU
 	always_comb begin
 		ALU_output = {32{1'bx}};
 		mult_start = 0;
+		div_start = 0;
+		mult_signedctrl = 0;
 		HI_LO_driven_by = 0;
+		div_signedctrl = 0;
 		case(ALU_operation)
 			6'b000000: 	ALU_output = input_2 << shift_amount; 					//SLL
 			6'b000010:	ALU_output = input_2 >> shift_amount; 					//SRL
@@ -67,13 +92,26 @@ module ALU
 			6'b010001:	HI_LO_driven_by = 2'b10;									//MTHI
 			6'b010010:	ALU_output = input_1;									//MFLO
 			6'b010011:	HI_LO_driven_by = 2'b10;									//MTLO
-			6'b011000:	mult_start = 1;	//MULT	
-			6'b011001:	mult_start = 1;											//MULTU
-			//6'b011010:	mult_start = 1;
-			// 6'b011011: 	begin													//DIVU
-			// 	ALU_HI_LO_output = {input_1 / input_2, {32{1'b0}}};		
-			// 	ALU_HI_LO_output = ALU_HI_LO_output + {{32{1'b0}},input_1 % input_2};
-			// end
+			6'b011000:	begin 													//MULT	
+				mult_start = 1;	
+				HI_LO_driven_by = 2'b00;
+				mult_signedctrl = 1;
+			end
+			6'b011001:	begin 													//MULTU
+				mult_start = 1;	
+				HI_LO_driven_by = 2'b00;
+				mult_signedctrl = 0;
+			end
+			6'b011010:	begin													//Div
+				div_start = 1;
+				div_signedctrl = 1;
+				HI_LO_driven_by = 2'b01;
+			end
+			6'b011011: 	begin													//DIVU
+				div_start = 1;	
+				div_signedctrl = 0;
+				HI_LO_driven_by = 2'b01;
+			end
 			6'b100000: 	ALU_output = $signed(input_1) + $signed(input_2);		//ADD
 			6'b100001:	ALU_output = input_1 + input_2;							//ADDU
 			6'b100010:	ALU_output = $signed(input_1) - $signed(input_2);		//SUB
