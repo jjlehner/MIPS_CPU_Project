@@ -101,10 +101,10 @@ module ALU
 		case(ALU_operation)
 			6'b000000: 	ALU_output = input_2 << shift_amount; 					//SLL
 			6'b000010:	ALU_output = input_2 >> shift_amount; 					//SRL
-			6'b000011: 	ALU_output = input_2 >>> shift_amount;					//SRA
+			6'b000011: 	ALU_output = $signed(input_2) >>> shift_amount;					//SRA
 			6'b000100:	ALU_output = input_2 <<	input_1;					//SLLV
 			6'b000110: 	ALU_output = input_2 >> input_1;					//SRLV
-			6'b000111: 	ALU_output = input_2 >>> input_1;					//SRAV
+			6'b000111: 	ALU_output = $signed(input_2) >>> input_1;					//SRAV
 			6'b001000:	ALU_output = input_2; 									//JR
 			6'b001001:	ALU_output = input_2;									//JALR
 			6'b010000:	ALU_output = input_2;									//MFHI TODO Some thing wrong here
