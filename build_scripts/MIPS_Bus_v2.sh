@@ -24,7 +24,7 @@ lower_level=(
 )
 
 programs_to_run=(
-	"divider"
+	"mult_test"
 )
 
 g++ stage2_assembler.cpp -o stage2_assembler
