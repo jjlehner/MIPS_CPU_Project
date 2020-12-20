@@ -237,6 +237,7 @@ module mips_cpu_bus (
 
 	Fetch_Decode_Register fetch_decode_register(
 		.clk(internal_clk),
+		.clear(flush_decode_register),
 		.reset(reset),
 		.enable(stall_decode),
 		.instruction_fetch(instruction_fetch),
@@ -494,6 +495,7 @@ module mips_cpu_bus (
 		.input_1(read_data_writeback_filtered),
 		.resolved(result_writeback)
 	);
+	logic flush_decode_register;
 	Hazard_Unit hazard_unit(
 		.branch_decode(branch_decode),
 		.Rs_decode(Rs_decode),
@@ -518,10 +520,12 @@ module mips_cpu_bus (
 		.stall_decode(stall_decode),
 		.forward_register_file_output_A_decode(forward_A_decode),
 		.forward_register_file_output_B_decode(forward_B_decode),
+		.flush_decode_register(flush_decode_register),
 		.flush_execute_register(flush_execute_register),
 		.forward_register_file_output_A_execute(forward_A_execute),
 		.forward_register_file_output_B_execute(forward_B_execute),
-		.program_counter_jalr_control_memory(program_counter_jalr_control_memory)
+		.program_counter_jalr_control_memory(program_counter_jalr_control_memory),
+
 	);
 	assign active = !HALT_writeback;
 	assign byteenable = byteenable_memory;

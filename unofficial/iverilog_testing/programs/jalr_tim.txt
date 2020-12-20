@@ -4,7 +4,7 @@
 	0x0100f809 08//JALR $ra $t0
 	0x27ff0004 0C//ADDIU $ra $ra 0x0004
 	0x1000FFFA 10//BEQ $zero $zero 0xFFFB
-	0x0BF00000 14//JR $zero
+	0x00000008 14//JR $zero
 	0x00000000 18//nop
 	0x00000000 1C//nop
 	0x24420064 20//ADDIU $v0 $v0 0x0064

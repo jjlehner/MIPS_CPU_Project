@@ -19,13 +19,15 @@ module Hazard_Unit(
 	input	logic		HI_register_write_writeback,
 	input	logic		using_HI_LO_execute,
 	input	logic		program_counter_jalr_control_memory,
+
 	output	logic 		stall_fetch,
 	output	logic 		stall_decode,
 	output	logic 		forward_register_file_output_A_decode,
 	output	logic 		forward_register_file_output_B_decode,
 	output	logic 		flush_execute_register,
 	output	logic [2:0] forward_register_file_output_A_execute,
-	output	logic [2:0] forward_register_file_output_B_execute
+	output	logic [2:0] forward_register_file_output_B_execute,
+	output	logic 		flush_decode_register
 );
 
 	logic lwstall;
@@ -72,6 +74,7 @@ module Hazard_Unit(
 
 		stall_fetch = branchstall || lwstall;
 		stall_decode = branchstall || lwstall;
+		flush_decode_register = program_counter_multiplexer_jump_memory || program_counter_jalr_control_memory;
 		flush_execute_register = branchstall || lwstall || program_counter_multiplexer_jump_memory || program_counter_jalr_control_memory;
 	
 
