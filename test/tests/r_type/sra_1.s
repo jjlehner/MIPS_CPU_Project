@@ -1,12 +1,8 @@
 #sra
-#2147483647
-#1
-#none
+#2118
+#2
 
-lui $t0, 0xFFFF
-addiu $t0, $t0, 0xFFFE
+ori $t0, $0, 0x4235
+sra $v0, $t0, 3
+jr $0
 
-sra $v0, $t0, 1
-
-jr $zero
-nop

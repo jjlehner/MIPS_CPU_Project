@@ -55,10 +55,11 @@ module RAM_32x2048_delay1(
 			if (write) begin
 				if(address >= 32'hbfc00000 && address <= 32'hc0000000) begin
 					mem[address] <= writedata_mod; // read after writing, delay1
+					waitrequest <= 0;
 				end else if(address >= 32'h0 && address <= 32'h0F00) begin
 					lower_mem[address] <= writedata_mod; // read after writing, delay1
+					waitrequest <= 0;
 				end
-				waitrequest <= 0;
 			end
 			else if (read) begin
 				if(address == 32'h0) begin
