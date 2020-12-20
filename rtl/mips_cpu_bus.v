@@ -47,6 +47,7 @@ module mips_cpu_bus (
 	logic		LO_register_write_decode;
 	logic		HALT_decode;
 	logic		no_sign_extend;
+	logic 		program_counter_jalr_control_decode;
 
 	//decode datapath
 	//TODO move instruction logic to control
@@ -100,6 +101,7 @@ module mips_cpu_bus (
 	logic			using_HI_LO_execute;
 	logic			HALT_execute;
 	logic [5:0]		op_execute;
+	logic			program_counter_jalr_control_execute;
 
 	//Execute Datapath
 	logic [31:0]	src_A_execute;
@@ -131,6 +133,7 @@ module mips_cpu_bus (
 	logic		HALT_memory;
 	logic [5:0]	op_memory;
 	logic [3:0] byteenable_memory;
+	logic		program_counter_jalr_control_memory;
 
 	//Memory datapath
 	logic [31:0] ALU_output_memory;
@@ -221,13 +224,16 @@ module mips_cpu_bus (
 		.input_1(program_counter_branch_decode),
 		.resolved(program_counter_mux_1_out)
 	);
-
+	logic [31:0] program_counter_mux_2_out;
 	MUX_2INPUT #(.BUS_WIDTH(32)) program_counter_multiplexer_two (
 		.control(program_counter_multiplexer_jump_memory),
 		.input_0(program_counter_mux_1_out),
 		.input_1(ALU_output_memory_resolved),
-		.resolved(program_counter_prime)
+		.resolved(program_counter_mux_2_out)
 	);
+
+	//program_counter_multiplexer_three
+	assign program_counter_prime = program_counter_jalr_control_memory ? src_A_ALU_memory : program_counter_mux_2_out;
 
 	Fetch_Decode_Register fetch_decode_register(
 		.clk(internal_clk),
@@ -256,7 +262,8 @@ module mips_cpu_bus (
 		.program_counter_multiplexer_jump(program_counter_multiplexer_jump_decode),
 		.j_instruction(j_instruction_decode),
 		.using_HI_LO(using_HI_LO_decode),
-		.no_sign_extend(no_sign_extend)
+		.no_sign_extend(no_sign_extend),
+		.program_counter_jalr_control(program_counter_jalr_control_decode)
 	);
 
 	//Post-Register File multiplexers
@@ -308,6 +315,8 @@ module mips_cpu_bus (
 		.HALT_execute(HALT_execute),
 		.sa_decode(sa_decode),
 		.sa_execute(sa_execute),
+		.program_counter_jalr_control_decode(program_counter_jalr_control_decode),
+		.program_counter_jalr_control_execute(program_counter_jalr_control_execute),
 
 		.register_write_execute(register_write_execute),
 		.memory_to_register_execute(memory_to_register_execute),
@@ -403,7 +412,7 @@ module mips_cpu_bus (
 		.program_counter_multiplexer_jump_execute(program_counter_multiplexer_jump_execute),
 		.j_instruction_execute(j_instruction_execute),
 		.HALT_execute(HALT_execute),
-
+		.program_counter_jalr_control_execute(program_counter_jalr_control_execute),
 		.register_write_memory(register_write_memory),
 		.memory_to_register_memory(memory_to_register_memory),
 		.memory_write_memory(memory_write_memory),
@@ -412,6 +421,7 @@ module mips_cpu_bus (
 		.program_counter_multiplexer_jump_memory(program_counter_multiplexer_jump_memory),
 		.j_instruction_memory(j_instruction_memory),
 		.HALT_memory(HALT_memory),
+		.program_counter_jalr_control_memory(program_counter_jalr_control_memory),
 
 		.ALU_output_execute(ALU_output_execute),
 		.ALU_HI_output_execute(ALU_HI_output_execute),
@@ -510,7 +520,8 @@ module mips_cpu_bus (
 		.forward_register_file_output_B_decode(forward_B_decode),
 		.flush_execute_register(flush_execute_register),
 		.forward_register_file_output_A_execute(forward_A_execute),
-		.forward_register_file_output_B_execute(forward_B_execute)
+		.forward_register_file_output_B_execute(forward_B_execute),
+		.program_counter_jalr_control_memory(program_counter_jalr_control_memory)
 	);
 	assign active = !HALT_writeback;
 	assign byteenable = byteenable_memory;

@@ -34,12 +34,14 @@ module Memory_Filter(
 					case(byteenable_writeback)
 						4'b0011 : filtered_output_writeback = {{16{read_data_writeback[15]}},read_data_writeback[15:0]};
 						4'b1100 : filtered_output_writeback = {{16{read_data_writeback[31]}}, read_data_writeback[31:16]};
+						default : filtered_output_writeback = read_data_writeback;
 					endcase
 				end
 				6'b100101 : begin //Load Half-Word Unsigned
 					case(byteenable_writeback)
 						4'b0011 : filtered_output_writeback = {{16{1'b0}},read_data_writeback[15:0]};
 						4'b1100 : filtered_output_writeback = {{16{1'b0}},read_data_writeback[31:16]};
+						default : filtered_output_writeback = read_data_writeback;
 					endcase
 				end
 				6'b100010 : begin //Load word left

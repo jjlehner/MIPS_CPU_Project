@@ -15,7 +15,8 @@ module Control_Unit(
 	output logic		LO_register_write,
 	output logic		HI_register_write,
 	output logic		using_HI_LO,
-	output logic		no_sign_extend
+	output logic		no_sign_extend,
+	output logic		program_counter_jalr_control
 );
 	//div 011010
 	//divu 011011
@@ -31,12 +32,13 @@ module Control_Unit(
 		rt = instruction[20:16]; 
 		funct = instruction[5:0];
 		ALU_src_A = 0;
+		program_counter_jalr_control = 0;
 		case(op)
 			6'b000000:	begin		//R-type instruction
 				register_write			= !(funct == 6'b011000 || funct == 6'b011001 || funct == 6'b011010 || funct == 6'b011011);
 				memory_to_register		= 0;
 				memory_write			= 0;
-				ALU_src_B				= 0;
+				ALU_src_B				= funct == 6'b001001 ? 2'b10 : 2'b00;
 				ALU_src_A				= (funct == 6'b000000 || funct == 6'b000010 || funct == 6'b000011);
 				register_destination 	= 1;
 				branch					= 0;
@@ -47,6 +49,7 @@ module Control_Unit(
 				j_instruction 			= 0;
 				using_HI_LO				= (funct == 6'b010000 || funct == 6'b010010); //MFHI, //MFLO
 				no_sign_extend = 0;
+				program_counter_jalr_control = (funct == 6'b001001);
 			end
 			
 			6'b000001:	begin		//BLTZ,BLTZAL, BGEZ,BGEZAL instruction

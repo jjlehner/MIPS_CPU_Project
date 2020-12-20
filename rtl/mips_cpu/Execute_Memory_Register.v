@@ -14,6 +14,7 @@ module Execute_Memory_Register
 	input	logic			HALT_execute,
 	input	logic [5:0]		op_execute,
 	input	logic [31:0]	src_A_ALU_execute,
+	input	logic			program_counter_jalr_control_execute,
 
 	output	logic 			register_write_memory,
 	output 	logic			memory_to_register_memory,
@@ -25,6 +26,7 @@ module Execute_Memory_Register
 	output	logic			HALT_memory,
 	output	logic [5:0]		op_memory,
 	output	logic [31:0]	src_A_ALU_memory,
+	output	logic			program_counter_jalr_control_memory,
 
 	//datapath
 	input	logic [31:0]	ALU_output_execute,
@@ -61,6 +63,7 @@ module Execute_Memory_Register
 			HALT_memory <= 0;
 			op_memory <= 0;
 			src_A_ALU_memory <= 0;
+			program_counter_jalr_control_memory <= 0;
 		end
 		else begin
 			register_write_memory <= register_write_execute;
@@ -79,6 +82,7 @@ module Execute_Memory_Register
 			HALT_memory <= HALT_execute;
 			op_memory <= op_execute;
 			src_A_ALU_memory <= src_A_ALU_execute;
+			program_counter_jalr_control_memory <= program_counter_jalr_control_execute;
 		end
 
 	end

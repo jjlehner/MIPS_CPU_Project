@@ -25,7 +25,7 @@ lower_level=(
 )
 
 programs_to_run=(
-	"mult_hard"
+	"jalr_tim"
 )
 
 g++ stage2_assembler.cpp -o stage2_assembler

@@ -19,7 +19,8 @@ module Decode_Execute_Register
 	input	logic			using_HI_LO_decode,
 	input	logic			HALT_decode,
 	input	logic [5:0]		op_decode,
-	
+	input	logic			program_counter_jalr_control_decode,
+
 	output	logic 			register_write_execute,
 	output 	logic			memory_to_register_execute,
 	output	logic			memory_write_execute,
@@ -34,6 +35,7 @@ module Decode_Execute_Register
 	output	logic			using_HI_LO_execute,
 	output	logic			HALT_execute,
 	output	logic [5:0]		op_execute,
+	output	logic			program_counter_jalr_control_execute,
 
 	input 	logic [4:0]		Rs_decode,
 	input 	logic [4:0]		Rt_decode,
@@ -89,6 +91,8 @@ module Decode_Execute_Register
 			op_execute <= op_decode;
 			sa_execute <= sa_decode;
 
+			program_counter_jalr_control_execute <= program_counter_jalr_control_decode;
+
 		end
 		else begin
 			register_write_execute <= 0;
@@ -113,6 +117,7 @@ module Decode_Execute_Register
 			j_program_counter_execute <= {32{1'b0}};
 			src_A_execute <= {32{1'b0}};
 			src_B_execute <= {32{1'b0}};
+			program_counter_jalr_control_execute <= 0;
 			if(reset) begin
 				HALT_execute <= 0;
 			end
