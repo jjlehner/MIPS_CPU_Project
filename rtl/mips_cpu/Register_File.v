@@ -55,8 +55,7 @@ module Register_File(
 	//Combinational read of register file 
 	//Register 0 is hard wired to zero so sourcing output from that register
 	//should always produce zero
-	assign read_data_1 = registers[read_address_1];
-	assign read_data_2 = registers[read_address_2];
+	
 	assign read_data_LO = LO_reg;
 	assign read_data_HI = HI_reg;
 	assign read_register_2 = registers[2];
@@ -66,6 +65,12 @@ module Register_File(
 	//it is being pipelined or not
 	logic modified_write_clk;
 	assign modified_write_clk = clk ^ pipelined;
+	always_comb begin
+		if(read_address_1 != 0) read_data_1 = registers[read_address_1];
+		else read_data_1 = 0;
+		if(read_address_2 != 0) read_data_2 = registers[read_address_2];
+		else read_data_2 = 0;
+	end
 	always_ff @(posedge modified_write_clk, posedge reset) begin
 		if(reset) begin
 			for(int i = 0; i < 32; i++) begin

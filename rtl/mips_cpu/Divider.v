@@ -101,7 +101,7 @@ always_ff @(posedge clk, posedge start, posedge reset) begin
             if(dividendsign) begin
               output_2_temp <= 0-remainder;
             end else begin
-              output_2_temp <= -remainder;
+              output_2_temp <= remainder;
             end
 
           end else begin

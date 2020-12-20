@@ -29,6 +29,7 @@ mkdir -p test/hex1/j_type
 mkdir -p test/results1
 mkdir -p test/simulator1
 
+g++ test/flip.cpp -o test/flipper.exe
 ### get file input 
 
 SOURCEDIR="$1"
@@ -110,7 +111,7 @@ if [ -z "$INSTRUCTION" ]; then
 
 else
 	for type in r i j e s ; do
-		TESTS="test/tests/${type}_type/*.s"
+		TESTS="test/tests/${type}_type/*.asm.txt"
 		touch test/results1/result1_${INSTRUCTION}.csv
 		>&2 echo "Instruction has been specified. Proceeding with ${INSTRUCTION} test."
 
@@ -118,7 +119,7 @@ else
 			TESTCASE="$t"
 			basename "$TESTCASE" >/dev/null
 			hexname="$(basename -- $TESTCASE)"
-			hexed="${hexname%.*}"
+			hexed="${hexname%.*.*}"
 			exec 5< $t
 
 			### first line specifies what is being tested
@@ -140,12 +141,15 @@ else
 			if [ "$testType" == "$INSTRUCTION" ]; then
 		
 				### assemble input file
-				mipsel-linux-gnu-gcc -c test/tests/${type}_type/$hexed.s -o test/tmp1/${type}_type/$hexed.o
+				#mipsel-linux-gnu-gcc -c test/tests/${type}_type/$hexed.s -o test/tmp1/${type}_type/$hexed.o
 			
-				mipsel-linux-gnu-objcopy -O binary --only-section=.text test/tmp1/${type}_type/$hexed.o test/bin1/${type}_type/$hexed.bin
+				#mipsel-linux-gnu-objcopy -O binary --only-section=.text test/tmp1/${type}_type/$hexed.o test/bin1/${type}_type/$hexed.bin
 			
-				hexdump -v test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/$hexed.hex.txt -e '1/4 "%08x " "\n"'
-				
+				test/assembler/bin/parser test/tests/${type}_type/$hexed.asm.txt test/bin1/${type}_type/$hexed.bin
+				hexdump -v test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/${hexed}_order.hex.txt -e '1/4 "%08x " "\n"'
+				test/flipper.exe < test/hex1/${type}_type/${hexed}_order.hex.txt > test/hex1/${type}_type/$hexed.hex.txt
+
+
 				###compile testbench
 				iverilog -g 2012 \
 					test/mips_cpu_bus_tb_delay1.v test/RAM_32x2048_delay1.v ${lower_level[@]} -s mips_cpu_bus_tb_delay1 -Pmips_cpu_bus_tb_delay1.RAM_INIT_FILE=\"test/hex1/${type}_type/$hexed.hex.txt\" -o test/simulator1/mips_cpu_bus_tb_delay1_$hexed 2>/dev/null
@@ -180,4 +184,4 @@ else
 
 fi
 
-
+rm test/flipper.exe
