@@ -40,8 +40,12 @@ module ALU
 			div_start_enable = div_start && (fetch_state == 3'b010 || fetch_state == 3'b110);
 		end
 	end
+	always_latch begin
+		if(!clk) begin
+			unsigned_mult_start_enable = unsigned_mult_start && (fetch_state == 3'b010 || fetch_state == 3'b110);
+		end
+	end
 
-	logic mult_signedctrl;
 	logic temp_mul_STALL;
 	Multiplier mult(
 		.clk(clk),
@@ -53,12 +57,27 @@ module ALU
 		.stall(temp_mul_STALL),
 		.reset(reset)
 	);
+	logic unsigned_mult_start_enable;
+	logic [31:0] temp_HI_unsigned_mult;
+	logic [31:0] temp_LO_unsigned_mult;
+	logic temp_unsigned_mul_STALL;
+	logic unsigned_mult_start;
+	Unsigned_Multiplier unsigned_mult(
+		.clk(clk),
+		.start(clk&unsigned_mult_start_enable),
+		.input_1(input_1),
+		.input_2(input_2),
+		.hi_output(temp_HI_unsigned_mult),
+		.lo_output(temp_LO_unsigned_mult),
+		.stall(temp_unsigned_mul_STALL),
+		.reset(reset)
+	);
 	logic div_signedctrl;
 	logic div_start;
 	logic div_start_enable;
 	logic temp_div_STALL;
 
-	assign ALU_STALL = temp_mul_STALL || temp_div_STALL;
+	assign ALU_STALL = temp_mul_STALL || temp_div_STALL || temp_unsigned_mul_STALL;
 	Divider div(
 		.clk(clk),
 		.start(clk&div_start_enable),
@@ -76,9 +95,9 @@ module ALU
 		ALU_output = {32{1'bx}};
 		mult_start = 0;
 		div_start = 0;
-		mult_signedctrl = 0;
 		HI_LO_driven_by = 0;
 		div_signedctrl = 0;
+		unsigned_mult_start = 0;
 		case(ALU_operation)
 			6'b000000: 	ALU_output = input_2 << shift_amount; 					//SLL
 			6'b000010:	ALU_output = input_2 >> shift_amount; 					//SRL
@@ -95,12 +114,10 @@ module ALU
 			6'b011000:	begin 													//MULT	
 				mult_start = 1;	
 				HI_LO_driven_by = 2'b00;
-				mult_signedctrl = 1;
 			end
 			6'b011001:	begin 													//MULTU
-				mult_start = 1;	
-				HI_LO_driven_by = 2'b00;
-				mult_signedctrl = 0;
+				unsigned_mult_start = 1;	
+				HI_LO_driven_by = 2'b11;
 			end
 			6'b011010:	begin													//Div
 				div_start = 1;
@@ -143,9 +160,9 @@ module ALU
 				ALU_HI_output = input_1;
 				ALU_LO_output = input_1;
 			end
-			default :begin
-				ALU_HI_output = 0;
-				ALU_LO_output = 0;	
+			2'b11: begin
+				ALU_HI_output = temp_HI_unsigned_mult;
+				ALU_LO_output = temp_LO_unsigned_mult;
 			end
 		endcase
 	end

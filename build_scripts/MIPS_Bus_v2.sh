@@ -21,10 +21,11 @@ lower_level=(
 	"../../../rtl/mips_cpu/Memory_Writeback_Register.v"
 	"../../../rtl/mips_cpu/Multiplier.v"
 	"../../../rtl/mips_cpu/Divider.v"
+	"../../../rtl/mips_cpu/Unsigned_Multiplier.v"
 )
 
 programs_to_run=(
-	"lb"
+	"mult_test_2"
 )
 
 g++ stage2_assembler.cpp -o stage2_assembler
