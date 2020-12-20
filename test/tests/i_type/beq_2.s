@@ -7,6 +7,7 @@
 	lui $t1, 0x0010
 
 	beq $t0, $t1, Target
+	nop
 
 	addiu $v0, $t0, 0x1000
 
