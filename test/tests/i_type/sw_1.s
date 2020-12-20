@@ -1,7 +1,7 @@
 #sw
 #5
 #1
-#additional comment : none
+#Check the offsetting on addresses
 
 addiu $t0, $zero, 5 
 addiu $t1, $zero, 32

@@ -1,7 +1,7 @@
 #ori
 #240
 #3
-#bitwise ori
+#bitwise ori between 2 numbers
 
 addiu $t0, $zero, 0x0010
 

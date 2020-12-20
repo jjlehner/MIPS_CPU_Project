@@ -1,5 +1,5 @@
 #lh
-#-2
+#4294967294
 #1
 #signed load halfword
 
