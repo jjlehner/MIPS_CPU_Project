@@ -339,7 +339,7 @@ module Control_Unit(
 				memory_to_register		= 1;
 				memory_write			= 0;
 				ALU_src_B				= 1;
-				register_destination 	= 1;
+				register_destination 	= 0;
 				branch					= 0;
 				HI_register_write		= 0;
 				LO_register_write		= HI_register_write;

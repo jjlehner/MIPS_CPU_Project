@@ -12,6 +12,7 @@ module Memory_Writeback_Register
 	input	logic [5:0]		op_memory,
 	input	logic [3:0]		byteenable_memory,
 	input	logic [31:0]	src_A_ALU_memory,
+	input	logic [31:0]	src_B_ALU_memory,
 
 
 	output	logic 			register_write_writeback,
@@ -22,6 +23,8 @@ module Memory_Writeback_Register
 	output	logic [5:0]		op_writeback,
 	output	logic [3:0]     byteenable_writeback,
 	output	logic [31:0] 	src_A_ALU_writeback,
+	output	logic [31:0]	src_B_ALU_writeback,
+
 
 	//datapath
 	input	logic [31:0]	ALU_output_memory,
@@ -51,6 +54,8 @@ module Memory_Writeback_Register
 			op_writeback <= 0;
 			byteenable_writeback <= 0;
 			src_A_ALU_writeback <= 0;
+			src_B_ALU_writeback <= 0;
+
 			read_data_writeback <= 0;
 		end
 		else begin
@@ -70,6 +75,8 @@ module Memory_Writeback_Register
 			op_writeback <= op_memory;
 			byteenable_writeback <= byteenable_memory;
 			src_A_ALU_writeback <= src_A_ALU_memory;
+			src_B_ALU_writeback <= src_B_ALU_memory;
+
 			read_data_writeback <= read_data_memory;
 		end
 

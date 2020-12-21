@@ -1,0 +1,7 @@
+r tests:
+addu_1 pass ensure addiu works
+addu_2 pass trying with lui dependency
+r tests:
+r tests:
+i tests:
+j tests:

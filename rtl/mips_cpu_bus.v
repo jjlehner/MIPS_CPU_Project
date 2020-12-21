@@ -143,6 +143,7 @@ module mips_cpu_bus (
 	logic [31:0] ALU_output_memory_resolved;
 	logic [31:0] j_program_counter_memory;
 	logic [31:0] src_A_ALU_memory;
+	logic [31:0] src_B_ALU_memory;
 	logic [31:0] read_data_memory;
 
 	//Writeback controls
@@ -154,6 +155,7 @@ module mips_cpu_bus (
 	logic [5:0] op_writeback;
 	logic [3:0] byteenable_writeback;
 	logic [31:0] src_A_ALU_writeback;
+	logic [31:0] src_B_ALU_writeback;
 
 	//Writeback datapath
 	logic [4:0] write_register_writeback;
@@ -363,6 +365,7 @@ module mips_cpu_bus (
 		.resolved(write_register_execute)
 	);
 
+	logic [31:0] src_B_mid;
 	ALU_Input_Mux alu_input_mux(
 		.ALU_src_A_execute(ALU_src_A_execute),
 		.ALU_src_B_execute(ALU_src_B_execute),
@@ -383,7 +386,8 @@ module mips_cpu_bus (
 
 		.src_A_ALU_execute(src_A_ALU_execute),
 		.src_B_ALU_execute(src_B_ALU_execute),
-		.write_data_execute(write_data_execute)
+		.write_data_execute(write_data_execute),
+		.src_B_mid(src_B_mid)
 	);
 
 	logic ALU_STALL;
@@ -442,7 +446,10 @@ module mips_cpu_bus (
 		.op_execute(op_execute),
 		.op_memory(op_memory),
 		.src_A_ALU_execute(src_A_ALU_execute),
-		.src_A_ALU_memory(src_A_ALU_memory)
+		.src_A_ALU_memory(src_A_ALU_memory),
+		.src_B_ALU_execute(src_B_mid),
+		.src_B_ALU_memory(src_B_ALU_memory)
+
 	);
 
 	assign ALU_output_memory_resolved = j_instruction_memory ? j_program_counter_memory : ALU_output_memory;
@@ -451,10 +458,12 @@ module mips_cpu_bus (
 		.op_writeback(op_writeback),
 		.byteenable_writeback(byteenable_writeback),
 		.src_A_writeback(src_A_ALU_writeback),
+		.src_B_writeback(src_B_ALU_writeback),
 		.read_data_writeback(read_data_writeback),
 		.filtered_output_writeback(read_data_writeback_filtered)
 	);
 
+	
 	Memory_Writeback_Register memory_writeback_register(
 		.clk(internal_clk),
 		.reset(reset),
@@ -486,7 +495,9 @@ module mips_cpu_bus (
 		.src_A_ALU_memory(src_A_ALU_memory),
 		.src_A_ALU_writeback(src_A_ALU_writeback),
 		.read_data_memory(read_data_memory),
-		.read_data_writeback(read_data_writeback)
+		.read_data_writeback(read_data_writeback),
+		.src_B_ALU_memory(src_B_ALU_memory),
+		.src_B_ALU_writeback(src_B_ALU_writeback)
 
 	);
 

@@ -18,7 +18,8 @@ module ALU_Input_Mux(
 
 	output	logic [31:0] src_A_ALU_execute,
 	output  logic [31:0] src_B_ALU_execute,
-	output	logic [31:0] write_data_execute
+	output	logic [31:0] write_data_execute,
+	output	logic [31:0] src_B_mid
 );
 	logic [31:0] src_mux_input_0_A;
 	logic [31:0] src_mux_input_0_B;
@@ -51,6 +52,7 @@ module ALU_Input_Mux(
 			default: src_B_ALU_execute = 0;
 		endcase
 		write_data_execute = src_mux_input_0_B;
+		src_B_mid = src_mux_input_0_B;
 	end
 
 endmodule

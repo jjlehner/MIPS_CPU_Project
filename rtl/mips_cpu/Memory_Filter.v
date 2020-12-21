@@ -3,6 +3,7 @@ module Memory_Filter(
 	input	logic [5:0] op_writeback,
 	input	logic [3:0] byteenable_writeback,
 	input	logic [31:0] src_A_writeback,
+	input	logic [31:0] src_B_writeback,
 	input	logic [31:0] read_data_writeback,
 	input	logic reset,
 	output	logic [31:0] filtered_output_writeback
@@ -46,9 +47,9 @@ module Memory_Filter(
 				end
 				6'b100010 : begin //Load word left
 					case(byteenable_writeback)
-						4'b0001 : filtered_output_writeback = {read_data_writeback[7:0], src_A_writeback[23:0]};
-						4'b0011 : filtered_output_writeback = {read_data_writeback[15:0], src_A_writeback[15:0]};
-						4'b0111 : filtered_output_writeback = {read_data_writeback[23:0], src_A_writeback[7:0]};
+						4'b0001 : filtered_output_writeback = {read_data_writeback[7:0], src_B_writeback[23:0]};
+						4'b0011 : filtered_output_writeback = {read_data_writeback[15:0], src_B_writeback[15:0]};
+						4'b0111 : filtered_output_writeback = {read_data_writeback[23:0], src_B_writeback[7:0]};
 						4'b1111 : filtered_output_writeback = read_data_writeback;
 						default : filtered_output_writeback = read_data_writeback;
 					endcase
@@ -56,9 +57,9 @@ module Memory_Filter(
 				6'b100110 : begin //Load word right
 					case(byteenable_writeback)
 						4'b1111 : filtered_output_writeback = read_data_writeback;
-						4'b1110 : filtered_output_writeback = {src_A_writeback[31:24],read_data_writeback[31:8]};
-						4'b1100 : filtered_output_writeback = {src_A_writeback[31:16],read_data_writeback[31:16]};
-						4'b1000 : filtered_output_writeback = {src_A_writeback[31:8],read_data_writeback[31:24]};
+						4'b1110 : filtered_output_writeback = {src_B_writeback[31:24],read_data_writeback[31:8]};
+						4'b1100 : filtered_output_writeback = {src_B_writeback[31:16],read_data_writeback[31:16]};
+						4'b1000 : filtered_output_writeback = {src_B_writeback[31:8],read_data_writeback[31:24]};
 						default : filtered_output_writeback = read_data_writeback;
 					endcase
 				end
