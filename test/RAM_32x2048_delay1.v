@@ -74,7 +74,7 @@ module RAM_32x2048_delay1(
 				waitrequest <= 0;
 			end
 			if(!read && !write) begin
-				readdata <= 0;
+				readdata <= 32'hx;
 			end
 	end
 	always_comb begin
