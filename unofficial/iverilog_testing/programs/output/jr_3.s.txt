@@ -1,0 +1,16 @@
+#jr 
+#16
+#2
+#additional comment : none
+.set noreorder 
+.set nomacro
+
+lui $4, 0xbfc0			#0
+addiu $4, $4, 0x0014	#4
+jr $4					#8
+jr $0					#c
+jr $0					#10
+addiu $v0, $zero, 0x10	#14
+jr $0					#18
+						#1c
+						#20

@@ -47,10 +47,11 @@ module RAM_32x2048_delay1(
 		waitrequest = 0;
 
 	end
-	always @(posedge read, posedge write) begin
-		waitrequest <= 1;
-	end
+	// always @(posedge read, posedge write) begin
+	// 	waitrequest <= 1;
+	// end
 	
+
 	always @(posedge clk) begin
 			if (write) begin
 				if(address >= 32'hbfc00000 && address <= 32'hc0000000) begin
@@ -71,6 +72,9 @@ module RAM_32x2048_delay1(
 					readdata <= lower_mem[address]; // read after writing, delay1
 				end
 				waitrequest <= 0;
+			end
+			if(!read && !write) begin
+				readdata <= 0;
 			end
 	end
 	always_comb begin

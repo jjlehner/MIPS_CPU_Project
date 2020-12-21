@@ -2,7 +2,7 @@
 module ALU
 (
 	input					clk,
-	input	logic [2:0]		fetch_state,
+	input	logic [2:0]		fetch_state_next,
 
 	input 	logic [5:0]		ALU_operation,
 	input 	logic [31:0]	input_1,
@@ -30,26 +30,30 @@ module ALU
 	// logic [31]
 
 
-	always_latch begin
-		if(!clk) begin
-			mult_start_enable = mult_start && (fetch_state == 3'b010 || fetch_state == 3'b110);
-		end
+	// always_latch begin
+	// 	if(!clk) begin
+	// 		mult_start_enable = mult_start && (fetch_state == 2'b11);
+	// 	end
+	// end
+	// always_latch begin
+	// 	if(!clk) begin
+	// 		div_start_enable = div_start && (fetch_state == 2'b11);
+	// 	end
+	// end
+	// always_latch begin
+	// 	if(!clk) begin
+	// 		unsigned_mult_start_enable = unsigned_mult_start && (fetch_state == 2'b11);
+	// 	end
+	// end
+	always_ff @(posedge clk) begin
+			mult_start_enable = mult_start && !temp_mul_STALL && (fetch_state_next == 3'b100);
+			div_start_enable = div_start && !temp_div_STALL && (fetch_state_next == 3'b100);
+			unsigned_mult_start_enable = unsigned_mult_start && !temp_unsigned_mul_STALL && (fetch_state_next == 3'b100);
 	end
-	always_latch begin
-		if(!clk) begin
-			div_start_enable = div_start && (fetch_state == 3'b010 || fetch_state == 3'b110);
-		end
-	end
-	always_latch begin
-		if(!clk) begin
-			unsigned_mult_start_enable = unsigned_mult_start && (fetch_state == 3'b010 || fetch_state == 3'b110);
-		end
-	end
-
 	logic temp_mul_STALL;
 	Multiplier mult(
 		.clk(clk),
-		.start(clk&mult_start_enable),
+		.start(mult_start_enable),
 		.input_1(input_1),
 		.input_2(input_2),
 		.hi_output(temp_HI_mult),
@@ -64,7 +68,7 @@ module ALU
 	logic unsigned_mult_start;
 	Unsigned_Multiplier unsigned_mult(
 		.clk(clk),
-		.start(clk&unsigned_mult_start_enable),
+		.start(unsigned_mult_start_enable),
 		.input_1(input_1),
 		.input_2(input_2),
 		.hi_output(temp_HI_unsigned_mult),
@@ -80,7 +84,7 @@ module ALU
 	assign ALU_STALL = temp_mul_STALL || temp_div_STALL || temp_unsigned_mul_STALL;
 	Divider div(
 		.clk(clk),
-		.start(clk&div_start_enable),
+		.start(div_start_enable),
 		.signedctrl(div_signedctrl),
 		.input_1(input_1),
 		.input_2(input_2),

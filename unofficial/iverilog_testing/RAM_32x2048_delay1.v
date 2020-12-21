@@ -51,14 +51,16 @@ module RAM_32x2048_delay1(
 		waitrequest <= 1;
 	end
 	
+
 	always @(posedge clk) begin
 			if (write) begin
 				if(address >= 32'hbfc00000 && address <= 32'hc0000000) begin
 					mem[address] <= writedata_mod; // read after writing, delay1
+					waitrequest <= 0;
 				end else if(address >= 32'h0 && address <= 32'h0F00) begin
 					lower_mem[address] <= writedata_mod; // read after writing, delay1
+					waitrequest <= 0;
 				end
-				waitrequest <= 0;
 			end
 			else if (read) begin
 				if(address == 32'h0) begin
@@ -71,6 +73,9 @@ module RAM_32x2048_delay1(
 				end
 				waitrequest <= 0;
 			end
+			if(!read && !write) begin
+				readdata <= 0;
+			end
 	end
 	always_comb begin
 		a = !byteenable[3] ? writedata[31:24] : 4'h0;
@@ -79,6 +84,6 @@ module RAM_32x2048_delay1(
 		d = !byteenable[0] ? writedata[7:0] : 4'h0;
 
 		writedata_mod = {a,b,c,d};
-		val = lower_mem[32'h20];
+		val = mem[32'hBD000000];
 	end
 endmodule

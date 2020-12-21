@@ -1,6 +1,6 @@
 `define PIPELINED true
 module Register_File(	
-	input	logic 			clk,
+	input	logic 			clk, HALT_writeback,
 	input 	logic 			pipelined, reset,
 	input 	logic			write_enable,	HI_write_enable, LO_write_enable,
 	input	logic [4:0]		read_address_1, read_address_2, write_address,
@@ -80,7 +80,7 @@ module Register_File(
 			HI_reg <= 0;
 		end
 		else begin
-			if(write_enable) registers[write_address]<= write_data;
+			if(write_enable && !HALT_writeback) registers[write_address]<= write_data;
 			if(HI_write_enable) begin
 				HI_reg <= HI_write_data;
 			end

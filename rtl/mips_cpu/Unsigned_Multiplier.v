@@ -14,7 +14,7 @@ logic carry, tempcarry;
 logic [31:0] result, tempresult;
 
 always_comb begin
-  if(start) begin
+  if(!stall) begin
     {tempcarry, tempresult} = input_1 + 32'b0;
   end else begin
     {carry, result} = multiplicand + accumulator;

@@ -20,7 +20,7 @@ module mips_cpu_bus (
 );
 
 	logic internal_clk;
-
+	logic [2:0] fetch_state;
 	//Fetch control
 	logic [31:0] program_counter_prime;
 	logic [31:0] instr_address;
@@ -200,7 +200,8 @@ module mips_cpu_bus (
 		.read_register_2(register_v0_reg_file),
 		.read_data_HI(register_file_output_HI_decode),
 		.read_data_LO(register_file_output_LO_decode),
-		.reset(reset)
+		.reset(reset),
+		.HALT_writeback(HALT_writeback)
 	);
 
 	Program_Counter pc (
@@ -395,7 +396,7 @@ module mips_cpu_bus (
 		.ALU_HI_output(ALU_HI_output_execute),
 		.ALU_LO_output(ALU_LO_output_execute),
 		.clk(clk),
-		.fetch_state(fetch_state),
+		.fetch_state_next(fetch_state_next),
 		.ALU_STALL(ALU_STALL),
 		.reset(reset)
 	);
@@ -532,119 +533,120 @@ module mips_cpu_bus (
 	logic [3:0] byteenable_memory_next;
 
 	
-	logic [2:0] fetch_state_next;
-	logic [2:0] fetch_state;
+	//logic [2:0] fetch_state_next;
+	//logic [2:0] fetch_state;
 	logic clk_enable;
 	logic en_out;
 	logic [31:0] instruction_fetch_next;
 	logic [31:0] read_data_memory_next;
 	assign internal_clk = clk && en_out;
+
+	always_latch begin    
+		if (!clk) en_out = clk_enable;
+	end
+	logic read_enable;
+	// logic [31:0] sanity_read;
+	// logic [31:0] sanity_read_2;
+	logic [2:0] fetch_state_next;
+	logic read_next;
+	logic write_next;
+	logic [31:0] address_next;
 	always_ff @(posedge clk, posedge reset) begin
 		if(reset) begin
-			fetch_state <= 3'b111;
+			fetch_state <= 3'b110;
 			instruction_fetch <= 0;
 			read_data_memory <= 0;
 			byteenable_memory <= 0;
+			address <= 32'hBFC00000;
 		end
 		else begin
 			fetch_state <= fetch_state_next;
 			instruction_fetch <= instruction_fetch_next;
 			read_data_memory <= read_data_memory_next;
 			byteenable_memory <= byteenable_memory_next;
-		end
 
+			address <= address_next;
+		end
 	end
-	always_latch begin    
-		if (!clk) en_out = clk_enable;    
-	end
-	logic read_enable;
 	always_comb begin
 		case(fetch_state) 
-			3'b000: begin
-				fetch_state_next = (!ALU_STALL) ? 3'b001 : 3'b011;
-				read_enable = 0;
-				write = 0;
-				clk_enable = !ALU_STALL;
-				instruction_fetch_next = instruction_fetch;
-				read_data_memory_next = read_data_memory;
+			3'b000 : begin
+				fetch_state_next = 3'b001;
+				// fetch_state_next = (!waitrequest) ? ((memory_to_register_memory || memory_write_memory) ? 2'b01 : 2'b11) : 2'b00;
+	 			read = 1;
+	 			write = 0;
+	 			clk_enable = 0;
+	 			instruction_fetch_next = readdata;
+	 			read_data_memory_next = read_data_memory;
 			end
-			3'b001: begin
-				fetch_state_next = (!waitrequest) ? ((memory_to_register_memory || memory_write_memory) ? 3'b100 : 3'b010) : 3'b001;
-				read_enable = 1;
+			3'b001 : begin
+				fetch_state_next = (!waitrequest) ? ((memory_to_register_memory || memory_write_memory) ? 3'b010 : 3'b100) : 3'b001;
+				read = waitrequest;
 				write = 0;
 				clk_enable = 0;
 				instruction_fetch_next = readdata;
-				read_data_memory_next = read_data_memory;
+	 			read_data_memory_next = read_data_memory;
 			end
-			3'b010: begin
-				fetch_state_next = 3'b000;
-				read_enable = 0;
+			3'b010 : begin
+				fetch_state_next = (!memory_write_memory) ? 3'b101 : 2'b11;
+	 			read = !memory_write_memory;
+	 			write = memory_write_memory;
+	 			clk_enable = 0;
+	 			instruction_fetch_next = instruction_fetch;
+	 			read_data_memory_next = read_data_memory;
+			end
+			3'b011: begin
+				fetch_state_next = (!waitrequest) ? 3'b100 : 3'b011;
+				read = waitrequest;
 				write = 0;
 				clk_enable = 0;
 				instruction_fetch_next = instruction_fetch;
-				read_data_memory_next = read_data_memory;
-			end
-			3'b011: begin //STATE ELIMINATED -> now alu hold state
-				fetch_state_next = (!ALU_STALL) ? 3'b001 : 3'b011;
-				read_enable = 0;
-				write = 0;
-				clk_enable = !ALU_STALL;
-				instruction_fetch_next = instruction_fetch;
-				read_data_memory_next = read_data_memory;
-			end
-			3'b100: begin
-				fetch_state_next = 3'b101;
-				read_enable = 0;
-				write = 0;
-				clk_enable = 0;
-				instruction_fetch_next = instruction_fetch;
-				read_data_memory_next = read_data_memory;
+	 			read_data_memory_next = readdata;
 			end
 			3'b101: begin
-				fetch_state_next = (!waitrequest) ? 3'b110 : 3'b101;
-				read_enable = !memory_write_memory;
-				write = memory_write_memory;
+				fetch_state_next = (!waitrequest) ? 3'b100 : 3'b101;
+				read = 0;
+				write = waitrequest;
 				clk_enable = 0;
 				instruction_fetch_next = instruction_fetch;
-				read_data_memory_next = readdata;
+	 			read_data_memory_next = readdata;
 			end
-			3'b110: begin
+			3'b100 : begin
+				fetch_state_next = (!ALU_STALL) ? 3'b000 : 3'b100;
+	 			read = 0;
+	 			write = 0;
+	 			clk_enable = (!ALU_STALL);
+	 			instruction_fetch_next = instruction_fetch;
+	 			read_data_memory_next = read_data_memory;
+			end
+			3'b110 : begin
 				fetch_state_next = 3'b000;
-				read_enable = 0;
-				write = 0;
-				clk_enable = 0;
-				instruction_fetch_next = instruction_fetch;
-				read_data_memory_next = read_data_memory;
-			end
-			3'b111: begin //Reset State
-				fetch_state_next = 3'b001;
-				read_enable = 0;
-				write = 0;
-				clk_enable = 0;
-				instruction_fetch_next = instruction_fetch;
-				read_data_memory_next = read_data_memory;
+	 			read = 0;
+	 			write = 0;
+	 			clk_enable = 1;
+	 			instruction_fetch_next = 0;
+	 			read_data_memory_next = read_data_memory;
 			end
 		endcase
-		read = !HALT_fetch && read_enable;
 
-		address[1:0] = 2'b00;
-		if(fetch_state == 3'b001) begin
-			address[31:2] = instr_address[31:2];
+		address_next[1:0] = 2'b00;
+		if(fetch_state_next == 2'b000) begin
+			address_next[31:2] = instr_address[31:2];
 		end
-		else if(fetch_state == 3'b101) begin
-			address[31:2] = data_address[31:2];
+		else if(fetch_state_next == 3'b010) begin
+			address_next[31:2] = data_address[31:2];
 		end
 		else begin
-			address[31:2] = 0;
+			address_next[31:2] = address[31:2];
 		end
-
-		if(register_write_memory == 1 && write_register_memory == 5'h2 && !memory_to_register_memory) begin
-			register_v0 = ALU_output_memory;
-		end else if(register_write_memory == 1 && write_register_writeback == 5'h2) begin
-			register_v0 = result_writeback;
-		end else begin
-			register_v0 = register_v0_reg_file;
-		end
+		register_v0 = register_v0_reg_file;
+		// if(register_write_memory == 1 && write_register_memory == 5'h2 && !memory_to_register_memory) begin
+		// 	register_v0 = ALU_output_memory;
+		// end else if(register_write_memory == 1 && write_register_writeback == 5'h2) begin
+		// 	register_v0 = result_writeback;
+		// end else begin
+		// 	register_v0 = register_v0_reg_file;
+		// end
 		
 
 		if(fetch_state == 3'b101 || fetch_state == 3'b100 || fetch_state == 3'b110) begin
@@ -720,6 +722,187 @@ module mips_cpu_bus (
 			byteenable_memory_next = 4'b0000;
 		end
 	end
+	// always_ff @(posedge clk, posedge reset) begin
+	// 	if(reset) begin
+	// 		fetch_state <= 3'b111;
+	// 		instruction_fetch <= 0;
+	// 		read_data_memory <= 0;
+	// 		byteenable_memory <= 0;
+	// 		sanity_read <= 0;
+	// 	end
+	// 	else begin
+	// 		fetch_state <= fetch_state_next;
+	// 		instruction_fetch <= instruction_fetch_next;
+	// 		read_data_memory <= read_data_memory_next;
+	// 		byteenable_memory <= byteenable_memory_next;
+	// 		sanity_read <= readdata;
+	// 		sanity_read_2 <= sanity_read;
+	// 	end
+
+	// end
+	// always_comb begin
+	// 	case(fetch_state) 
+	// 		3'b000: begin
+	// 			fetch_state_next = (!ALU_STALL) ? 3'b001 : 3'b011;
+	// 			read_enable = 0;
+	// 			write = 0;
+	// 			clk_enable = !ALU_STALL;
+	// 			instruction_fetch_next = instruction_fetch;
+	// 			read_data_memory_next = read_data_memory;
+	// 		end
+	// 		3'b001: begin
+	// 			fetch_state_next = (!waitrequest) ? ((memory_to_register_memory || memory_write_memory) ? 3'b100 : 3'b010) : 3'b001;
+	// 			read_enable = 1;
+	// 			write = 0;
+	// 			clk_enable = 0;
+	// 			if(!HALT_decode) instruction_fetch_next = sanity_read_2;
+	// 			else instruction_fetch_next = 0;
+	// 			read_data_memory_next = read_data_memory;
+	// 		end
+	// 		3'b010: begin
+	// 			fetch_state_next = 3'b000;
+	// 			read_enable = 0;
+	// 			write = 0;
+	// 			clk_enable = 0;
+	// 			instruction_fetch_next = instruction_fetch;
+	// 			read_data_memory_next = read_data_memory;
+	// 		end
+	// 		3'b011: begin //STATE ELIMINATED -> now alu hold state
+	// 			fetch_state_next = (!ALU_STALL) ? 3'b001 : 3'b011;
+	// 			read_enable = 0;
+	// 			write = 0;
+	// 			clk_enable = !ALU_STALL;
+	// 			instruction_fetch_next = instruction_fetch;
+	// 			read_data_memory_next = read_data_memory;
+	// 		end
+	// 		3'b100: begin
+	// 			fetch_state_next = 3'b101;
+	// 			read_enable = 0;
+	// 			write = 0;
+	// 			clk_enable = 0;
+	// 			instruction_fetch_next = instruction_fetch;
+	// 			read_data_memory_next = read_data_memory;
+	// 		end
+	// 		3'b101: begin
+	// 			fetch_state_next = (!waitrequest) ? 3'b110 : 3'b101;
+	// 			read_enable = !memory_write_memory;
+	// 			write = memory_write_memory;
+	// 			clk_enable = 0;
+	// 			instruction_fetch_next = instruction_fetch;
+	// 			read_data_memory_next = sanity_read_2;
+	// 		end
+	// 		3'b110: begin
+	// 			fetch_state_next = 3'b000;
+	// 			read_enable = 0;
+	// 			write = 0;
+	// 			clk_enable = 0;
+	// 			instruction_fetch_next = instruction_fetch;
+	// 			read_data_memory_next = read_data_memory;
+	// 		end
+	// 		3'b111: begin //Reset State
+	// 			fetch_state_next = 3'b001;
+	// 			read_enable = 0;
+	// 			write = 0;
+	// 			clk_enable = 0;
+	// 			instruction_fetch_next = instruction_fetch;
+	// 			read_data_memory_next = read_data_memory;
+	// 		end
+	// 	endcase
+	// 	read = !HALT_fetch && read_enable;
+
+	// 	address[1:0] = 2'b00;
+	// 	if(fetch_state == 3'b001) begin
+	// 		address[31:2] = instr_address[31:2];
+	// 	end
+	// 	else if(fetch_state == 3'b101) begin
+	// 		address[31:2] = data_address[31:2];
+	// 	end
+	// 	else begin
+	// 		address[31:2] = 0;
+	// 	end
+	// 	register_v0 = register_v0_reg_file;
+	// 	// if(register_write_memory == 1 && write_register_memory == 5'h2 && !memory_to_register_memory) begin
+	// 	// 	register_v0 = ALU_output_memory;
+	// 	// end else if(register_write_memory == 1 && write_register_writeback == 5'h2) begin
+	// 	// 	register_v0 = result_writeback;
+	// 	// end else begin
+	// 	// 	register_v0 = register_v0_reg_file;
+	// 	// end
+		
+
+	// 	if(fetch_state == 3'b101 || fetch_state == 3'b100 || fetch_state == 3'b110) begin
+	// 		case(op_memory)
+	// 			6'b100000 : begin //LB
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory_next = 4'b0001;
+	// 					2'b01 : byteenable_memory_next = 4'b0010;
+	// 					2'b10 : byteenable_memory_next = 4'b0100;
+	// 					2'b11:	byteenable_memory_next = 4'b1000;
+	// 				endcase
+	// 			end
+	// 			6'b100100 : begin //LBU
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory_next = 4'b0001;
+	// 					2'b01 : byteenable_memory_next = 4'b0010;
+	// 					2'b10 : byteenable_memory_next = 4'b0100;
+	// 					2'b11:	byteenable_memory_next = 4'b1000;
+	// 				endcase
+	// 			end
+	// 			6'b100001 : begin //LHW
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory_next = 4'b0011;
+	// 					2'b10 : byteenable_memory_next = 4'b1100;
+	// 					default : byteenable_memory_next = 4'b1111;
+	// 				endcase
+	// 			end
+	// 			6'b100101 : begin //LHWU
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory_next = 4'b0011;
+	// 					2'b10 : byteenable_memory_next = 4'b1100;
+	// 					default : byteenable_memory_next = 4'b1111;
+	// 				endcase
+	// 			end
+	// 			6'b100010 : begin //LWL
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory_next = 4'b0001;
+	// 					2'b01 : byteenable_memory_next = 4'b0011;
+	// 					2'b10 : byteenable_memory_next = 4'b0111;
+	// 					2'b11:	byteenable_memory_next = 4'b1111;
+	// 				endcase
+	// 			end
+	// 			6'b100110 : begin //LWR
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory_next = 4'b1111;
+	// 					2'b01 : byteenable_memory_next = 4'b1110;
+	// 					2'b10 : byteenable_memory_next = 4'b1100;
+	// 					2'b11:	byteenable_memory_next = 4'b1000;
+	// 				endcase
+	// 			end
+	// 			6'b101000 : begin //SB
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory_next = 4'b1110;
+	// 					2'b01 : byteenable_memory_next = 4'b1101;
+	// 					2'b10 : byteenable_memory_next = 4'b1011;
+	// 					2'b11:	byteenable_memory_next = 4'b0111;
+	// 				endcase
+	// 			end
+	// 			6'b101001 : begin //SH
+	// 				case(data_address[1:0])
+	// 					2'b00 : byteenable_memory_next = 4'b1100;
+	// 					2'b10 : byteenable_memory_next = 4'b0011;
+	// 					default : byteenable_memory_next = 4'b1111;
+	// 				endcase
+	// 			end
+	// 			6'b101011 : begin //SW
+	// 				byteenable_memory_next = 4'b0000;
+	// 			end
+
+	// 			default : byteenable_memory_next = 4'b1111;
+	// 		endcase
+	// 	end else begin
+	// 		byteenable_memory_next = 4'b0000;
+	// 	end
+	// end
 	// logic [1:0] fetch_state; //0 == inst_prev_inst, 1 = inst_prev_data, 2 = data, 3 =  instr_prev_data;
 	// always_comb begin
 	// 	address[1:0] = 2'b00;

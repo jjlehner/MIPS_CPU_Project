@@ -1,0 +1,4 @@
+beq_1 fail none
+beq_2 pass not equal should not branch
+beq_3 pass testing extreme inequality FFFF /= FFFE ?  so $v0 = 0001 not FFFF
+beq_4 fail testing extreme equality FFFF == FFFF ? if so $v0 = FFFF

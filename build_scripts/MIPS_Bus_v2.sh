@@ -25,7 +25,7 @@ lower_level=(
 )
 
 programs_to_run=(
-	"jalr_tim"
+	"divider"
 )
 
 g++ stage2_assembler.cpp -o stage2_assembler
@@ -41,7 +41,7 @@ do
 	./stage2_assembler ${i} >output/$i/${program}
 	echo program
 	echo "COMPILING VERILOG"
-   iverilog -Wall -g 2012 ../../../rtl/mips_cpu_bus.v ../mips_cpu_bus_tb_delay1.v ../RAM_32x2048_delay1.v ${lower_level[@]} -s mips_cpu_bus_tb_delay1 -Pmips_cpu_bus_tb_delay1.VCD_FILE=\"output/$i/$i.vcd\" -Pmips_cpu_bus_tb_delay1.RAM_INIT_FILE=\"output/$i/${program}\" -o output/$i/$i.exe  &>output/$i/${i}_vcompilation_output.txt
+   iverilog -Wall -g 2012 ../../../rtl/mips_cpu_bus.v ../mips_cpu_bus_tb_delay1.v ../RAM_32x2048_delay1.v ${lower_level[@]} -s mips_cpu_bus_tb_delay1 -Pmips_cpu_bus_tb_delay1.VCD_FILE=\"output/$i/$i.vcd\" -Pmips_cpu_bus_tb_delay1.RAM_INIT_FILE=\"output/$i/${program}\" -o output/$i/$i.exe
 	echo "SUCCESSFULLY COMPILED VERILOG"
 	echo "----------------------------------------------------------"
 	set +e

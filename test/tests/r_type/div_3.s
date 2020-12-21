@@ -2,8 +2,8 @@
 #13
 #3
 #none
-#40000/4999
-
+.set noreorder 
+.set nomacro
 lui $t0, 0x4
 addiu $t1, $zero, 0x4999
 div $t0, $t1

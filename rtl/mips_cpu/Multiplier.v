@@ -18,7 +18,7 @@ logic q0;
 logic [5:0] n;
 
 always_comb begin
-  if(start) begin
+  if(!stall) begin
     tempsub = -(input_1);
     tempadd = input_1;
   end else begin
@@ -35,6 +35,8 @@ always_ff @(posedge clk, posedge start, posedge reset) begin
     q0 <= 0;
     n <= 0;
     stall <= 0;
+    hi_output <= 0;
+    lo_output <= 0;
   end  
   else if(start && !stall) begin
     Q <= input_2;
