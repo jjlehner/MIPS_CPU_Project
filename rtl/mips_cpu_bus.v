@@ -557,18 +557,46 @@ module mips_cpu_bus (
 			instruction_fetch <= 0;
 			read_data_memory <= 0;
 			byteenable_memory <= 0;
-			address <= 32'hBFC00000;
 		end
 		else begin
 			fetch_state <= fetch_state_next;
-			instruction_fetch <= instruction_fetch_next;
-			read_data_memory <= read_data_memory_next;
 			byteenable_memory <= byteenable_memory_next;
-
-			address <= address_next;
 		end
 	end
+	always_latch begin
+		case(fetch_state) 
+			3'b000 : begin
+	 			instruction_fetch = readdata;
+			end
+			3'b001 : begin
+				instruction_fetch = readdata;
+			end
+			3'b011: begin
+	 			read_data_memory = readdata;
+			end
+			3'b101: begin
+	 			read_data_memory = readdata;
+			end
+		endcase
+
+	end
 	always_comb begin
+		address[1:0] = 2'b00;
+		if(fetch_state == 3'b000) begin
+			address[31:2] = instr_address[31:2];
+		end
+		else if (fetch_state == 3'b001) begin
+			address[31:2] = instr_address[31:2];
+		end
+		else if(fetch_state == 3'b010) begin
+			address[31:2] = data_address[31:2];
+		end
+		else if(fetch_state == 3'b011) begin
+			address[31:2] = data_address[31:2];
+		end
+		else begin
+			address[31:2] = instr_address[31:2];
+		end
 		case(fetch_state) 
 			3'b000 : begin
 				fetch_state_next = 3'b001;
@@ -576,77 +604,55 @@ module mips_cpu_bus (
 	 			read = 1;
 	 			write = 0;
 	 			clk_enable = 0;
-	 			instruction_fetch_next = readdata;
-	 			read_data_memory_next = read_data_memory;
 			end
 			3'b001 : begin
 				fetch_state_next = (!waitrequest) ? ((memory_to_register_memory || memory_write_memory) ? 3'b010 : 3'b100) : 3'b001;
 				read = waitrequest;
 				write = 0;
 				clk_enable = 0;
-				instruction_fetch_next = readdata;
-	 			read_data_memory_next = read_data_memory;
 			end
 			3'b010 : begin
 				fetch_state_next = (!memory_write_memory) ? 3'b101 : 2'b11;
 	 			read = !memory_write_memory;
 	 			write = memory_write_memory;
 	 			clk_enable = 0;
-	 			instruction_fetch_next = instruction_fetch;
-	 			read_data_memory_next = read_data_memory;
 			end
 			3'b011: begin
 				fetch_state_next = (!waitrequest) ? 3'b100 : 3'b011;
 				read = waitrequest;
 				write = 0;
 				clk_enable = 0;
-				instruction_fetch_next = instruction_fetch;
-	 			read_data_memory_next = readdata;
 			end
 			3'b101: begin
 				fetch_state_next = (!waitrequest) ? 3'b100 : 3'b101;
 				read = 0;
 				write = waitrequest;
 				clk_enable = 0;
-				instruction_fetch_next = instruction_fetch;
-	 			read_data_memory_next = readdata;
 			end
 			3'b100 : begin
 				fetch_state_next = (!ALU_STALL) ? 3'b000 : 3'b100;
 	 			read = 0;
 	 			write = 0;
 	 			clk_enable = (!ALU_STALL);
-	 			instruction_fetch_next = instruction_fetch;
-	 			read_data_memory_next = read_data_memory;
 			end
 			3'b110 : begin
 				fetch_state_next = 3'b000;
 	 			read = 0;
 	 			write = 0;
-	 			clk_enable = 1;
-	 			instruction_fetch_next = 0;
-	 			read_data_memory_next = read_data_memory;
+	 			clk_enable = 0;
 			end
 		endcase
 
 		address_next[1:0] = 2'b00;
-		if(fetch_state_next == 2'b000) begin
-			address_next[31:2] = instr_address[31:2];
+		
+		//register_v0 = register_v0_reg_file;
+		if(register_write_memory == 1 && write_register_memory == 5'h2 && !memory_to_register_memory) begin
+			register_v0 = ALU_output_memory;
+		end else if(register_write_memory == 1 && write_register_writeback == 5'h2) begin
+			register_v0 = result_writeback;
+		end else begin
+			register_v0 = register_v0_reg_file;
 		end
-		else if(fetch_state_next == 3'b010) begin
-			address_next[31:2] = data_address[31:2];
-		end
-		else begin
-			address_next[31:2] = address[31:2];
-		end
-		register_v0 = register_v0_reg_file;
-		// if(register_write_memory == 1 && write_register_memory == 5'h2 && !memory_to_register_memory) begin
-		// 	register_v0 = ALU_output_memory;
-		// end else if(register_write_memory == 1 && write_register_writeback == 5'h2) begin
-		// 	register_v0 = result_writeback;
-		// end else begin
-		// 	register_v0 = register_v0_reg_file;
-		// end
 		
 
 		if(fetch_state == 3'b101 || fetch_state == 3'b100 || fetch_state == 3'b110) begin
