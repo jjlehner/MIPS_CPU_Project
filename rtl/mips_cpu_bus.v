@@ -524,7 +524,7 @@ module mips_cpu_bus (
 		.flush_execute_register(flush_execute_register),
 		.forward_register_file_output_A_execute(forward_A_execute),
 		.forward_register_file_output_B_execute(forward_B_execute),
-		.program_counter_jalr_control_memory(program_counter_jalr_control_memory),
+		.program_counter_jalr_control_memory(program_counter_jalr_control_memory)
 
 	);
 	assign active = !HALT_writeback;

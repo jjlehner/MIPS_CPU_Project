@@ -39,17 +39,18 @@ lower_level=("${SOURCEDIR}/mips_cpu_*.v"
 	)
 
 if [ -z "$INSTRUCTION" ]; then
+	i=1
 	touch test/results1/result1.csv
-	>&2 echo "Instruction has not been specified. Proceeding with all functional tests."
+	#>&2 echo "Instruction has not been specified. Proceeding with all functional tests."
 	for type in r i j e s ; do
 		TESTS="test/tests/${type}_type/*.s"
 
-		>&2 echo "Commencing ${type} type instruction tests."	
+		#>&2 echo "Commencing ${type} type instruction tests."	
 		echo "${type} tests:" >> test/results1/result1.csv
 
 		for t in $TESTS; do
 			TESTCASE="$t"
-			basename "$TESTCASE"
+			basename "$TESTCASE" >/dev/null
 			hexname="$(basename -- $TESTCASE)"
 			hexed="${hexname%.*}"
 			exec 5< $t	
@@ -71,7 +72,7 @@ if [ -z "$INSTRUCTION" ]; then
 			comment="${line:1:${#line}-1}"
 
 			### assemble input file
-			mipsel-linux-gnu-gcc -c test/tests/${type}_type/$hexed.s -o test/tmp1/${type}_type/$hexed.o
+			mipsel-linux-gnu-gcc -c test/tests/${type}_type/$hexed.s -o test/tmp1/${type}_type/$hexed.o &>/dev/null
 		
 			mipsel-linux-gnu-objcopy -O binary --only-section=.text test/tmp1/${type}_type/$hexed.o test/bin1/${type}_type/$hexed.bin
 		
@@ -85,8 +86,8 @@ if [ -z "$INSTRUCTION" ]; then
 			set +e
 			test/simulator1/mips_cpu_bus_tb_delay1_$hexed > test/results1/mips_cpu_bus_tb_delay1_$hexed.txt
 			output=$(tail -n 1 test/results1/mips_cpu_bus_tb_delay1_${hexed}.txt)
-			echo "out $output"
-			echo "exp $expectedValue"
+			#echo "out $output"
+			#echo "exp $expectedValue"
 			set -e
 
 			###testing for failure code
@@ -96,23 +97,27 @@ if [ -z "$INSTRUCTION" ]; then
 
 		
 			###compare output to expected
-			bool="fail"
+			bool="Fail"
 			if [ $output -eq $expectedValue ]; then
-				bool="pass"
+				bool="Pass"
 			fi
+			file_base_name=${t##*/}
+			file_base_name=${file_base_name%.s}
+			echo $file_base_name ${testType} ${bool}
 
-			echo "${testType}_${testId} ${bool} ${comment}" >> test/results1/result1.csv
-			echo ""
+			#echo "${testType}_${testId} ${bool} ${comment}" >> test/results1/result1.csv
+			#echo ""
 
 		done
 	done
 
 
 else
+	i=1
 	for type in r i j e s ; do
 		TESTS="test/tests/${type}_type/*.s"
 		touch test/results1/result1_${INSTRUCTION}.csv
-		>&2 echo "Instruction has been specified. Proceeding with ${INSTRUCTION} test."
+		#>&2 echo "Instruction has been specified. Proceeding with ${INSTRUCTION} test."
 
 		for t in $TESTS; do
 			TESTCASE="$t"
@@ -136,13 +141,12 @@ else
 			### read additional comment
 			read -r line <&5
 			comment="${line:1:${#line}-1}"
-
 			if [ "$testType" == "$INSTRUCTION" ]; then
-		
+				
 				### assemble input file
-				mipsel-linux-gnu-gcc -c test/tests/${type}_type/$hexed.s -o test/tmp1/${type}_type/$hexed.o
+				mipsel-linux-gnu-gcc -c test/tests/${type}_type/$hexed.s -o test/tmp1/${type}_type/$hexed.o &>/dev/null
 			
-				mipsel-linux-gnu-objcopy -O binary --only-section=.text test/tmp1/${type}_type/$hexed.o test/bin1/${type}_type/$hexed.bin
+				mipsel-linux-gnu-objcopy -O binary --only-section=.text test/tmp1/${type}_type/$hexed.o test/bin1/${type}_type/$hexed.bin 2>&1 >/dev/null
 			
 				hexdump -v test/bin1/${type}_type/$hexed.bin > test/hex1/${type}_type/$hexed.hex.txt -e '1/4 "%08x " "\n"'
 				
@@ -154,8 +158,8 @@ else
 				set +e
 				test/simulator1/mips_cpu_bus_tb_delay1_$hexed > test/results1/mips_cpu_bus_tb_delay1_$hexed.txt
 				output=$(tail -n 1 test/results1/mips_cpu_bus_tb_delay1_${hexed}.txt)
-				echo "out $output"
-				echo "exp $expectedValue"
+				#echo "out $output"
+				#echo "exp $expectedValue"
 				set -e
 
 				###testing for failure code
@@ -165,14 +169,16 @@ else
 
 			
 				###compare output to expected
-				bool="fail"
+				bool="Fail"
 				if [ $output -eq $expectedValue ]; then
-					bool="pass"
+					bool="Pass"
 				fi
-
-				echo "${testType}_${testId} ${bool} ${comment}" >> test/results1/result1_${INSTRUCTION}.csv
-				echo ${bool}
-				echo ""
+				file_base_name=${t##*/}
+				file_base_name=${file_base_name%.s}
+				echo $file_base_name ${testType} ${bool}
+				#echo "${testType}_${testId} ${bool} ${comment}" >> test/results1/result1_${INSTRUCTION}.csv
+				#echo ${bool}
+				#echo ""
 			fi
 
 		done

@@ -1,15 +1,16 @@
 #jalr
-#100
+#500
 #2
 
 .set noreorder 
 .set nomacro
 
+l1:
 lui   $t0, 0xbfc0         #bfc0 0000
 ori   $t0, $t0, 0x001C    #bfc0 0004
-jalr  $ra, $t0            #bfc0 0008
+jalr  $t0                 #bfc0 0008
 addiu $ra, $ra, 0x4       #bfc0 000C
-j 0x3f00000              #bfc0 0010
+j l1                      #bfc0 0010
 jr $0                     #bfc0 0014
 nop                       #bfc0 0018
 nop                       #bfc0 001C

@@ -1,11 +1,13 @@
 #slti
 #2
 #4
-
-ori   $v0, $0, 1
+.set noreorder 
+.set nomacro
+lui	  $v0,  0xFFFF
+addiu $v0, $v0, 0xFFF0
 l1:
-addu  $v0, $v0, $v0
-slti  $a0, $v0, 0x7FFF
+addiu  $v0, $v0, 1
+slti  $a0, $v0, 0xFFFE
 bne   $a0, $0,  l1
 jr $0
 

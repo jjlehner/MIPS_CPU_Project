@@ -1,5 +1,5 @@
 #ori
-#65536
+#65535
 #4
 #Simple or operation with 0
 

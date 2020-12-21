@@ -49,7 +49,7 @@ module Control_Unit(
 				j_instruction 			= 0;
 				using_HI_LO				= (funct == 6'b010000 || funct == 6'b010010); //MFHI, //MFLO
 				no_sign_extend = 0;
-				program_counter_jalr_control = (funct == 6'b001001);
+				program_counter_jalr_control = (funct == 6'b001001 || funct == 6'b001000);
 			end
 			
 			6'b000001:	begin		//BLTZ,BLTZAL, BGEZ,BGEZAL instruction

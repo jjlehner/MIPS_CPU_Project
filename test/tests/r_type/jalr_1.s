@@ -1,12 +1,12 @@
 #jalr
-#1
+#3217031184
 #1
 
-lui $15, 0x1000
-ori $15, $15, 0x0018
+lui $15, 0xBFC0
+ori $15, $15, 0x000F
 jalr $15
 nop
-ori $2, $2, 0x0001
+addu $v0, $zero, $ra
 jr $0
 nop
 
