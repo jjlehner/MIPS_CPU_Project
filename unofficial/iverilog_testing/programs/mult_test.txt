@@ -1,0 +1,7 @@
+.main
+	0x3C04FFFF //lui a0 0xffff
+	0x24050002 //addiu a1 zero 0x2
+	0x00A40018 //mult $a1 $a0
+	0x00001012 //mflo v0 <-----HAZARDING GOING WRONG HERE
+	0x00400011
+	0x00000008

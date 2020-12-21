@@ -1,0 +1,12 @@
+# DESCRIPTION: Verilator output: Timestamp data for --skip-identical.  Delete at will.
+C "-Wall -cc Register_File.v --prefix Register_File_tb --Mdir ../test/Register_File_obj_dir"
+T      9275  2265155  1605991095   642365407  1605991095   642365407 "../test/Register_File_obj_dir/Register_File_tb.cpp"
+T      3110  2265154  1605991095   642365407  1605991095   642365407 "../test/Register_File_obj_dir/Register_File_tb.h"
+T      1514  2265157  1605991095   642365407  1605991095   642365407 "../test/Register_File_obj_dir/Register_File_tb.mk"
+T       589  2265151  1605991095   642365407  1605991095   642365407 "../test/Register_File_obj_dir/Register_File_tb__Syms.cpp"
+T       851  2265153  1605991095   642365407  1605991095   642365407 "../test/Register_File_obj_dir/Register_File_tb__Syms.h"
+T       440  2265158  1605991095   642365407  1605991095   642365407 "../test/Register_File_obj_dir/Register_File_tb__ver.d"
+T         0        0  1605991095   642365407  1605991095   642365407 "../test/Register_File_obj_dir/Register_File_tb__verFiles.dat"
+T      1271  2265156  1605991095   642365407  1605991095   642365407 "../test/Register_File_obj_dir/Register_File_tb_classes.mk"
+S   7484256  9975204  1594665919   359134879  1581264640           0 "/usr/bin/verilator_bin"
+S      1061  2257827  1605990602   628529735  1605990602   634000000 "Register_File.v"

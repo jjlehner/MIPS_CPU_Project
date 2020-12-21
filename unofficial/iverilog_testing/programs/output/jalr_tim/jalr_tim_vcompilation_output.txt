@@ -1,0 +1,35 @@
+../../../rtl/mips_cpu_bus.v:241: warning: implicit definition of wire 'flush_decode_register'.
+../RAM_32x2048_delay1.v:75: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../RAM_32x2048_delay1.v:75: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../RAM_32x2048_delay1.v:75: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../RAM_32x2048_delay1.v:75: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../RAM_32x2048_delay1.v:75: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../RAM_32x2048_delay1.v:75: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../RAM_32x2048_delay1.v:75: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../RAM_32x2048_delay1.v:75: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Control_Unit.v:30: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Control_Unit.v:30: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Control_Unit.v:30: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu_bus.v:390: warning: Port 2 (fetch_state) of ALU expects 3 bits, got 2.
+../../../rtl/mips_cpu_bus.v:390:        : Padding 1 high bits of the port.
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu/Memory_Filter.v:10: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu_bus.v:569: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu_bus.v:569: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+../../../rtl/mips_cpu_bus.v:569: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
