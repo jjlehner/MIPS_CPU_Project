@@ -1,4 +1,10 @@
 .vscode
 out
+bin1
+hex1
+results1
+simulator1
+tm_memory_test
+tmp1
 .bak
 .code-workspace
