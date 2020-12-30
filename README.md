@@ -1,2 +1,2 @@
 # MIPS_CPU_Project
-![alt text](https://github.com/jjlehner/16BitCPU/blob/main/final.png)
+![alt text](https://github.com/jjlehner/MIPS_CPU_Project/blob/main/MIPS-1.jpg)
